@@ -1,53 +1,65 @@
 {%extends 'base/base.html'%}
 
 {%block title%}{{title_complete|title}}{%endblock%}
+
 {%block content%}
-<section class="content">
-  <div class="container-fluid lista">
-  
-    {% include 'base/title_header.html' %}
-    
-    {% include 'base/msg_sucesso.html' %}
-
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 lista-content">
-      <div class="card">
-        <form action="" method="post">
-          {% csrf_token %}
-          <div class="header">
-            <h2>
-              {{title_complete}}
-            </h2>
-              <div class="header-btn">
-                <a href="{{add_url}}" class="btn btn-success"><i class="material-icons">&#xE148;</i><span> ADICIONAR</span></a>
-                <button class="btn btn-red btn-remove"><i class="material-icons">&#xE872;</i></button>
-              </div>
-          </div>
-
-          <div class="body">
-
-           {% include 'base/search.html' %}
-
-           {% if tipo_pessoa == 'cliente' %}
-           {% include 'cadastro/cliente/cliente_list_table.html' %}
-           {% elif tipo_pessoa == 'empresa' %}
-           {% include 'cadastro/empresa/empresa_list_table.html' %}
-           {% elif tipo_pessoa == 'fornecedor' %}
-           {% include 'cadastro/fornecedor/fornecedor_list_table.html' %}
-           {% elif tipo_pessoa == 'transportadora' %}
-           {% include 'cadastro/transportadora/transportadora_list_table.html' %}
-           {% else %}
-           Nenhum registro encontrado
-           {% endif %}
-
+<div class="page-header">
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div>
+            <h1 class="page-title">{{title_complete}}</h1>
+            <p class="page-subtitle">Gerencie seus cadastros</p>
         </div>
-
-      </form>
-
+        <div style="display: flex; gap: 12px;">
+            <a href="{{add_url}}" style="text-decoration: none;">
+                <button style="padding: 10px 20px; background: #FF9100; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.15s ease;">
+                    <span style="font-size: 18px;">+</span>
+                    <span>Adicionar</span>
+                </button>
+            </a>
+            <button class="btn-remove" style="padding: 10px 16px; background: transparent; color: #ef4444; border: 1px solid #fecaca; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s ease;">
+                <span style="font-size: 18px;">🗑️</span>
+            </button>
+        </div>
     </div>
-  </div>
-
 </div>
-</section>
 
+{% include 'base/msg_sucesso.html' %}
 
+<div class="section">
+    <div class="section-body" style="padding: 0;">
+        <form action="" method="post">
+            {% csrf_token %}
+            
+            <!-- Search Bar -->
+            <div style="padding: 20px; border-bottom: 1px solid #e5e7eb;">
+                {% include 'base/search.html' %}
+            </div>
+
+            <!-- Table -->
+            <div style="overflow-x: auto;">
+                {% if tipo_pessoa == 'cliente' %}
+                {% include 'cadastro/cliente/cliente_list_table.html' %}
+                {% elif tipo_pessoa == 'empresa' %}
+                {% include 'cadastro/empresa/empresa_list_table.html' %}
+                {% elif tipo_pessoa == 'fornecedor' %}
+                {% include 'cadastro/fornecedor/fornecedor_list_table.html' %}
+                {% elif tipo_pessoa == 'transportadora' %}
+                {% include 'cadastro/transportadora/transportadora_list_table.html' %}
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">📋</div>
+                    <div class="empty-state-text">Nenhum registro encontrado</div>
+                </div>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+.btn-remove:hover {
+    background: #fef2f2;
+    border-color: #fca5a5;
+}
+</style>
 {%endblock%}

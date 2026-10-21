@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Menu Lumina - LED TOOLS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f7fa;
+            padding: 40px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        h1 {
+            font-size: 42px;
+            font-weight: 900;
+            color: #FF9100;
+            margin-bottom: 15px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #FFF3E0;
+            color: #FF9100;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 15px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .sidebar-demo {
+            background: #fafbfc;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 24px 16px;
+            height: fit-content;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 16px;
+        }
+        
+        .sidebar-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0 8px;
+            margin-bottom: 12px;
+        }
+        
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .menu-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            color: #0f172a;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+        
+        .menu-card:hover {
+            border-color: #FF9100;
+            box-shadow: 0 4px 12px rgba(255, 145, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .menu-card.active {
+            background: #FFF3E0;
+            border-color: #FF9100;
+            color: #FF9100;
+        }
+        
+        .menu-icon {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            color: #0f172a;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .sidebar-nav a:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+        
+        .sidebar-nav a.active {
+            background: #FFF3E0;
+            border-color: #FF9100;
+            color: #FF9100;
+        }
+        
+        .icon {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        
+        .info-panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 40px;
+        }
+        
+        .info-panel h2 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 20px;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .feature-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 16px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .check {
+            color: #FF9100;
+            font-weight: 900;
+            font-size: 20px;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .compare-box {
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .compare-box.old {
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+        
+        .compare-box.new {
+            background: #FFF3E0;
+            border-color: #FF9100;
+        }
+        
+        .compare-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+        
+        .compare-box.old .compare-title {
+            color: #dc2626;
+        }
+        
+        .compare-box.new .compare-title {
+            color: #FF9100;
+        }
+        
+        .compare-items {
+            list-style: none;
+            font-size: 14px;
+        }
+        
+        .compare-items li {
+            padding: 6px 0;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💡 Novo Menu Lumina</h1>
+            <p class="subtitle">Estilo profissional inspirado na sua referência</p>
+            <div class="badge">✨ LED TOOLS</div>
+        </div>
+        
+        <div class="grid">
+            <!-- SIDEBAR DEMO -->
+            <div class="sidebar-demo">
+                <div class="sidebar-section">
+                    <div class="sidebar-label">Menu Principal</div>
+                    <nav class="sidebar-nav">
+                        <div class="menu-card active">
+                            <svg class="menu-icon" viewBox="0 0 24 24">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                            </svg>
+                            Vendas e NF-e
+                        </div>
+                        
+                        <div class="menu-card">
+                            <svg class="menu-icon" viewBox="0 0 24 24">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                            </svg>
+                            Produtos e Serviços
+                        </div>
+                        
+                        <div class="menu-card">
+                            <svg class="menu-icon" viewBox="0 0 24 24">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                            Finanças
+                        </div>
+                        
+                        <div class="menu-card">
+                            <svg class="menu-icon" viewBox="0 0 24 24">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                            Compras, estoque e produção
+                        </div>
+                    </nav>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-label">Cadastros</div>
+                    <nav class="sidebar-nav">
+                        <a>
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            Clientes
+                        </a>
+                        <a>
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            Fornecedores
+                        </a>
+                        <a>
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                            </svg>
+                            Empresas
+                        </a>
+                    </nav>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-label">Fiscal</div>
+                    <nav class="sidebar-nav">
+                        <a>
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                            </svg>
+                            Notas Fiscais
+                        </a>
+                    </nav>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-label">Sistema</div>
+                    <nav class="sidebar-nav">
+                        <a>
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            </svg>
+                            Dashboard
+                        </a>
+                        <a>
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M12 1v6m0 6v6m5.2-14.8l-4.2 4.2m-2.8 2.8l-4.2 4.2M23 12h-6m-6 0H5m14.8 5.2l-4.2-4.2m-2.8-2.8l-4.2-4.2"></path>
+                            </svg>
+                            Meu Perfil
+                        </a>
+                        <a>
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            Usuários
+                        </a>
+                    </nav>
+                </div>
+            </div>
+            
+            <!-- INFO PANEL -->
+            <div class="info-panel">
+                <h2>✨ Novo Design do Menu</h2>
+                <ul class="feature-list">
+                    <li><span class="check">✓</span> <strong>Cards grandes</strong> para módulos principais (estilo da referência)</li>
+                    <li><span class="check">✓</span> <strong>Ícones SVG outline</strong> profissionais (não emojis)</li>
+                    <li><span class="check">✓</span> <strong>Tipografia em negrito</strong> moderna e clara</li>
+                    <li><span class="check">✓</span> <strong>Hover com borda laranja</strong> LED TOOLS (#FF9100)</li>
+                    <li><span class="check">✓</span> <strong>Sombras sutis</strong> e elevação no hover</li>
+                    <li><span class="check">✓</span> <strong>Organização por seções</strong> (Principal, Cadastros, Fiscal, Sistema)</li>
+                    <li><span class="check">✓</span> <strong>Largura aumentada</strong> (320px) para melhor legibilidade</li>
+                    <li><span class="check">✓</span> <strong>Fundo neutro</strong> (#fafbfc) para destaque dos cards</li>
+                </ul>
+                
+                <h2 style="margin-top: 40px;">📊 Antes vs Depois</h2>
+                <div class="comparison">
+                    <div class="compare-box old">
+                        <div class="compare-title">❌ Anterior</div>
+                        <ul class="compare-items">
+                            <li>• Emojis como ícones</li>
+                            <li>• Links simples sem cards</li>
+                            <li>• Sidebar 240px</li>
+                            <li>• Hover básico cinza</li>
+                            <li>• Texto peso 500</li>
+                        </ul>
+                    </div>
+                    <div class="compare-box new">
+                        <div class="compare-title">✅ Novo</div>
+                        <ul class="compare-items">
+                            <li>• Ícones SVG profissionais</li>
+                            <li>• Cards brancos com sombra</li>
+                            <li>• Sidebar 320px</li>
+                            <li>• Hover laranja LED TOOLS</li>
+                            <li>• Texto peso 700 (negrito)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 40px; padding: 24px; background: #FFF3E0; border-radius: 12px; border-left: 4px solid #FF9100;">
+                    <strong style="color: #FF9100; font-size: 16px;">💡 Teste Agora!</strong>
+                    <p style="margin-top: 10px; color: #64748b;">
+                        Acesse <strong>http://localhost:8000</strong> para ver o novo menu em ação!<br>
+                        Passe o mouse sobre os cards para ver os efeitos de hover.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

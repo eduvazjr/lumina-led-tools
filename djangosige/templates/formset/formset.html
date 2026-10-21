@@ -1,33 +1,136 @@
-<div class="formset-box">
-
-  {% for form in formset %}
-  <div id="{{formset.prefix}}-{{forloop.counter0}}" class="formset">
-
-    <div class="col-sm-12 formset-header">
-    <h4 class="formset-title">{{title}}<span class="formset-padrao"> (padrão)<i class="material-icons" title="As entradas padrão serão utilizadas no preenchimento de notas fiscais, pedidos de venda/compra, etc.">&#xE887;</i></span><a class="remove-formset"></a></h4>
+<div class="form-section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 class="form-section-title" style="margin: 0; padding: 0; border: none;">{{title}}</h3>
+        <button type="button" class="add-formset-btn" data-formset="{{formset.prefix}}" 
+                style="padding: 6px 12px; background: #0f172a; color: white; border: none; 
+                       border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer;
+                       display: flex; align-items: center; gap: 6px;">
+            <span>+</span>
+            <span>Adicionar</span>
+        </button>
     </div>
 
-    {% for field in form.visible_fields %}
-    <div class="col-sm-6">
-      <div class="form-group">
-        <div class="form-line">
-          <label>{{field.label}}</label>
-          {% if field.errors %}<label class="error">{% for error in field.errors %}{{error}}{% endfor %}</label>{% endif %}
-          {{field}}
+    {{formset.management_form}}
+
+    <div id="{{formset.prefix}}-container">
+        {% for form in formset %}
+        <div class="formset-item" style="padding: 20px; background: #fafbfc; border: 1px solid #e5e7eb; 
+                                         border-radius: 6px; margin-bottom: 16px;">
+            
+            <!-- Delete checkbox (hidden visually, shown in header) -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <div style="font-size: 13px; font-weight: 600; color: #64748b;">
+                    {{title}} #{{forloop.counter}}
+                </div>
+                {% if formset.can_delete %}
+                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; 
+                              padding: 4px 8px; color: #ef4444; font-size: 12px;">
+                    {{form.DELETE}}
+                    <span>Remover</span>
+                </label>
+                {% endif %}
+            </div>
+
+            <!-- Form fields -->
+            <div class="form-grid-2">
+                {% for field in form.visible_fields %}
+                {% if field.name != 'DELETE' %}
+                <div class="form-group">
+                    <label>{{field.label}}{% if field.field.required %} <span class="required">*</span>{% endif %}</label>
+                    {{field}}
+                    {% if field.help_text %}
+                    <div class="help-text">{{field.help_text}}</div>
+                    {% endif %}
+                    {% if field.errors %}
+                    <div class="error-message">{% for error in field.errors %}{{error}}{% endfor %}</div>
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            <!-- Hidden fields -->
+            {% for hidden in form.hidden_fields %}
+            {{hidden}}
+            {% endfor %}
         </div>
-      </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 
-    {{ form.id }}
+    <!-- Empty form template (for adding new items) -->
+    <div id="{{formset.prefix}}-empty-form" style="display: none;">
+        <div class="formset-item" style="padding: 20px; background: #fafbfc; border: 1px solid #e5e7eb; 
+                                         border-radius: 6px; margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <div style="font-size: 13px; font-weight: 600; color: #64748b;">
+                    {{title}} #<span class="formset-number"></span>
+                </div>
+                {% if formset.can_delete %}
+                <button type="button" class="remove-formset-btn"
+                        style="padding: 4px 8px; background: transparent; color: #ef4444; 
+                               border: 1px solid #fecaca; border-radius: 4px; font-size: 12px; cursor: pointer;">
+                    Remover
+                </button>
+                {% endif %}
+            </div>
 
-    <div class="col-sm-12">
-      <a class="btn btn-xs add-formset">Adicionar novo</a>
+            <div class="form-grid-2">
+                {% for field in formset.empty_form.visible_fields %}
+                {% if field.name != 'DELETE' %}
+                <div class="form-group">
+                    <label>{{field.label}}{% if field.field.required %} <span class="required">*</span>{% endif %}</label>
+                    {{field}}
+                    {% if field.help_text %}
+                    <div class="help-text">{{field.help_text}}</div>
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            {% for hidden in formset.empty_form.hidden_fields %}
+            {{hidden}}
+            {% endfor %}
+        </div>
     </div>
-  </div>
-
-  {% endfor %}
-
-  {{formset.management_form}}
-
 </div>
+
+<script>
+(function() {
+    const prefix = '{{formset.prefix}}';
+    const container = document.getElementById(prefix + '-container');
+    const emptyFormTemplate = document.getElementById(prefix + '-empty-form').innerHTML;
+    const totalFormsInput = document.querySelector('[name="' + prefix + '-TOTAL_FORMS"]');
+    
+    // Add formset item
+    document.querySelectorAll('.add-formset-btn[data-formset="' + prefix + '"]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const currentForms = container.querySelectorAll('.formset-item').length;
+            const newFormHtml = emptyFormTemplate
+                .replace(/__prefix__/g, currentForms)
+                .replace(/<span class="formset-number"><\/span>/g, currentForms + 1);
+            
+            container.insertAdjacentHTML('beforeend', newFormHtml);
+            totalFormsInput.value = parseInt(totalFormsInput.value) + 1;
+            
+            // Bind remove button for the new item
+            const newItem = container.lastElementChild;
+            const removeBtn = newItem.querySelector('.remove-formset-btn');
+            if (removeBtn) {
+                removeBtn.addEventListener('click', function() {
+                    newItem.remove();
+                    totalFormsInput.value = parseInt(totalFormsInput.value) - 1;
+                });
+            }
+        });
+    });
+
+    // Remove existing formset items
+    document.querySelectorAll('#' + prefix + '-container .remove-formset-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            btn.closest('.formset-item').remove();
+            totalFormsInput.value = parseInt(totalFormsInput.value) - 1;
+        });
+    });
+})();
+</script>

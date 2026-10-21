@@ -1,34 +1,62 @@
-
-<div class="table-responsive">
-  <table id="lista-database" class="table table-bordered table-striped lista-table">
+<table class="table">
     <thead>
-      <tr>
-        <th>#ID</th>                   
-        <th>Nome/Razão Social</th>
-        <th>CPF/CNPJ</th>
-        <th>Estado</th>
-        <th>Município</th>
-        <th>Remover</th>
-      </tr>
+        <tr>
+            <th style="width: 80px;">#ID</th>
+            <th>Nome/Razão Social</th>
+            <th style="width: 160px;">CNPJ</th>
+            <th style="width: 180px;">Telefone</th>
+            <th style="width: 180px;">Município</th>
+            <th style="width: 80px; text-align: center;">Remover</th>
+        </tr>
     </thead>
-
     <tbody>
-     {% if all_fornecedores %}
-     {% for fornecedor in all_fornecedores %}
-     <tr class="clickable-row" data-href="{% url 'cadastro:editarfornecedorview' fornecedor.id %}">
-      <td>{{fornecedor.id}}</td>
-      <td>{{fornecedor.nome_razao_social}}</td>
-      <td>{% if fornecedor.tipo_pessoa == "PJ" %}{{fornecedor.pessoa_jur_info.cnpj|default_if_none:""}}{% else %}{{fornecedor.pessoa_fis_info.cpf|default_if_none:""}}{% endif %}</td>
-      <td>{% if fornecedor.endereco.all.0.uf %}{{fornecedor.endereco.all.0.get_uf_display}}{% endif %}</td>
-      <td>{{fornecedor.endereco.all.0.municipio|default_if_none:""}}</td>
-      <td class="lista-remove">
-        <input type="checkbox" name="{{fornecedor.id}}" id="remover-entrada-{{fornecedor.id}}"/>
-        <label class="remove-entry-label" for="remover-entrada-{{fornecedor.id}}"></label>
-      </td>
-    </tr>
-    {% endfor %}
-    {%else%}
-    {%endif%}
-  </tbody>
+        {% if all_fornecedores %}
+        {% for fornecedor in all_fornecedores %}
+        <tr class="clickable-row" data-href="{% url 'cadastro:editarfornecedorview' fornecedor.id %}" style="cursor: pointer;">
+            <td><strong>{{fornecedor.id}}</strong></td>
+            <td>
+                <div>
+                    <strong>{{fornecedor.nome_razao_social}}</strong>
+                </div>
+            </td>
+            <td style="font-family: 'Consolas', monospace; font-size: 13px;">
+                {{fornecedor.pessoa_jur_info.cnpj|default_if_none:""}}
+            </td>
+            <td>
+                {% if fornecedor.telefone %}
+                    {{fornecedor.telefone}}
+                {% else %}
+                    <span style="color: #94a3b8;">---</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if fornecedor.endereco.all.0.municipio %}
+                    {{fornecedor.endereco.all.0.municipio}}
+                {% else %}
+                    <span style="color: #94a3b8;">---</span>
+                {% endif %}
+            </td>
+            <td class="lista-remove" style="text-align: center;" onclick="event.stopPropagation();">
+                <input type="checkbox" 
+                       name="{{fornecedor.id}}" 
+                       id="remover-entrada-{{fornecedor.id}}"
+                       style="width: 16px; height: 16px; cursor: pointer;"/>
+            </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="6" style="text-align: center; padding: 48px; color: #94a3b8;">
+                <div style="font-size: 48px; opacity: 0.3; margin-bottom: 12px;">🏢</div>
+                <div>Nenhum fornecedor cadastrado</div>
+            </td>
+        </tr>
+        {% endif %}
+    </tbody>
 </table>
-</div>
+
+<style>
+.clickable-row:hover {
+    background: #FFF3E0 !important;
+}
+</style>
