@@ -1,0 +1,63 @@
+# 🚀 Comandos Prontos - GitHub
+
+## 📋 Copie e cole estes comandos
+
+### 1️⃣ **Criar Repositório no GitHub**
+
+Acesse: https://github.com/new
+
+- Nome: `lumina-led-tools`
+- Descrição: `💡 Sistema ERP Lumina - LED TOOLS | Django 5.2 | Performance 6x melhor`
+- Não marque "Initialize with README"
+
+---
+
+### 2️⃣ **Enviar para o GitHub**
+
+```bash
+cd ~/djangoSIGE
+
+# Remover conexão com repositório original
+git remote remove origin
+
+# Adicionar SEU repositório (SUBSTITUA SEU-USUARIO)
+git remote add origin https://github.com/SEU-USUARIO/lumina-led-tools.git
+
+# Enviar código
+git branch -M main
+git push -u origin main
+```
+
+---
+
+### 3️⃣ **Se pedir autenticação:**
+
+**Username:** seu-usuario-github  
+**Password:** cole seu Personal Access Token
+
+**Criar token:** https://github.com/settings/tokens  
+Marque: `repo` (Full control of private repositories)
+
+---
+
+## ✅ Pronto!
+
+Seu projeto estará em:
+```
+https://github.com/SEU-USUARIO/lumina-led-tools
+```
+
+---
+
+## 🔄 **Atualizações futuras:**
+
+```bash
+cd ~/djangoSIGE
+git add .
+git commit -m "feat: descrição da mudança"
+git push
+```
+
+---
+
+**Precisa de ajuda? Veja GUIA_GITHUB.md**

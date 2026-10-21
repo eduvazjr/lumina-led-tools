@@ -20,7 +20,7 @@ from djangosige.configs.settings import MEDIA_ROOT
 from datetime import datetime
 from pathlib import Path
 
-from weasyprint import HTML
+# from weasyprint import HTML  # Temporariamente desabilitado no Windows
 
 
 class AdicionarCompraView(CustomCreateView):
