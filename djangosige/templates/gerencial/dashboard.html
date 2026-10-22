@@ -1,0 +1,136 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Controle Gerencial{% endblock %}
+
+{% block content %}
+<style>
+.gerencial-wrap { padding: 20px; background: #fafbfc; min-height: calc(100vh - 60px); }
+.page-head { background: white; border: 1px solid #d0d7de; padding: 16px 20px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+.page-head-title { margin: 0; font-size: 18px; font-weight: 600; color: #24292f; }
+.page-head-subtitle { margin: 2px 0 0 0; font-size: 12px; color: #656d76; }
+.btn-group { display: flex; gap: 8px; }
+.btn { padding: 5px 14px; font-size: 12px; font-weight: 500; border: 1px solid #d0d7de; border-radius: 4px; background: white; color: #24292f; cursor: pointer; text-decoration: none; }
+.btn:hover { background: #f6f8fa; border-color: #c1c5c9; }
+.btn-primary { background: #FF9100; border-color: #FF9100; color: white; }
+.btn-primary:hover { background: #E67E00; border-color: #E67E00; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.kpi-box { background: white; border: 1px solid #d0d7de; padding: 14px; position: relative; }
+.kpi-box::after { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; }
+.kpi-box.accent-primary::after { background: #FF9100; }
+.kpi-box.accent-green::after { background: #1a7f37; }
+.kpi-box.accent-amber::after { background: #9a6700; }
+.kpi-box.accent-red::after { background: #cf222e; }
+.kpi-label { font-size: 11px; font-weight: 600; color: #656d76; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 6px; }
+.kpi-value { font-size: 24px; font-weight: 600; color: #24292f; margin-bottom: 2px; }
+.kpi-desc { font-size: 11px; color: #656d76; }
+.section-box { background: white; border: 1px solid #d0d7de; margin-bottom: 16px; }
+.section-head { padding: 12px 16px; border-bottom: 1px solid #d0d7de; }
+.section-title { margin: 0; font-size: 14px; font-weight: 600; color: #24292f; }
+.section-body { padding: 16px; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.data-table thead { background: #f6f8fa; }
+.data-table th { padding: 6px 12px; text-align: left; font-weight: 600; color: #57606a; border-bottom: 1px solid #d0d7de; font-size: 11px; text-transform: uppercase; }
+.data-table td { padding: 10px 12px; border-bottom: 1px solid #eaeef2; color: #24292f; }
+.data-table tbody tr:hover { background: #f6f8fa; }
+.tag { display: inline-block; padding: 2px 7px; font-size: 10px; font-weight: 600; border-radius: 12px; text-transform: uppercase; }
+.tag-pending { background: #fff5b1; color: #735c0f; }
+.tag-paid { background: #d3f9d8; color: #116329; }
+.tag-overdue { background: #ffe8e8; color: #a40e26; }
+.chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 16px; margin-bottom: 16px; }
+.chart-box { background: white; border: 1px solid #d0d7de; padding: 16px; }
+.chart-title { font-size: 13px; font-weight: 600; color: #24292f; margin: 0 0 12px 0; }
+.chart-canvas { position: relative; height: 260px; }
+.import-panel { background: #fbfcfd; border: 1px solid #d0d7de; padding: 14px; margin-bottom: 16px; display: none; }
+.import-panel.show { display: block; }
+.filter-bar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.filter-col { flex: 1; min-width: 160px; }
+.filter-label { display: block; font-size: 11px; font-weight: 600; color: #24292f; margin-bottom: 4px; }
+.filter-select { width: 100%; padding: 5px 10px; font-size: 12px; border: 1px solid #d0d7de; border-radius: 4px; background: white; }
+.table-actions { display: flex; gap: 6px; }
+.action-link { padding: 3px 6px; font-size: 11px; color: #656d76; text-decoration: none; border-radius: 3px; }
+.action-link:hover { background: #f6f8fa; color: #24292f; }
+.alert { padding: 10px 14px; border: 1px solid; border-radius: 4px; font-size: 12px; margin-bottom: 12px; }
+.alert-success { background: #dafbe1; border-color: #2da44e; color: #1a7f37; }
+.alert-warning { background: #fff8c5; border-color: #9a6700; color: #735c0f; }
+.alert-error { background: #ffe8e8; border-color: #cf222e; color: #a40e26; }
+</style>
+
+<div class="gerencial-wrap">
+    <div class="page-head">
+        <div>
+            <h1 class="page-head-title">Controle Gerencial</h1>
+            <p class="page-head-subtitle">Gestão de pagamentos a fornecedores</p>
+        </div>
+        <div class="btn-group">
+            <a href="{% url 'gerencial:pagamento_add' %}" class="btn btn-primary">Novo Pagamento</a>
+            <button onclick="toggleImport()" class="btn">Importar</button>
+            <a href="/static/modelo_importacao_pagamentos.csv" download class="btn">Modelo</a>
+        </div>
+    </div>
+
+    {% if messages %}{% for message in messages %}<div class="alert alert-{{ message.tags }}">{{ message }}</div>{% endfor %}{% endif %}
+
+    <div id="importPanel" class="import-panel">
+        <form method="post" action="{% url 'gerencial:importar_planilha' %}" enctype="multipart/form-data" style="display: flex; gap: 10px;">
+            {% csrf_token %}
+            <input type="file" name="arquivo" accept=".csv,.xlsx,.xls" required style="flex:1; padding: 5px; font-size: 12px; border: 1px solid #d0d7de; border-radius: 4px;">
+            <button type="submit" class="btn btn-primary">Importar</button>
+            <button type="button" onclick="toggleImport()" class="btn">Cancelar</button>
+        </form>
+    </div>
+
+    <div class="kpi-grid">
+        <div class="kpi-box accent-primary"><div class="kpi-label">Média Semanal</div><div class="kpi-value">R$ {{ media_semanal|default:"0,00" }}</div><div class="kpi-desc">Últimos 30 dias</div></div>
+        <div class="kpi-box accent-primary"><div class="kpi-label">Média Mensal</div><div class="kpi-value">R$ {{ media_mensal|default:"0,00" }}</div><div class="kpi-desc">Últimos 12 meses</div></div>
+        <div class="kpi-box accent-amber"><div class="kpi-label">Maior Concentração</div><div class="kpi-value">R$ {{ maior_divida_valor|default:"0,00" }}</div><div class="kpi-desc">{{ maior_divida_fornecedor|default:"N/A" }} · {{ maior_divida_percentual|default:"0" }}%</div></div>
+        <div class="kpi-box accent-green"><div class="kpi-label">Menor Concentração</div><div class="kpi-value">R$ {{ menor_divida_valor|default:"0,00" }}</div><div class="kpi-desc">{{ menor_divida_fornecedor|default:"N/A" }} · {{ menor_divida_percentual|default:"0" }}%</div></div>
+        <div class="kpi-box accent-red"><div class="kpi-label">Total a Pagar</div><div class="kpi-value">R$ {{ total_pagar|default:"0,00" }}</div><div class="kpi-desc">{{ qtd_fornecedores|default:"0" }} fornecedores</div></div>
+        <div class="kpi-box accent-red"><div class="kpi-label">Vencidos</div><div class="kpi-value">{{ qtd_vencidos|default:"0" }}</div><div class="kpi-desc">R$ {{ valor_vencidos|default:"0,00" }}</div></div>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-box"><h3 class="chart-title">Distribuição por Fornecedor</h3><div class="chart-canvas"><canvas id="chartDist"></canvas></div></div>
+        <div class="chart-box"><h3 class="chart-title">Vencimentos Próximos</h3><div class="chart-canvas"><canvas id="chartVenc"></canvas></div></div>
+    </div>
+
+    <div class="section-box">
+        <div class="section-head"><h2 class="section-title">Pagamentos Recentes</h2></div>
+        <div class="section-body">
+            <form method="get" class="filter-bar">
+                <div class="filter-col"><label class="filter-label">Fornecedor</label><select name="fornecedor" class="filter-select"><option value="">Todos</option>{% for f in fornecedores %}<option value="{{ f.id }}">{{ f.nome_razao_social }}</option>{% endfor %}</select></div>
+                <div class="filter-col"><label class="filter-label">Status</label><select name="status" class="filter-select"><option value="">Todos</option><option value="pendente">Pendente</option><option value="pago">Pago</option></select></div>
+                <div class="filter-col"><label class="filter-label">Período</label><select name="periodo" class="filter-select"><option value="">Todos</option><option value="7">7 dias</option><option value="30">30 dias</option><option value="90">90 dias</option></select></div>
+                <div class="filter-col" style="display: flex; align-items: end;"><button type="submit" class="btn btn-primary" style="width: 100%;">Filtrar</button></div>
+            </form>
+
+            {% if pagamentos %}
+            <table class="data-table">
+                <thead><tr><th>Fornecedor</th><th>Descrição</th><th style="text-align: right;">Valor</th><th>Emissão</th><th>Vencimento</th><th>Status</th><th style="width: 100px;">Ações</th></tr></thead>
+                <tbody>
+                    {% for pag in pagamentos %}
+                    <tr>
+                        <td>{{ pag.fornecedor.nome_razao_social|truncatechars:25 }}</td>
+                        <td>{{ pag.descricao|truncatechars:35 }}</td>
+                        <td style="text-align: right; font-weight: 600;">R$ {{ pag.valor|floatformat:2 }}</td>
+                        <td>{{ pag.data_emissao|date:"d/m/Y" }}</td>
+                        <td>{{ pag.data_vencimento|date:"d/m/Y" }}</td>
+                        <td>{% if pag.status == 'pago' %}<span class="tag tag-paid">Pago</span>{% elif pag.dias_vencimento < 0 %}<span class="tag tag-overdue">Vencido</span>{% else %}<span class="tag tag-pending">Pendente</span>{% endif %}</td>
+                        <td><div class="table-actions"><a href="{% url 'gerencial:pagamento_edit' pag.pk %}" class="action-link">Editar</a>{% if pag.status == 'pendente' %}<a href="{% url 'gerencial:pagamento_pagar' pag.pk %}" class="action-link">Pagar</a>{% endif %}<a href="{% url 'gerencial:pagamento_delete' pag.pk %}" class="action-link" onclick="return confirm('Confirma?')">Excluir</a></div></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div style="text-align: center; padding: 40px; color: #656d76;">Nenhum pagamento encontrado</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+function toggleImport() { document.getElementById('importPanel').classList.toggle('show'); }
+new Chart(document.getElementById('chartDist'), { type: 'bar', data: { labels: {{ grafico_labels|safe }}, datasets: [{ data: {{ grafico_valores|safe }}, backgroundColor: '#FF9100', borderRadius: 2 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { backgroundColor: '#24292f', padding: 10, displayColors: false, callbacks: { label: (c) => 'R$ ' + c.parsed.y.toLocaleString('pt-BR', {minimumFractionDigits: 2}) } } }, scales: { x: { grid: { display: false }, ticks: { font: { size: 10 }, color: '#656d76' }}, y: { grid: { color: '#eaeef2' }, ticks: { font: { size: 10 }, color: '#656d76' }} } } });
+new Chart(document.getElementById('chartVenc'), { type: 'line', data: { labels: {{ vencimentos_labels|safe }}, datasets: [{ data: {{ vencimentos_valores|safe }}, borderColor: '#FF9100', backgroundColor: 'rgba(255,145,0,0.05)', borderWidth: 2, fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: '#FF9100' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { backgroundColor: '#24292f', padding: 10, displayColors: false, callbacks: { label: (c) => 'R$ ' + c.parsed.y.toLocaleString('pt-BR', {minimumFractionDigits: 2}) } } }, scales: { x: { grid: { display: false }, ticks: { font: { size: 10 }, color: '#656d76' }}, y: { grid: { color: '#eaeef2' }, ticks: { font: { size: 10 }, color: '#656d76' }} } } });
+</script>
+{% endblock %}

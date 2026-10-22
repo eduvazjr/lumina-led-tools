@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📤 Como Importar Planilhas - Led Gerencial</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #FF9100 0%, #E67E00 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 20px; padding: 50px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        h1 { font-size: 36px; font-weight: 900; color: #FF9100; margin-bottom: 30px; text-align: center; }
+        h2 { font-size: 24px; font-weight: 700; color: #0f172a; margin: 40px 0 20px; border-left: 4px solid #FF9100; padding-left: 15px; }
+        .step { background: #FFF3E0; padding: 25px; border-radius: 12px; margin: 20px 0; }
+        .step-number { display: inline-block; width: 40px; height: 40px; background: #FF9100; color: white; border-radius: 50%; text-align: center; line-height: 40px; font-weight: 900; margin-right: 15px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 12px; text-align: left; border: 1px solid #e5e7eb; }
+        th { background: #FF9100; color: white; font-weight: 700; }
+        code { background: #0f172a; color: #10b981; padding: 3px 8px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 13px; }
+        .alert { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .success { background: #d1fae5; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        ul { margin: 15px 0 15px 30px; line-height: 1.8; }
+        .download-btn { display: inline-block; background: #FF9100; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: 700; margin: 10px 10px 10px 0; box-shadow: 0 4px 12px rgba(255, 145, 0, 0.3); }
+        .download-btn:hover { background: #E67E00; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📤 Como Importar Planilhas</h1>
+        <p style="text-align: center; color: #64748b; font-size: 18px; margin-bottom: 40px;">
+            Guia completo para importar pagamentos a fornecedores no Led Gerencial v7.5
+        </p>
+
+        <h2>📊 Formatos Aceitos</h2>
+        <ul>
+            <li><strong>CSV</strong> (.csv) - Delimitador: ponto-e-vírgula (;)</li>
+            <li><strong>Excel</strong> (.xlsx ou .xls) - Formato moderno do Microsoft Excel</li>
+        </ul>
+
+        <h2>📋 Estrutura da Planilha</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Coluna</th>
+                    <th>Descrição</th>
+                    <th>Exemplo</th>
+                    <th>Obrigatório</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>fornecedor_cnpj</code> ou <code>fornecedor_nome</code></td>
+                    <td>CNPJ ou nome do fornecedor (deve estar cadastrado)</td>
+                    <td>12.345.678/0001-90<br>ou<br>ACME LTDA</td>
+                    <td>✅ Sim</td>
+                </tr>
+                <tr>
+                    <td><code>descricao</code></td>
+                    <td>Descrição do pagamento</td>
+                    <td>Compra de materiais</td>
+                    <td>✅ Sim</td>
+                </tr>
+                <tr>
+                    <td><code>valor</code></td>
+                    <td>Valor (use ponto como decimal)</td>
+                    <td>1500.00</td>
+                    <td>✅ Sim</td>
+                </tr>
+                <tr>
+                    <td><code>data_emissao</code></td>
+                    <td>Data de emissão (DD/MM/AAAA)</td>
+                    <td>21/10/2026</td>
+                    <td>✅ Sim</td>
+                </tr>
+                <tr>
+                    <td><code>data_vencimento</code></td>
+                    <td>Data de vencimento (DD/MM/AAAA)</td>
+                    <td>30/10/2026</td>
+                    <td>✅ Sim</td>
+                </tr>
+                <tr>
+                    <td><code>observacoes</code></td>
+                    <td>Observações adicionais</td>
+                    <td>Pedido 001</td>
+                    <td>❌ Não</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🎯 Passo a Passo</h2>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong style="font-size: 18px;">Baixe o modelo</strong>
+            <p style="margin: 15px 0 15px 55px; color: #64748b;">
+                Use o botão "⬇️ Baixar Modelo CSV" no dashboard ou os links abaixo:
+            </p>
+            <div style="margin-left: 55px;">
+                <a href="/static/modelo_importacao_pagamentos.csv" download class="download-btn">
+                    📄 Baixar Modelo CSV
+                </a>
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong style="font-size: 18px;">Preencha seus dados</strong>
+            <p style="margin: 15px 0 0 55px; color: #64748b;">
+                Abra o arquivo no Excel, LibreOffice ou editor de texto e preencha com seus pagamentos.
+            </p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <strong style="font-size: 18px;">Certifique-se de que os fornecedores existem</strong>
+            <p style="margin: 15px 0 0 55px; color: #64748b;">
+                Todos os fornecedores mencionados na planilha devem estar cadastrados em <strong>Cadastros → Fornecedores</strong>.
+            </p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">4</span>
+            <strong style="font-size: 18px;">Importe no sistema</strong>
+            <ul style="margin: 15px 0 0 55px; color: #64748b;">
+                <li>Acesse <strong>Gestão Avançada → Controle Gerencial</strong></li>
+                <li>Clique em <strong>"📤 Importar Planilha"</strong></li>
+                <li>Selecione seu arquivo</li>
+                <li>Clique em <strong>"🚀 Importar Agora"</strong></li>
+            </ul>
+        </div>
+
+        <h2>✅ Exemplo CSV Válido</h2>
+        <div style="background: #0f172a; color: #10b981; padding: 20px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.8; overflow-x: auto; margin: 20px 0;">
+fornecedor_cnpj;descricao;valor;data_emissao;data_vencimento;observacoes<br>
+12.345.678/0001-90;Compra de materiais;1500.00;21/10/2026;30/10/2026;Pedido 001<br>
+98.765.432/0001-10;Serviços de manutenção;2300.50;21/10/2026;05/11/2026;Contrato 2026<br>
+ACME LTDA;Fornecimento de equipamentos;5000.00;20/10/2026;25/10/2026;Urgente
+        </div>
+
+        <div class="alert">
+            <strong style="display: block; margin-bottom: 10px; color: #92400e;">⚠️ IMPORTANTE:</strong>
+            <ul style="color: #78350f;">
+                <li>Use <strong>ponto-e-vírgula (;)</strong> como separador no CSV</li>
+                <li>Valores numéricos usam <strong>ponto (.)</strong> como separador decimal</li>
+                <li>Datas sempre no formato <strong>DD/MM/AAAA</strong></li>
+                <li>Não deixe linhas vazias entre os registros</li>
+                <li>A primeira linha (cabeçalho) será ignorada no Excel</li>
+            </ul>
+        </div>
+
+        <h2>🔧 Solução de Problemas</h2>
+
+        <div style="margin: 20px 0;">
+            <strong style="color: #0f172a;">❌ Erro: "Fornecedor não encontrado"</strong>
+            <p style="color: #64748b; margin: 10px 0 0 25px;">
+                <strong>Solução:</strong> Cadastre o fornecedor primeiro em <strong>Cadastros → Fornecedores</strong>
+            </p>
+        </div>
+
+        <div style="margin: 20px 0;">
+            <strong style="color: #0f172a;">❌ Erro: "Formato de data inválido"</strong>
+            <p style="color: #64748b; margin: 10px 0 0 25px;">
+                <strong>Solução:</strong> Use sempre DD/MM/AAAA (exemplo: 21/10/2026). No Excel, formate a célula como "Texto" antes de digitar.
+            </p>
+        </div>
+
+        <div style="margin: 20px 0;">
+            <strong style="color: #0f172a;">❌ Erro: "Biblioteca openpyxl não instalada"</strong>
+            <p style="color: #64748b; margin: 10px 0 0 25px;">
+                <strong>Solução:</strong> Execute no terminal: <code>pip install openpyxl</code>
+            </p>
+        </div>
+
+        <div class="success">
+            <strong style="display: block; margin-bottom: 10px; color: #065f46;">✅ APÓS A IMPORTAÇÃO:</strong>
+            <ul style="color: #064e3b;">
+                <li>Uma mensagem de sucesso aparecerá mostrando quantos registros foram importados</li>
+                <li>Os KPIs do dashboard serão atualizados automaticamente</li>
+                <li>Um log completo da importação fica salvo no banco de dados</li>
+                <li>Erros são registrados linha por linha para fácil correção</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 50px; padding: 30px; background: #f8fafc; border-radius: 12px;">
+            <div style="font-size: 48px; margin-bottom: 15px;">💡</div>
+            <h3 style="color: #FF9100; margin-bottom: 10px;">Led Gerencial v7.5</h3>
+            <p style="color: #64748b;">Sistema ERP LED TOOLS com IA Integrada</p>
+        </div>
+    </div>
+</body>
+</html>

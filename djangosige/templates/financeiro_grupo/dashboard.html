@@ -1,0 +1,310 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Controle Financeiro - Grupo{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">🏢 Controle Financeiro entre Empresas</h1>
+    <p class="page-subtitle">Manobras financeiras internas do grupo</p>
+</div>
+
+<!-- Dashboard Cards -->
+<div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 40px;">
+    <div class="stat-card">
+        <div class="stat-header">
+            <span class="stat-label">Total em Movimentação</span>
+            <div class="stat-icon">💸</div>
+        </div>
+        <div class="stat-value">R$ {{ total_movimentacao|default:"0,00" }}</div>
+        <div class="stat-description">Últimos 30 dias</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-header">
+            <span class="stat-label">Empresa Credora</span>
+            <div class="stat-icon">📈</div>
+        </div>
+        <div class="stat-value">{{ empresa_credora|default:"N/A" }}</div>
+        <div class="stat-description">R$ {{ saldo_credora|default:"0,00" }}</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-header">
+            <span class="stat-label">Empresa Devedora</span>
+            <div class="stat-icon">📉</div>
+        </div>
+        <div class="stat-value">{{ empresa_devedora|default:"N/A" }}</div>
+        <div class="stat-description">R$ {{ saldo_devedora|default:"0,00" }}</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-header">
+            <span class="stat-label">Transferências Pendentes</span>
+            <div class="stat-icon">⏳</div>
+        </div>
+        <div class="stat-value">{{ qtd_pendentes|default:"0" }}</div>
+        <div class="stat-description">R$ {{ valor_pendentes|default:"0,00" }}</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-header">
+            <span class="stat-label">Proprietário</span>
+            <div class="stat-icon">👤</div>
+        </div>
+        <div class="stat-value">{{ proprietario_nome|default:"N/A" }}</div>
+        <div class="stat-description">CPF: {{ proprietario_cpf|default:"***.***.***-**" }}</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-header">
+            <span class="stat-label">Empresas Ativas</span>
+            <div class="stat-icon">🏭</div>
+        </div>
+        <div class="stat-value">{{ qtd_empresas|default:"0" }}</div>
+        <div class="stat-description">No grupo</div>
+    </div>
+</div>
+
+<!-- Gráficos -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; margin-bottom: 40px;">
+    <!-- Fluxo entre Empresas -->
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">Fluxo entre Empresas (Mês)</h2>
+        </div>
+        <div class="section-body">
+            <canvas id="graficoFluxo" style="max-height: 300px;"></canvas>
+        </div>
+    </div>
+    
+    <!-- Saldos por Empresa -->
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">Saldos por Empresa</h2>
+        </div>
+        <div class="section-body">
+            <canvas id="graficoSaldos" style="max-height: 300px;"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Filtros e Tabela -->
+<div class="section">
+    <div class="section-header">
+        <h2 class="section-title">Manobras Financeiras</h2>
+        <div style="display: flex; gap: 10px;">
+            <a href="{% url 'financeiro_grupo:transferencia_add' %}" class="btn btn-primary">
+                ➕ Nova Transferência
+            </a>
+            <a href="{% url 'financeiro_grupo:relatorio' %}" class="btn btn-secondary">
+                📊 Relatório Completo
+            </a>
+        </div>
+    </div>
+    
+    <div class="section-body">
+        <!-- Filtros -->
+        <form method="get" style="display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 200px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 6px;">
+                    Empresa Origem
+                </label>
+                <select name="origem" style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px;">
+                    <option value="">Todas</option>
+                    {% for emp in empresas %}
+                    <option value="{{ emp.id }}">{{ emp.nome_fantasia }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div style="flex: 1; min-width: 200px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 6px;">
+                    Empresa Destino
+                </label>
+                <select name="destino" style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px;">
+                    <option value="">Todas</option>
+                    {% for emp in empresas %}
+                    <option value="{{ emp.id }}">{{ emp.nome_fantasia }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div style="flex: 1; min-width: 150px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 6px;">
+                    Status
+                </label>
+                <select name="status" style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px;">
+                    <option value="">Todos</option>
+                    <option value="pendente">Pendente</option>
+                    <option value="concluida">Concluída</option>
+                    <option value="cancelada">Cancelada</option>
+                </select>
+            </div>
+            
+            <div style="display: flex; align-items: flex-end;">
+                <button type="submit" class="btn btn-primary" style="height: 44px;">🔍 Filtrar</button>
+            </div>
+        </form>
+        
+        <!-- Tabela -->
+        <div style="overflow-x: auto;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Origem</th>
+                        <th>→</th>
+                        <th>Destino</th>
+                        <th>Valor</th>
+                        <th>Finalidade</th>
+                        <th>Status</th>
+                        <th>Responsável</th>
+                        <th style="text-align: center;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for trans in transferencias %}
+                    <tr>
+                        <td>{{ trans.data|date:"d/m/Y H:i" }}</td>
+                        <td><strong>{{ trans.empresa_origem.nome_fantasia }}</strong></td>
+                        <td style="text-align: center; color: #FF9100; font-size: 18px;">→</td>
+                        <td><strong>{{ trans.empresa_destino.nome_fantasia }}</strong></td>
+                        <td style="font-family: 'Courier New', monospace; font-weight: 700; color: #FF9100;">
+                            R$ {{ trans.valor|floatformat:2 }}
+                        </td>
+                        <td>{{ trans.finalidade|truncatewords:8 }}</td>
+                        <td>
+                            {% if trans.status == 'concluida' %}
+                            <span class="badge badge-success">✓ Concluída</span>
+                            {% elif trans.status == 'cancelada' %}
+                            <span class="badge badge-danger">✗ Cancelada</span>
+                            {% else %}
+                            <span class="badge badge-warning">⏱ Pendente</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ trans.usuario.username }}</td>
+                        <td style="text-align: center;">
+                            <a href="{% url 'financeiro_grupo:transferencia_detail' trans.id %}" class="btn-icon" title="Ver Detalhes">👁️</a>
+                            <a href="{% url 'financeiro_grupo:transferencia_edit' trans.id %}" class="btn-icon" title="Editar">✏️</a>
+                            <a href="{% url 'financeiro_grupo:transferencia_confirmar' trans.id %}" class="btn-icon" title="Confirmar">✓</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="9" class="empty-state">
+                            <div class="empty-state-icon">💸</div>
+                            <div class="empty-state-text">Nenhuma transferência registrada</div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Matriz de Fluxo -->
+<div class="section">
+    <div class="section-header">
+        <h2 class="section-title">Matriz de Transferências (Resumo)</h2>
+    </div>
+    <div class="section-body">
+        <div style="overflow-x: auto;">
+            <table class="table" style="text-align: center;">
+                <thead>
+                    <tr>
+                        <th style="text-align: left;">De \ Para</th>
+                        {% for emp in empresas %}
+                        <th>{{ emp.nome_fantasia|truncatewords:2 }}</th>
+                        {% endfor %}
+                        <th style="background: #FFF3E0; color: #FF9100;">Total Saída</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for linha in matriz_fluxo %}
+                    <tr>
+                        <th style="text-align: left;">{{ linha.empresa }}</th>
+                        {% for valor in linha.valores %}
+                        <td style="{% if valor > 0 %}background: #FFF3E0; font-weight: 700; color: #FF9100;{% endif %}">
+                            {% if valor > 0 %}R$ {{ valor|floatformat:2 }}{% else %}-{% endif %}
+                        </td>
+                        {% endfor %}
+                        <td style="font-weight: 700; background: #FFF3E0; color: #FF9100;">
+                            R$ {{ linha.total|floatformat:2 }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr style="background: #f8fafc; font-weight: 700;">
+                        <th>Total Entrada</th>
+                        {% for total in totais_entrada %}
+                        <td style="color: #10b981;">R$ {{ total|floatformat:2 }}</td>
+                        {% endfor %}
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// Gráfico de Fluxo
+const ctxFluxo = document.getElementById('graficoFluxo').getContext('2d');
+new Chart(ctxFluxo, {
+    type: 'line',
+    data: {
+        labels: {{ fluxo_labels|safe }},
+        datasets: [{
+            label: 'Transferências (R$)',
+            data: {{ fluxo_valores|safe }},
+            borderColor: '#FF9100',
+            backgroundColor: 'rgba(255, 145, 0, 0.1)',
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { y: { beginAtZero: true } }
+    }
+});
+
+// Gráfico de Saldos
+const ctxSaldos = document.getElementById('graficoSaldos').getContext('2d');
+new Chart(ctxSaldos, {
+    type: 'bar',
+    data: {
+        labels: {{ saldos_labels|safe }},
+        datasets: [{
+            label: 'Saldo (R$)',
+            data: {{ saldos_valores|safe }},
+            backgroundColor: '#FF9100',
+            borderColor: '#E67E00',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { y: { beginAtZero: true } }
+    }
+});
+</script>
+
+<style>
+.btn-icon {
+    display: inline-block;
+    padding: 6px 10px;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+}
+.btn-icon:hover {
+    background: #FFF3E0;
+    transform: scale(1.1);
+}
+</style>
+{% endblock %}

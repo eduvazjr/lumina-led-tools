@@ -15,6 +15,11 @@ urlpatterns = [
     url(r'^compras/', include('djangosige.apps.compras.urls')),
     url(r'^financeiro/', include('djangosige.apps.financeiro.urls')),
     url(r'^estoque/', include('djangosige.apps.estoque.urls')),
+    
+    # Led Gerencial v7.5 - Novos módulos gerenciais
+    url(r'^gerencial/', include('djangosige.apps.gerencial.urls')),
+    url(r'^financeiro-grupo/', include('djangosige.apps.financeiro_grupo.urls')),
+    url(r'^juridico/', include('djangosige.apps.juridico.urls')),
 ]
 
 if DEBUG is True:

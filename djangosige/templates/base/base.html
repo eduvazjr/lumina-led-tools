@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Dashboard{% endblock %} | Lumina v7.4 - LED TOOLS</title>
+    <title>{% block title %}Dashboard{% endblock %} | Led Gerencial v7.5 - LED TOOLS</title>
     <style>
         * {
             margin: 0;
@@ -450,13 +450,13 @@
         }
     </style>
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
     <!-- Header -->
     <header class="header">
         <div class="header-left">
             <a href="{% url 'base:index' %}" class="brand">
                 <span class="brand-icon">💡</span>
-                <span>Lumina</span>
+                <span>Led Gerencial</span>
             </a>
             <nav class="header-nav">
                 <a href="{% url 'base:index' %}" class="active">Dashboard</a>
@@ -545,6 +545,33 @@
                             <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
                         </svg>
                         Empresas
+                    </a>
+                </nav>
+            </div>
+
+            <!-- LED GERENCIAL V7.5 - NOVOS MÓDULOS GERENCIAIS -->
+            <div class="sidebar-section">
+                <div class="sidebar-label">Gestão Avançada</div>
+                <nav class="sidebar-nav">
+                    <a href="{% url 'gerencial:dashboard' %}"{% if request.resolver_match.namespace == 'gerencial' %} class="active" aria-current="page"{% endif %}>
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        Controle Gerencial
+                    </a>
+                    <a href="{% url 'financeiro_grupo:dashboard' %}">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                        </svg>
+                        Financeiro - Grupo
+                    </a>
+                    <a href="{% url 'juridico:dashboard' %}">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        Controle Jurídico
                     </a>
                 </nav>
             </div>

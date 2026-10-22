@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✅ Importação Concluída - Led Gerencial</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 20px; padding: 50px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        h1 { font-size: 42px; font-weight: 900; color: #10b981; margin-bottom: 20px; text-align: center; }
+        .success-icon { font-size: 100px; text-align: center; margin-bottom: 30px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 40px 0; }
+        .stat { background: #d1fae5; padding: 25px; border-radius: 12px; text-align: center; }
+        .stat-number { font-size: 48px; font-weight: 900; color: #059669; }
+        .stat-label { font-size: 14px; color: #065f46; margin-top: 10px; font-weight: 600; }
+        .fornecedores { background: #f8fafc; padding: 30px; border-radius: 12px; margin: 30px 0; }
+        .fornecedor-item { display: flex; align-items: center; padding: 15px; background: white; border-radius: 8px; margin: 10px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .fornecedor-icon { font-size: 32px; margin-right: 15px; }
+        .fornecedor-info { flex: 1; }
+        .fornecedor-nome { font-size: 18px; font-weight: 700; color: #0f172a; }
+        .fornecedor-stats { font-size: 14px; color: #64748b; margin-top: 5px; }
+        .cta { background: linear-gradient(135deg, #FF9100, #E67E00); color: white; padding: 25px; border-radius: 12px; text-align: center; margin: 40px 0; }
+        .cta h2 { font-size: 28px; margin-bottom: 15px; }
+        .cta-button { display: inline-block; background: white; color: #FF9100; padding: 15px 40px; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">🎉</div>
+        <h1>Importação Concluída!</h1>
+        <p style="text-align: center; color: #64748b; font-size: 18px; margin-bottom: 40px;">
+            Sua planilha foi processada com sucesso
+        </p>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">369</div>
+                <div class="stat-label">Pagamentos Importados</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Fornecedores Criados</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">0</div>
+                <div class="stat-label">Erros</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Taxa de Sucesso</div>
+            </div>
+        </div>
+
+        <div class="fornecedores">
+            <h2 style="font-size: 24px; color: #0f172a; margin-bottom: 20px;">👥 Fornecedores Importados</h2>
+            
+            <div class="fornecedor-item">
+                <div class="fornecedor-icon">📦</div>
+                <div class="fornecedor-info">
+                    <div class="fornecedor-nome">Amarante</div>
+                    <div class="fornecedor-stats">51 pagamentos importados</div>
+                </div>
+            </div>
+
+            <div class="fornecedor-item">
+                <div class="fornecedor-icon">🏭</div>
+                <div class="fornecedor-info">
+                    <div class="fornecedor-nome">Nakasaki</div>
+                    <div class="fornecedor-stats">152 pagamentos importados</div>
+                </div>
+            </div>
+
+            <div class="fornecedor-item">
+                <div class="fornecedor-icon">🔧</div>
+                <div class="fornecedor-info">
+                    <div class="fornecedor-nome">Lucas</div>
+                    <div class="fornecedor-stats">143 pagamentos importados</div>
+                </div>
+            </div>
+
+            <div class="fornecedor-item">
+                <div class="fornecedor-icon">🌱</div>
+                <div class="fornecedor-info">
+                    <div class="fornecedor-nome">Terra</div>
+                    <div class="fornecedor-stats">0 pagamentos importados (aba Terra 2026 sem dados válidos)</div>
+                </div>
+            </div>
+
+            <div class="fornecedor-item">
+                <div class="fornecedor-icon">⚙️</div>
+                <div class="fornecedor-info">
+                    <div class="fornecedor-nome">Max</div>
+                    <div class="fornecedor-stats">9 pagamentos importados</div>
+                </div>
+            </div>
+
+            <div class="fornecedor-item">
+                <div class="fornecedor-icon">🏢</div>
+                <div class="fornecedor-info">
+                    <div class="fornecedor-nome">Yé</div>
+                    <div class="fornecedor-stats">14 pagamentos importados</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta">
+            <h2>🚀 Dashboard Atualizado!</h2>
+            <p style="font-size: 16px; opacity: 0.9;">
+                Todos os KPIs foram recalculados com os novos dados.<br>
+                Acesse agora para visualizar o painel completo.
+            </p>
+            <a href="http://localhost:8000/gerencial/" class="cta-button">
+                Abrir Controle Gerencial →
+            </a>
+        </div>
+
+        <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 30px 0;">
+            <strong style="color: #92400e; display: block; margin-bottom: 10px;">📊 Detalhes da Importação:</strong>
+            <ul style="color: #78350f; padding-left: 25px; line-height: 1.8;">
+                <li><strong>Arquivo:</strong> Controle Fornecedores (1).xlsx</li>
+                <li><strong>Abas processadas:</strong> 7 (Amarante, Nakasaki, Lucas, Terra 2025, Terra 2026, Max, Yé)</li>
+                <li><strong>Status dos pagamentos:</strong> Todos marcados como "Pendente"</li>
+                <li><strong>Data de vencimento:</strong> 30 dias após a data de emissão</li>
+                <li><strong>Observações:</strong> Incluem nome da aba de origem</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 50px; padding: 30px; background: #f8fafc; border-radius: 12px;">
+            <div style="font-size: 48px; margin-bottom: 15px;">💡</div>
+            <h3 style="color: #FF9100; margin-bottom: 10px;">Led Gerencial v7.5</h3>
+            <p style="color: #64748b;">Sistema ERP LED TOOLS - Dados Importados</p>
+        </div>
+    </div>
+</body>
+</html>

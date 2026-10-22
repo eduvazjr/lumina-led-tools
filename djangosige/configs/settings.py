@@ -24,12 +24,23 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())
 # https://docs.djangoproject.com/en/5.2/ref/settings/#csrf-trusted-origins
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
 
-if not DEFAULT_DATABASE_URL:
-    DEFAULT_DATABASE_URL = 'sqlite:///' + os.path.join(APP_ROOT, 'db.sqlite3')
+# Database: PostgreSQL em produção (Railway/Render), SQLite em desenvolvimento
+# Em produção, a variável DATABASE_URL é automaticamente fornecida
+DATABASE_URL = config('DATABASE_URL', default=None)
 
-DATABASES = {
-    'default': config('DATABASE_URL', default=DEFAULT_DATABASE_URL, cast=dburl),
-}
+if DATABASE_URL:
+    # Produção: usa PostgreSQL via DATABASE_URL
+    DATABASES = {
+        'default': dburl(DATABASE_URL)
+    }
+else:
+    # Desenvolvimento: usa SQLite local
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(APP_ROOT, 'db.sqlite3'),
+        }
+    }
 
 
 # Application definition
@@ -51,11 +62,17 @@ INSTALLED_APPS = [
     'djangosige.apps.fiscal',
     'djangosige.apps.financeiro',
     'djangosige.apps.estoque',
+    
+    # Led Gerencial v7.5 - Novos módulos gerenciais
+    'djangosige.apps.gerencial',
+    'djangosige.apps.financeiro_grupo',
+    'djangosige.apps.juridico',
 ]
 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Serve arquivos estáticos em produção
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -131,10 +148,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')  # Arquivos coletados para produção
 
 STATICFILES_DIRS = [
     os.path.join(APP_ROOT, 'static'),
 ]
+
+# WhiteNoise - compressão e cache de arquivos estáticos
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 FIXTURE_DIRS = [
     os.path.join(APP_ROOT, 'fixtures'),

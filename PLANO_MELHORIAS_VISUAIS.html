@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DjangoSIGE - Plano de Melhorias Visuais</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            opacity: 0.9;
+        }
+
+        .status-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .status-card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--secondary);
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        }
+
+        .status-card.info { border-left-color: var(--primary); }
+        .status-card.success { border-left-color: var(--secondary); }
+        .status-card.warning { border-left-color: var(--accent); }
+
+        .status-card h3 {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .status-card p {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        section {
+            background: var(--surface);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        }
+
+        h2 {
+            font-size: 1.875rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--text);
+        }
+
+        .icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        li::before {
+            content: "→";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .feature-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            font-size: 1.125rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge.priority-high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge.priority-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge.priority-low {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tech-badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        code {
+            background: var(--bg);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.875rem;
+            color: var(--primary);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin-top: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid var(--surface);
+        }
+
+        .timeline-item h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 DjangoSIGE - Plano de Melhorias Visuais</h1>
+            <p class="subtitle">Modernização da Interface e Experiência do Usuário</p>
+        </header>
+
+        <div class="status-bar">
+            <div class="status-card success">
+                <h3>Sistema Instalado</h3>
+                <p>✅ Rodando</p>
+            </div>
+            <div class="status-card info">
+                <h3>Acesso Local</h3>
+                <p>localhost:8000</p>
+            </div>
+            <div class="status-card warning">
+                <h3>Credenciais</h3>
+                <p>admin / admin123</p>
+            </div>
+        </div>
+
+        <section>
+            <h2><span class="icon">📊</span> Análise Atual do Sistema</h2>
+            
+            <h3>Stack Tecnológica Identificada</h3>
+            <div class="tech-stack">
+                <span class="tech-badge">Django 5.2</span>
+                <span class="tech-badge">Materialize CSS</span>
+                <span class="tech-badge">Bootstrap 3</span>
+                <span class="tech-badge">jQuery 3.0</span>
+                <span class="tech-badge">jQuery UI</span>
+                <span class="tech-badge">Material Icons</span>
+            </div>
+
+            <h3>Estrutura de Apps</h3>
+            <ul>
+                <li><strong>base</strong> - Dashboard e página inicial</li>
+                <li><strong>login</strong> - Autenticação e perfil de usuário</li>
+                <li><strong>cadastro</strong> - Clientes, Fornecedores, Produtos, Empresas</li>
+                <li><strong>vendas</strong> - Orçamentos e Pedidos de Venda</li>
+                <li><strong>compras</strong> - Orçamentos e Pedidos de Compra</li>
+                <li><strong>fiscal</strong> - NF-e / NFC-e</li>
+                <li><strong>financeiro</strong> - Contas a Pagar/Receber</li>
+                <li><strong>estoque</strong> - Controle de Estoque</li>
+            </ul>
+
+            <h3>Pontos Fortes Atuais</h3>
+            <ul>
+                <li>Sistema funcional e completo para gestão empresarial</li>
+                <li>Material Design como base (Materialize CSS)</li>
+                <li>Estrutura modular bem organizada</li>
+                <li>Integração com NF-e (PySIGNFe)</li>
+            </ul>
+
+            <h3>Oportunidades de Melhoria</h3>
+            <ul>
+                <li>Interface datada (Materialize CSS + Bootstrap 3 misturados)</li>
+                <li>Design System inconsistente</li>
+                <li>jQuery + jQuery UI (tecnologia legada)</li>
+                <li>Responsividade limitada</li>
+                <li>UX pode ser otimizada para workflows mais eficientes</li>
+                <li>CSS customizado extenso (1634 linhas)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2><span class="icon">🎯</span> Plano de Modernização Visual</h2>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4>Fase 1: Fundação e Design System <span class="badge priority-high">Alta Prioridade</span></h4>
+                    <p><strong>Objetivo:</strong> Criar um design system consistente e moderno</p>
+                    <ul style="margin-top: 1rem;">
+                        <li>Migrar de Materialize/Bootstrap para <strong>Tailwind CSS</strong> ou <strong>DaisyUI</strong></li>
+                        <li>Definir paleta de cores moderna e profissional</li>
+                        <li>Padronizar tipografia e espaçamentos</li>
+                        <li>Criar biblioteca de componentes reutilizáveis</li>
+                        <li>Implementar modo escuro (dark mode)</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item">
+                    <h4>Fase 2: Modernização do Frontend <span class="badge priority-high">Alta Prioridade</span></h4>
+                    <p><strong>Objetivo:</strong> Substituir jQuery por tecnologias modernas</p>
+                    <ul style="margin-top: 1rem;">
+                        <li>Migrar para <strong>Alpine.js</strong> (leve, ~15KB) ou <strong>HTMX</strong> (django-friendly)</li>
+                        <li>Implementar componentes interativos modernos</li>
+                        <li>Otimizar carregamento e performance</li>
+                        <li>Adicionar animações e transições suaves</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item">
+                    <h4>Fase 3: Dashboard e UX <span class="badge priority-medium">Média Prioridade</span></h4>
+                    <p><strong>Objetivo:</strong> Redesenhar a página inicial e fluxos principais</p>
+                    <ul style="margin-top: 1rem;">
+                        <li>Dashboard com gráficos interativos (Chart.js ou ApexCharts)</li>
+                        <li>Cards informativos com KPIs principais</li>
+                        <li>Atalhos rápidos para ações frequentes</li>
+                        <li>Notificações e alertas visuais melhorados</li>
+                        <li>Breadcrumbs e navegação intuitiva</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item">
+                    <h4>Fase 4: Formulários e Tabelas <span class="badge priority-medium">Média Prioridade</span></h4>
+                    <p><strong>Objetivo:</strong> Melhorar entrada de dados e visualização</p>
+                    <ul style="margin-top: 1rem;">
+                        <li>Formulários com validação em tempo real</li>
+                        <li>Inputs modernos com máscaras e autocomplete</li>
+                        <li>Tabelas responsivas com ordenação e filtros</li>
+                        <li>Paginação moderna</li>
+                        <li>Modais e dropdowns aprimorados</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item">
+                    <h4>Fase 5: Mobile e Responsividade <span class="badge priority-low">Baixa Prioridade</span></h4>
+                    <p><strong>Objetivo:</strong> Garantir experiência mobile-first</p>
+                    <ul style="margin-top: 1rem;">
+                        <li>Navegação mobile otimizada (hamburguer menu)</li>
+                        <li>Touch-friendly controls</li>
+                        <li>PWA (Progressive Web App) básico</li>
+                        <li>Offline-first para visualização de dados</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2><span class="icon">🛠️</span> Tecnologias Recomendadas</h2>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Tailwind CSS + DaisyUI</h4>
+                    <p>Framework CSS utilitário com componentes prontos. Permite customização total e reduz CSS customizado.</p>
+                    <p style="margin-top: 0.5rem; color: var(--text-light); font-size: 0.875rem;">
+                        <strong>Vantagens:</strong> Moderno, performático, design system consistente
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Alpine.js</h4>
+                    <p>JavaScript reativo leve (~15KB). Perfeito para interatividade sem overhead de frameworks pesados.</p>
+                    <p style="margin-top: 0.5rem; color: var(--text-light); font-size: 0.875rem;">
+                        <strong>Vantagens:</strong> Sintaxe simples, performance, integração fácil com Django
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>HTMX</h4>
+                    <p>Permite AJAX, WebSockets e SSE diretamente no HTML. Filosofia "HTML over the wire".</p>
+                    <p style="margin-top: 0.5rem; color: var(--text-light); font-size: 0.875rem;">
+                        <strong>Vantagens:</strong> Zero JavaScript custom, SEO-friendly, server-side rendering
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Chart.js / ApexCharts</h4>
+                    <p>Bibliotecas modernas para gráficos interativos e visualização de dados.</p>
+                    <p style="margin-top: 0.5rem; color: var(--text-light); font-size: 0.875rem;">
+                        <strong>Vantagens:</strong> Bonitos, responsivos, fáceis de usar
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Heroicons / Lucide</h4>
+                    <p>Bibliotecas modernas de ícones SVG, substituindo Material Icons.</p>
+                    <p style="margin-top: 0.5rem; color: var(--text-light); font-size: 0.875rem;">
+                        <strong>Vantagens:</strong> Customizáveis, leves, design consistente
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>django-crispy-forms</h4>
+                    <p>Renderização DRY de formulários Django com templates customizáveis.</p>
+                    <p style="margin-top: 0.5rem; color: var(--text-light); font-size: 0.875rem;">
+                        <strong>Vantagens:</strong> Menos código, mais controle, Tailwind-friendly
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2><span class="icon">🎨</span> Proposta de Design</h2>
+
+            <h3>Paleta de Cores Moderna</h3>
+            <div style="display: flex; gap: 1rem; margin: 1.5rem 0; flex-wrap: wrap;">
+                <div style="width: 150px;">
+                    <div style="height: 80px; background: #2563eb; border-radius: 8px; margin-bottom: 0.5rem;"></div>
+                    <p style="font-size: 0.875rem; text-align: center;"><strong>Primary</strong><br>#2563eb</p>
+                </div>
+                <div style="width: 150px;">
+                    <div style="height: 80px; background: #10b981; border-radius: 8px; margin-bottom: 0.5rem;"></div>
+                    <p style="font-size: 0.875rem; text-align: center;"><strong>Success</strong><br>#10b981</p>
+                </div>
+                <div style="width: 150px;">
+                    <div style="height: 80px; background: #f59e0b; border-radius: 8px; margin-bottom: 0.5rem;"></div>
+                    <p style="font-size: 0.875rem; text-align: center;"><strong>Warning</strong><br>#f59e0b</p>
+                </div>
+                <div style="width: 150px;">
+                    <div style="height: 80px; background: #ef4444; border-radius: 8px; margin-bottom: 0.5rem;"></div>
+                    <p style="font-size: 0.875rem; text-align: center;"><strong>Danger</strong><br>#ef4444</p>
+                </div>
+                <div style="width: 150px;">
+                    <div style="height: 80px; background: #1e293b; border-radius: 8px; margin-bottom: 0.5rem;"></div>
+                    <p style="font-size: 0.875rem; text-align: center;"><strong>Dark</strong><br>#1e293b</p>
+                </div>
+            </div>
+
+            <h3>Princípios de Design</h3>
+            <ul>
+                <li><strong>Clean & Minimal:</strong> Espaço em branco, hierarquia visual clara</li>
+                <li><strong>Consistência:</strong> Componentes reutilizáveis, padrões repetidos</li>
+                <li><strong>Acessibilidade:</strong> Contraste adequado, navegação por teclado</li>
+                <li><strong>Performance:</strong> Carregamento rápido, animações suaves</li>
+                <li><strong>Responsivo:</strong> Mobile-first, adaptável a todos dispositivos</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2><span class="icon">📋</span> Próximos Passos</h2>
+
+            <h3>Início Imediato</h3>
+            <ul>
+                <li>Explorar o sistema atual rodando em <code>http://localhost:8000</code></li>
+                <li>Fazer capturas de tela das principais telas para referência</li>
+                <li>Identificar os workflows mais usados pelos usuários</li>
+                <li>Criar protótipos de alta fidelidade das telas principais</li>
+            </ul>
+
+            <h3>Primeira Sprint (1-2 semanas)</h3>
+            <ul>
+                <li>Instalar e configurar Tailwind CSS + DaisyUI</li>
+                <li>Criar componentes base (buttons, cards, inputs)</li>
+                <li>Redesenhar a página de login</li>
+                <li>Redesenhar o dashboard principal</li>
+                <li>Implementar nova barra de navegação</li>
+            </ul>
+
+            <h3>Validação Contínua</h3>
+            <ul>
+                <li>Mostrar progresso incremental para feedback</li>
+                <li>Testar em diferentes navegadores e dispositivos</li>
+                <li>Medir performance (Lighthouse, Core Web Vitals)</li>
+                <li>Documentar decisões de design</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p><strong>DjangoSIGE Visual Modernization Plan</strong></p>
+            <p style="margin-top: 0.5rem; font-size: 0.875rem;">
+                Sistema pronto para transformação visual! 🚀<br>
+                Acesse: <a href="http://localhost:8000" style="color: var(--primary);">http://localhost:8000</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

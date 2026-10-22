@@ -1,0 +1,21 @@
+10:08:14.053061 exec-cmd.c:266          trace: resolved executable dir: C:/Users/Usuario/AppData/Local/hermes/tools/git-2.53.0+3-win32-x64/mingw64/bin
+10:08:14.068646 git.c:502               trace: built-in: git push -u origin main --verbose
+10:08:14.072696 run-command.c:674       trace: run_command: GIT_DIR=.git git remote-https origin https://github.com/eduvazjr/lumina-led-tools.git
+10:08:14.072696 run-command.c:935       trace: start_command: git remote-https origin https://github.com/eduvazjr/lumina-led-tools.git
+10:08:14.088743 exec-cmd.c:266          trace: resolved executable dir: C:/Users/Usuario/AppData/Local/hermes/tools/git-2.53.0+3-win32-x64/mingw64/libexec/git-core
+10:08:14.100309 git.c:809               trace: exec: git-remote-https origin https://github.com/eduvazjr/lumina-led-tools.git
+10:08:14.101304 run-command.c:674       trace: run_command: git-remote-https origin https://github.com/eduvazjr/lumina-led-tools.git
+10:08:14.101304 run-command.c:935       trace: start_command: git-remote-https origin https://github.com/eduvazjr/lumina-led-tools.git
+10:08:14.127436 exec-cmd.c:266          trace: resolved executable dir: C:/Users/Usuario/AppData/Local/hermes/tools/git-2.53.0+3-win32-x64/mingw64/libexec/git-core
+Pushing to https://github.com/eduvazjr/lumina-led-tools.git
+10:08:14.146019 http.c:930              == Info: Could not find host github.com in the .netrc file; using defaults
+10:08:18.205885 http.c:930              == Info: Host github.com:443 was resolved.
+10:08:18.205885 http.c:930              == Info: IPv6: (none)
+10:08:18.205885 http.c:930              == Info: IPv4: 4.228.31.150
+10:08:18.205885 http.c:930              == Info:   Trying 4.228.31.150:443...
+10:08:20.275567 http.c:930              == Info: schannel: disabled automatic use of client certificate
+10:08:20.277691 http.c:930              == Info: ALPN: curl offers http/1.1
+10:10:50.341884 http.c:930              == Info: Recv failure: Connection was reset
+10:10:50.342881 http.c:930              == Info: schannel: failed to receive handshake, SSL/TLS connection failed
+10:10:50.342881 http.c:930              == Info: closing connection #0
+fatal: unable to access 'https://github.com/eduvazjr/lumina-led-tools.git/': Recv failure: Connection was reset

@@ -1,0 +1,4 @@
+fornecedor_cnpj;descricao;valor;data_emissao;data_vencimento;observacoes
+12.345.678/0001-90;Compra de materiais;1500.00;21/10/2026;30/10/2026;Pedido 001
+98.765.432/0001-10;Serviços de manutenção;2300.50;21/10/2026;05/11/2026;Contrato 2026
+ACME LTDA;Fornecimento de equipamentos;5000.00;20/10/2026;25/10/2026;Urgente

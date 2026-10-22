@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Upload para o GitHub - Lumina LED TOOLS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #FF9100 0%, #E67E00 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .header {
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 40px;
+            text-align: center;
+        }
+        .logo { font-size: 80px; margin-bottom: 20px; }
+        h1 { font-size: 36px; font-weight: 900; color: #0f172a; margin-bottom: 15px; }
+        .status { font-size: 20px; color: #FF9100; font-weight: 700; }
+        .content { background: white; padding: 50px; border-radius: 0 0 20px 20px; }
+        .option {
+            background: #FFF3E0;
+            border-left: 4px solid #FF9100;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 12px;
+        }
+        .option-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: #FF9100;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: 900;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+        .option-title { font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 20px; }
+        .option-desc { font-size: 16px; color: #64748b; line-height: 1.6; margin-bottom: 20px; }
+        .steps { margin: 20px 0; padding-left: 20px; }
+        .steps li { margin: 10px 0; color: #64748b; line-height: 1.8; }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #FF9100;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            margin: 10px 10px 10px 0;
+            transition: all 0.3s ease;
+        }
+        .btn:hover { background: #E67E00; transform: translateY(-2px); }
+        .btn-secondary { background: #f1f5f9; color: #0f172a; }
+        .btn-secondary:hover { background: #e2e8f0; }
+        .recommended {
+            background: #10b981;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-left: 10px;
+        }
+        .files { background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .file-item { 
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .file-item:last-child { border-bottom: none; }
+        .file-name { font-weight: 600; color: #0f172a; }
+        .file-size { color: #64748b; font-size: 14px; }
+        .warning { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .warning-title { font-weight: 700; color: #92400e; margin-bottom: 10px; }
+        .warning-text { color: #78350f; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🚨</div>
+            <h1>Problema de Conectividade</h1>
+            <div class="status">Sua rede está bloqueando o GitHub</div>
+        </div>
+        
+        <div class="content">
+            <div class="warning">
+                <div class="warning-title">⚠️ O que aconteceu?</div>
+                <div class="warning-text">
+                    O Git não conseguiu enviar os arquivos para o GitHub porque sua rede/firewall está bloqueando
+                    a conexão com a API do GitHub. Mas não se preocupe! Existem várias alternativas.
+                </div>
+            </div>
+            
+            <div class="files">
+                <h3 style="margin-bottom: 15px; color: #0f172a;">📦 Arquivos de Backup Criados:</h3>
+                <div class="file-item">
+                    <span class="file-name">📁 lumina-led-tools-v7.4.zip</span>
+                    <span class="file-size">1.6 MB</span>
+                </div>
+                <div class="file-item">
+                    <span class="file-name">📦 lumina-backup.bundle</span>
+                    <span class="file-size">2.0 MB</span>
+                </div>
+                <div class="file-item">
+                    <span class="file-name">📄 SOLUCAO_UPLOAD_MANUAL.md</span>
+                    <span class="file-size">3.3 KB</span>
+                </div>
+            </div>
+            
+            <h2 style="font-size: 28px; font-weight: 900; margin: 40px 0 30px; color: #0f172a;">
+                🚀 Escolha uma solução:
+            </h2>
+            
+            <!-- OPÇÃO 1 -->
+            <div class="option">
+                <div class="option-title">
+                    <span class="option-number">1</span>
+                    GitHub Desktop
+                    <span class="recommended">✅ RECOMENDADO</span>
+                </div>
+                <div class="option-desc">
+                    A forma mais fácil! O GitHub Desktop tem melhor suporte a firewall e proxy.
+                </div>
+                <ol class="steps">
+                    <li>Baixe e instale o GitHub Desktop</li>
+                    <li>Faça login com sua conta: <strong>eduvazjr</strong></li>
+                    <li>Clique em <strong>File → Add Local Repository</strong></li>
+                    <li>Selecione a pasta: <code>C:\Users\Usuario\djangoSIGE</code></li>
+                    <li>Clique em <strong>"Publish repository"</strong></li>
+                    <li>Pronto! 🎉</li>
+                </ol>
+                <a href="https://desktop.github.com/" class="btn" target="_blank">
+                    ⬇️ Baixar GitHub Desktop
+                </a>
+            </div>
+            
+            <!-- OPÇÃO 2 -->
+            <div class="option">
+                <div class="option-title">
+                    <span class="option-number">2</span>
+                    Upload Manual
+                </div>
+                <div class="option-desc">
+                    Faça upload dos arquivos direto pelo site do GitHub.
+                </div>
+                <ol class="steps">
+                    <li>Acesse o repositório no GitHub</li>
+                    <li>Clique em <strong>"Add file" → "Upload files"</strong></li>
+                    <li>Arraste TODOS os arquivos da pasta <code>C:\Users\Usuario\djangoSIGE</code></li>
+                    <li><strong>EXCETO:</strong> .git/, .env, .venv/, node_modules/, *.sqlite3</li>
+                    <li>Escreva a mensagem: "feat: Lumina v7.4 - Sistema completo"</li>
+                    <li>Clique em <strong>"Commit changes"</strong></li>
+                </ol>
+                <a href="https://github.com/eduvazjr/lumina-led-tools" class="btn" target="_blank">
+                    🌐 Abrir Repositório
+                </a>
+                <a href="SOLUCAO_UPLOAD_MANUAL.md" class="btn btn-secondary">
+                    📖 Ver Guia Detalhado
+                </a>
+            </div>
+            
+            <!-- OPÇÃO 3 -->
+            <div class="option">
+                <div class="option-title">
+                    <span class="option-number">3</span>
+                    Usar o Arquivo ZIP
+                </div>
+                <div class="option-desc">
+                    Use o arquivo ZIP criado para facilitar o upload.
+                </div>
+                <ol class="steps">
+                    <li>Localize o arquivo: <code>lumina-led-tools-v7.4.zip</code></li>
+                    <li>Extraia o conteúdo</li>
+                    <li>Faça upload dos arquivos extraídos no GitHub</li>
+                    <li>OU envie o ZIP para outro computador com melhor conexão</li>
+                </ol>
+                <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px;">
+                    <strong>Localização:</strong><br>
+                    <code>C:\Users\Usuario\djangoSIGE\lumina-led-tools-v7.4.zip</code>
+                </div>
+            </div>
+            
+            <!-- OPÇÃO 4 -->
+            <div class="option">
+                <div class="option-title">
+                    <span class="option-number">4</span>
+                    Tentar em Outra Rede
+                </div>
+                <div class="option-desc">
+                    Se possível, use outra conexão de internet.
+                </div>
+                <ul class="steps">
+                    <li>📱 Compartilhe internet do celular (hotspot)</li>
+                    <li>🏠 Conecte em outra rede Wi-Fi</li>
+                    <li>☕ Tente de outro local</li>
+                </ul>
+                <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px;">
+                    <strong>Depois execute:</strong><br>
+                    <code style="display: block; margin-top: 10px; padding: 10px; background: #f1f5f9; border-radius: 4px;">
+                        cd ~/djangoSIGE<br>
+                        git push -u origin main
+                    </code>
+                </div>
+            </div>
+            
+            <div style="margin-top: 50px; padding: 30px; background: #FFF3E0; border-radius: 12px; text-align: center;">
+                <h3 style="color: #FF9100; margin-bottom: 15px;">💡 Repositório Criado com Sucesso!</h3>
+                <p style="color: #64748b; margin-bottom: 20px;">
+                    O repositório já existe no GitHub, só falta fazer upload dos arquivos!
+                </p>
+                <a href="https://github.com/eduvazjr/lumina-led-tools" class="btn" target="_blank" style="font-size: 18px; padding: 15px 40px;">
+                    🚀 Ver Repositório
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

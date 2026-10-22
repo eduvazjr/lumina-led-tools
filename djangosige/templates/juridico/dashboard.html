@@ -1,0 +1,298 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Controle Jurídico{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">⚖️ Controle Jurídico</h1>
+    <p class="page-subtitle">Gestão de processos e demandas legais</p>
+</div>
+
+<!-- Dashboard Cards -->
+<div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 40px;">
+    <div class="stat-card">
+        <div class="stat-header">
+            <span class="stat-label">Processos Ativos</span>
+            <div class="stat-icon">📋</div>
+        </div>
+        <div class="stat-value">{{ processos_ativos|default:"0" }}</div>
+        <div class="stat-description">Em andamento</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-header">
+            <span class="stat-label">Prazos Vencendo (7 dias)</span>
+            <div class="stat-icon">⚠️</div>
+        </div>
+        <div class="stat-value" style="color: #f59e0b;">{{ prazos_urgentes|default:"0" }}</div>
+        <div class="stat-description">Requer atenção imediata</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-header">
+            <span class="stat-label">Processos Vencidos</span>
+            <div class="stat-icon">🔴</div>
+        </div>
+        <div class="stat-value" style="color: #dc2626;">{{ prazos_vencidos|default:"0" }}</div>
+        <div class="stat-description">Ação necessária</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-header">
+            <span class="stat-label">Risco Alto</span>
+            <div class="stat-icon">⚡</div>
+        </div>
+        <div class="stat-value">{{ processos_alto_risco|default:"0" }}</div>
+        <div class="stat-description">Diretoria alertada</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-header">
+            <span class="stat-label">Valor Total em Risco</span>
+            <div class="stat-icon">💰</div>
+        </div>
+        <div class="stat-value">R$ {{ valor_risco|default:"0,00" }}</div>
+        <div class="stat-description">Soma dos processos</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-header">
+            <span class="stat-label">Processos Ganhos</span>
+            <div class="stat-icon">✅</div>
+        </div>
+        <div class="stat-value" style="color: #10b981;">{{ processos_ganhos|default:"0" }}</div>
+        <div class="stat-description">Últimos 12 meses</div>
+    </div>
+</div>
+
+<!-- Alertas de Prazos -->
+{% if alertas_prazos %}
+<div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+    <h3 style="color: #92400e; font-weight: 700; margin-bottom: 15px;">⚠️ Alertas de Prazos Críticos</h3>
+    <ul style="margin: 0; padding-left: 20px;">
+        {% for alerta in alertas_prazos %}
+        <li style="margin: 10px 0; color: #78350f;">
+            <strong>{{ alerta.processo_numero }}</strong> - {{ alerta.descricao }} 
+            <span style="color: #dc2626; font-weight: 700;">(Vence em {{ alerta.dias_restantes }} dias)</span>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<!-- Pesquisa em Órgãos Governamentais -->
+<div class="section" style="margin-bottom: 40px;">
+    <div class="section-header">
+        <h2 class="section-title">🔍 Pesquisa em Órgãos Governamentais</h2>
+    </div>
+    <div class="section-body">
+        <form method="post" action="{% url 'juridico:pesquisar_processos' %}" style="display: flex; gap: 15px; flex-wrap: wrap;">
+            {% csrf_token %}
+            <div style="flex: 1; min-width: 200px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 6px;">
+                    Órgão
+                </label>
+                <select name="orgao" style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px;">
+                    <option value="trf">TRF - Tribunal Regional Federal</option>
+                    <option value="tst">TST - Tribunal Superior do Trabalho</option>
+                    <option value="tjsp">TJSP - Tribunal de Justiça SP</option>
+                    <option value="stj">STJ - Superior Tribunal de Justiça</option>
+                    <option value="stf">STF - Supremo Tribunal Federal</option>
+                </select>
+            </div>
+            
+            <div style="flex: 1; min-width: 300px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 6px;">
+                    Número do Processo ou CNPJ/CPF
+                </label>
+                <input type="text" name="busca" placeholder="0000000-00.0000.0.00.0000" 
+                       style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px;">
+            </div>
+            
+            <div style="display: flex; align-items: flex-end;">
+                <button type="submit" class="btn btn-primary" style="height: 44px;">
+                    🔍 Pesquisar
+                </button>
+            </div>
+        </form>
+        
+        {% if resultado_pesquisa %}
+        <div style="margin-top: 30px; padding: 20px; background: #f8fafc; border-radius: 8px;">
+            <h4 style="margin-bottom: 15px;">Resultados encontrados:</h4>
+            <pre style="white-space: pre-wrap; font-size: 13px; color: #64748b;">{{ resultado_pesquisa }}</pre>
+            <button class="btn btn-primary" onclick="importarProcesso()" style="margin-top: 15px;">
+                ➕ Importar para o Sistema
+            </button>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Filtros e Tabela de Processos -->
+<div class="section">
+    <div class="section-header">
+        <h2 class="section-title">Processos e Demandas</h2>
+        <div style="display: flex; gap: 10px;">
+            <a href="{% url 'juridico:processo_add' %}" class="btn btn-primary">
+                ➕ Nova Demanda
+            </a>
+            <a href="{% url 'juridico:relatorio_risco' %}" class="btn btn-secondary">
+                📊 Relatório de Riscos
+            </a>
+        </div>
+    </div>
+    
+    <div class="section-body">
+        <!-- Filtros -->
+        <form method="get" style="display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 150px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 6px;">
+                    Status
+                </label>
+                <select name="status" style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px;">
+                    <option value="">Todos</option>
+                    <option value="ativo">Ativo</option>
+                    <option value="arquivado">Arquivado</option>
+                    <option value="ganho">Ganho</option>
+                    <option value="perdido">Perdido</option>
+                </select>
+            </div>
+            
+            <div style="flex: 1; min-width: 150px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 6px;">
+                    Risco
+                </label>
+                <select name="risco" style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px;">
+                    <option value="">Todos</option>
+                    <option value="alto">Alto</option>
+                    <option value="medio">Médio</option>
+                    <option value="baixo">Baixo</option>
+                </select>
+            </div>
+            
+            <div style="flex: 1; min-width: 150px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 6px;">
+                    Prazo
+                </label>
+                <select name="prazo" style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px;">
+                    <option value="">Todos</option>
+                    <option value="vencido">Vencido</option>
+                    <option value="7">Vence em 7 dias</option>
+                    <option value="30">Vence em 30 dias</option>
+                </select>
+            </div>
+            
+            <div style="display: flex; align-items: flex-end;">
+                <button type="submit" class="btn btn-primary" style="height: 44px;">🔍 Filtrar</button>
+            </div>
+        </form>
+        
+        <!-- Tabela -->
+        <div style="overflow-x: auto;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nº Processo</th>
+                        <th>Descrição</th>
+                        <th>Órgão</th>
+                        <th>Risco</th>
+                        <th>Valor</th>
+                        <th>Próximo Prazo</th>
+                        <th>Status</th>
+                        <th>Diretoria Alertada</th>
+                        <th style="text-align: center;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for proc in processos %}
+                    <tr>
+                        <td><strong>{{ proc.numero }}</strong></td>
+                        <td>{{ proc.descricao|truncatewords:5 }}</td>
+                        <td>{{ proc.orgao }}</td>
+                        <td>
+                            {% if proc.nivel_risco == 'alto' %}
+                            <span class="badge badge-danger">🔴 Alto</span>
+                            {% elif proc.nivel_risco == 'medio' %}
+                            <span class="badge badge-warning">🟡 Médio</span>
+                            {% else %}
+                            <span class="badge badge-success">🟢 Baixo</span>
+                            {% endif %}
+                        </td>
+                        <td style="font-family: 'Courier New', monospace;">R$ {{ proc.valor_causa|floatformat:2 }}</td>
+                        <td>
+                            {% if proc.prazo_vencido %}
+                            <span style="color: #dc2626; font-weight: 700;">{{ proc.proximo_prazo|date:"d/m/Y" }} (Vencido!)</span>
+                            {% elif proc.dias_prazo <= 7 %}
+                            <span style="color: #f59e0b; font-weight: 700;">{{ proc.proximo_prazo|date:"d/m/Y" }} ({{ proc.dias_prazo }}d)</span>
+                            {% else %}
+                            <span>{{ proc.proximo_prazo|date:"d/m/Y" }} ({{ proc.dias_prazo }}d)</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if proc.status == 'ativo' %}
+                            <span class="badge badge-warning">⏱ Ativo</span>
+                            {% elif proc.status == 'ganho' %}
+                            <span class="badge badge-success">✓ Ganho</span>
+                            {% else %}
+                            <span class="badge">{{ proc.get_status_display }}</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center;">
+                            {% if proc.diretoria_alertada %}
+                            <span style="color: #FF9100; font-size: 18px;" title="Diretoria Alertada">📧</span>
+                            {% else %}
+                            <span style="color: #cbd5e1;">-</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center;">
+                            <a href="{% url 'juridico:processo_detail' proc.id %}" class="btn-icon" title="Ver Detalhes">👁️</a>
+                            <a href="{% url 'juridico:processo_edit' proc.id %}" class="btn-icon" title="Editar">✏️</a>
+                            <a href="{% url 'juridico:alertar_diretoria' proc.id %}" class="btn-icon" title="Alertar Diretoria">📧</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="9" class="empty-state">
+                            <div class="empty-state-icon">⚖️</div>
+                            <div class="empty-state-text">Nenhum processo cadastrado</div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+.btn-icon {
+    display: inline-block;
+    padding: 6px 10px;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+}
+.btn-icon:hover {
+    background: #FFF3E0;
+    transform: scale(1.1);
+}
+</style>
+
+<script>
+function importarProcesso() {
+    if(confirm('Deseja importar este processo para o sistema?')) {
+        // Lógica de importação
+        alert('Processo importado com sucesso!');
+    }
+}
+
+// Verificar prazos vencendo e alertar
+window.addEventListener('DOMContentLoaded', function() {
+    const prazosUrgentes = {{ prazos_urgentes|default:"0" }};
+    if(prazosUrgentes > 0) {
+        console.warn(`⚠️ Atenção: ${prazosUrgentes} prazo(s) vencendo em 7 dias!`);
+    }
+});
+</script>
+{% endblock %}

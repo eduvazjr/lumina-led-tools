@@ -1,0 +1,30 @@
+{
+  "name": "djangosige",
+  "version": "1.0.0",
+  "description": "Sistema Integrado de Gestão Empresarial baseado em Django",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "npx tailwindcss -i ./djangosige/static/css/input.css -o ./djangosige/static/css/output.css --minify",
+    "watch:css": "npx tailwindcss -i ./djangosige/static/css/input.css -o ./djangosige/static/css/output.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thiagopena/djangoSIGE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/thiagopena/djangoSIGE/issues"
+  },
+  "homepage": "https://github.com/thiagopena/djangoSIGE#readme",
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.11",
+    "@tailwindcss/typography": "^0.5.20",
+    "autoprefixer": "^10.6.1",
+    "postcss": "^8.5.31",
+    "tailwindcss": "^4.3.3"
+  }
+}
