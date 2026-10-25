@@ -1,62 +1,33 @@
-<table class="table">
-    <thead>
-        <tr>
-            <th style="width: 80px;">#ID</th>
-            <th>Nome/Razão Social</th>
-            <th style="width: 160px;">CNPJ</th>
-            <th style="width: 180px;">Telefone</th>
-            <th style="width: 180px;">Município</th>
-            <th style="width: 80px; text-align: center;">Remover</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% if all_fornecedores %}
-        {% for fornecedor in all_fornecedores %}
-        <tr class="clickable-row" data-href="{% url 'cadastro:editarfornecedorview' fornecedor.id %}" style="cursor: pointer;">
-            <td><strong>{{fornecedor.id}}</strong></td>
-            <td>
-                <div>
-                    <strong>{{fornecedor.nome_razao_social}}</strong>
-                </div>
-            </td>
-            <td style="font-family: 'Consolas', monospace; font-size: 13px;">
-                {{fornecedor.pessoa_jur_info.cnpj|default_if_none:""}}
-            </td>
-            <td>
-                {% if fornecedor.telefone %}
-                    {{fornecedor.telefone}}
-                {% else %}
-                    <span style="color: #94a3b8;">---</span>
-                {% endif %}
-            </td>
-            <td>
-                {% if fornecedor.endereco.all.0.municipio %}
-                    {{fornecedor.endereco.all.0.municipio}}
-                {% else %}
-                    <span style="color: #94a3b8;">---</span>
-                {% endif %}
-            </td>
-            <td class="lista-remove" style="text-align: center;" onclick="event.stopPropagation();">
-                <input type="checkbox" 
-                       name="{{fornecedor.id}}" 
-                       id="remover-entrada-{{fornecedor.id}}"
-                       style="width: 16px; height: 16px; cursor: pointer;"/>
-            </td>
-        </tr>
-        {% endfor %}
-        {% else %}
-        <tr>
-            <td colspan="6" style="text-align: center; padding: 48px; color: #94a3b8;">
-                <div style="font-size: 48px; opacity: 0.3; margin-bottom: 12px;">🏢</div>
-                <div>Nenhum fornecedor cadastrado</div>
-            </td>
-        </tr>
-        {% endif %}
-    </tbody>
-</table>
-
-<style>
-.clickable-row:hover {
-    background: #FFF3E0 !important;
-}
-</style>
+{% if all_fornecedores %}
+<div class="list-toolbar">{% include 'base/search.html' %}</div>
+<div class="table-wrap">
+    <table id="lista-database" class="table">
+        <thead>
+            <tr>
+                <th class="col-id">#</th>
+                <th>Nome / Razão social</th>
+                <th style="width:170px">CPF / CNPJ</th>
+                <th style="width:150px">Telefone</th>
+                <th style="width:200px">Cidade</th>
+                {% include 'base/list_check_all.html' %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for fornecedor in all_fornecedores %}
+            {% with end=fornecedor.endereco.all.0 %}
+            <tr class="clickable-row" data-href="{% url 'cadastro:editarfornecedorview' fornecedor.id %}">
+                <td class="col-id">{{fornecedor.id}}</td>
+                <td><strong>{{fornecedor.nome_razao_social}}</strong></td>
+                <td class="mono">{% if fornecedor.tipo_pessoa == "PF" %}{{fornecedor.pessoa_fis_info.cpf|default_if_none:""}}{% else %}{{fornecedor.pessoa_jur_info.cnpj|default_if_none:""}}{% endif %}</td>
+                <td>{% firstof fornecedor.telefone_padrao.telefone fornecedor.telefone.all.0.telefone %}{% if not fornecedor.telefone_padrao and not fornecedor.telefone.all %}<span class="cell-muted">—</span>{% endif %}</td>
+                <td>{% if end.municipio %}{{end.municipio}}{% if end.uf %} <span class="cell-muted">· {{end.uf}}</span>{% endif %}{% else %}<span class="cell-muted">—</span>{% endif %}</td>
+                {% include 'base/list_check.html' with obj_id=fornecedor.id %}
+            </tr>
+            {% endwith %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+{% include 'base/list_empty.html' with message='Nenhum fornecedor cadastrado' hint='Cadastre fornecedores para registrar compras e contas a pagar.' add_label='Cadastrar primeiro fornecedor' %}
+{% endif %}

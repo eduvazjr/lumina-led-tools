@@ -3,110 +3,40 @@
 {%block title%}{{title_complete|title}}{%endblock%}
 
 {%block content%}
-<div class="page-header">
-    <div style="display: flex; align-items: center; justify-content: space-between;">
-        <div>
-            <h1 class="page-title">{{title_complete}}</h1>
-            <p class="page-subtitle">Gerencie seus produtos e serviços</p>
-        </div>
-        <div style="display: flex; gap: 12px;">
-            <a href="{{add_url}}" style="text-decoration: none;">
-                <button style="padding: 10px 20px; background: #C2490A; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.15s ease;">
-                    <span style="font-size: 18px;">+</span>
-                    <span>Adicionar</span>
-                </button>
-            </a>
-            <button class="btn-remove" style="padding: 10px 16px; background: transparent; color: #ef4444; border: 1px solid #fecaca; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer;">
-                🗑️
-            </button>
-        </div>
-    </div>
-</div>
+{% include 'base/list_header.html' with subtitle='Produtos e serviços que você vende ou compra' add_label='Novo produto' %}
 
 {% include 'base/msg_sucesso.html' %}
 
-<div class="section">
-    <div class="section-body" style="padding: 0;">
-        <form action="" method="post">
-            {% csrf_token %}
-            
-            <!-- Search Bar -->
-            <div style="padding: 20px; border-bottom: 1px solid #e5e7eb;">
-                {% include 'base/search.html' %}
-            </div>
-
-            <!-- Table -->
-            <div style="overflow-x: auto;">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th style="width: 100px;">Código</th>
-                            <th>Descrição</th>
-                            <th style="width: 200px;">Categoria</th>
-                            <th style="width: 120px; text-align: right;">Estoque</th>
-                            <th style="width: 80px; text-align: center;">Remover</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if all_produtos %}
-                        {% for produto in all_produtos %}
-                        <tr class="clickable-row" data-href="{% url 'cadastro:editarprodutoview' produto.id %}" style="cursor: pointer;">
-                            <td><strong>{{produto.codigo}}</strong></td>
-                            <td>
-                                <div>
-                                    <strong>{{produto.descricao}}</strong>
-                                </div>
-                            </td>
-                            <td>
-                                {% if produto.categoria %}
-                                <span class="badge badge-led">{{produto.categoria}}</span>
-                                {% else %}
-                                <span style="color: #94a3b8;">---</span>
-                                {% endif %}
-                            </td>
-                            <td style="text-align: right; font-family: 'Consolas', monospace;">
-                                {% if produto.estoque_atual %}
-                                {{produto.estoque_atual}}
-                                {% else %}
-                                <span style="color: #94a3b8;">---</span>
-                                {% endif %}
-                            </td>
-                            <td class="lista-remove" style="text-align: center;" onclick="event.stopPropagation();">
-                                <input type="checkbox" 
-                                       name="{{produto.id}}" 
-                                       id="remover-entrada-{{produto.id}}"
-                                       style="width: 16px; height: 16px; cursor: pointer;"/>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                        {% else %}
-                        <tr>
-                            <td colspan="5" style="text-align: center; padding: 48px; color: #94a3b8;">
-                                <div style="font-size: 48px; opacity: 0.3; margin-bottom: 12px;">📦</div>
-                                <div>Nenhum produto cadastrado</div>
-                                <div style="margin-top: 16px;">
-                                    <a href="{{add_url}}" style="color: #C2490A; text-decoration: none; font-weight: 500;">
-                                        Adicionar primeiro produto →
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
-            </div>
-        </form>
+<form id="form-lista" action="" method="post" class="list-card">
+    {% csrf_token %}
+    {% if all_produtos %}
+    <div class="list-toolbar">{% include 'base/search.html' %}</div>
+    <div class="table-wrap">
+        <table id="lista-database" class="table">
+            <thead>
+                <tr>
+                    <th style="width:120px">Código</th>
+                    <th>Descrição</th>
+                    <th style="width:200px">Categoria</th>
+                    <th class="col-num" style="width:120px">Estoque</th>
+                    {% include 'base/list_check_all.html' %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for produto in all_produtos %}
+                <tr class="clickable-row" data-href="{% url 'cadastro:editarprodutoview' produto.id %}">
+                    <td class="mono">{{produto.codigo}}</td>
+                    <td><strong>{{produto.descricao}}</strong></td>
+                    <td>{% if produto.categoria %}<span class="badge badge-led">{{produto.categoria}}</span>{% else %}<span class="cell-muted">—</span>{% endif %}</td>
+                    <td class="col-num">{% if produto.estoque_atual %}{{produto.estoque_atual}}{% else %}<span class="cell-muted">—</span>{% endif %}</td>
+                    {% include 'base/list_check.html' with obj_id=produto.id %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-</div>
-
-<style>
-.clickable-row:hover {
-    background: #FFF3E0 !important;
-}
-
-.btn-remove:hover {
-    background: #fef2f2;
-    border-color: #fca5a5;
-}
-</style>
+    {% else %}
+    {% include 'base/list_empty.html' with message='Nenhum produto cadastrado' hint='Cadastre produtos para usá-los em orçamentos, pedidos e notas.' add_label='Cadastrar primeiro produto' %}
+    {% endif %}
+</form>
 {%endblock%}

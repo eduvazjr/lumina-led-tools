@@ -1,71 +1,36 @@
-<table class="table">
-    <thead>
-        <tr>
-            <th style="width: 80px;">#ID</th>
-            <th>Nome/Razão Social</th>
-            <th style="width: 160px;">CPF/CNPJ</th>
-            <th style="width: 100px;">Estado</th>
-            <th style="width: 180px;">Município</th>
-            <th style="width: 80px; text-align: center;">Remover</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% if all_clientes %}
-        {% for cliente in all_clientes %}
-        <tr class="clickable-row" data-href="{% url 'cadastro:editarclienteview' cliente.id %}" style="cursor: pointer;">
-            <td><strong>{{cliente.id}}</strong></td>
-            <td>
-                <div style="display: flex; align-items: center; gap: 8px;">
+{% if all_clientes %}
+<div class="list-toolbar">{% include 'base/search.html' %}</div>
+<div class="table-wrap">
+    <table id="lista-database" class="table">
+        <thead>
+            <tr>
+                <th class="col-id">#</th>
+                <th>Nome / Razão social</th>
+                <th style="width:170px">CPF / CNPJ</th>
+                <th style="width:150px">Telefone</th>
+                <th style="width:200px">Cidade</th>
+                {% include 'base/list_check_all.html' %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in all_clientes %}
+            {% with end=cliente.endereco.all.0 %}
+            <tr class="clickable-row" data-href="{% url 'cadastro:editarclienteview' cliente.id %}">
+                <td class="col-id">{{cliente.id}}</td>
+                <td>
                     <strong>{{cliente.nome_razao_social}}</strong>
-                    {% if cliente.tipo_pessoa == "PF" %}
-                    <span class="badge badge-led">PF</span>
-                    {% else %}
-                    <span class="badge" style="background: #dbeafe; color: #1e40af;">PJ</span>
-                    {% endif %}
-                </div>
-            </td>
-            <td style="font-family: 'Consolas', monospace; font-size: 13px;">
-                {% if cliente.tipo_pessoa == "PJ" %}
-                    {{cliente.pessoa_jur_info.cnpj|default_if_none:""}}
-                {% else %}
-                    {{cliente.pessoa_fis_info.cpf|default_if_none:""}}
-                {% endif %}
-            </td>
-            <td>
-                {% if cliente.endereco.all.0.uf %}
-                    {{cliente.endereco.all.0.get_uf_display}}
-                {% else %}
-                    <span style="color: #94a3b8;">---</span>
-                {% endif %}
-            </td>
-            <td>
-                {% if cliente.endereco.all.0.municipio %}
-                    {{cliente.endereco.all.0.municipio}}
-                {% else %}
-                    <span style="color: #94a3b8;">---</span>
-                {% endif %}
-            </td>
-            <td class="lista-remove" style="text-align: center;" onclick="event.stopPropagation();">
-                <input type="checkbox" 
-                       name="{{cliente.id}}" 
-                       id="remover-entrada-{{cliente.id}}"
-                       style="width: 16px; height: 16px; cursor: pointer;"/>
-            </td>
-        </tr>
-        {% endfor %}
-        {% else %}
-        <tr>
-            <td colspan="6" style="text-align: center; padding: 48px; color: #94a3b8;">
-                <div style="font-size: 48px; opacity: 0.3; margin-bottom: 12px;">👥</div>
-                <div>Nenhum cliente cadastrado</div>
-            </td>
-        </tr>
-        {% endif %}
-    </tbody>
-</table>
-
-<style>
-.clickable-row:hover {
-    background: #FFF3E0 !important;
-}
-</style>
+                    <span class="badge {% if cliente.tipo_pessoa == 'PF' %}badge-led{% else %}badge-info{% endif %}" style="margin-left:6px">{{cliente.tipo_pessoa}}</span>
+                </td>
+                <td class="mono">{% if cliente.tipo_pessoa == "PJ" %}{{cliente.pessoa_jur_info.cnpj|default_if_none:""}}{% else %}{{cliente.pessoa_fis_info.cpf|default_if_none:""}}{% endif %}</td>
+                <td>{% firstof cliente.telefone_padrao.telefone cliente.telefone.all.0.telefone %}{% if not cliente.telefone_padrao and not cliente.telefone.all %}<span class="cell-muted">—</span>{% endif %}</td>
+                <td>{% if end.municipio %}{{end.municipio}}{% if end.uf %} <span class="cell-muted">· {{end.uf}}</span>{% endif %}{% else %}<span class="cell-muted">—</span>{% endif %}</td>
+                {% include 'base/list_check.html' with obj_id=cliente.id %}
+            </tr>
+            {% endwith %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+{% include 'base/list_empty.html' with message='Nenhum cliente cadastrado' hint='Cadastre clientes para emitir orçamentos, pedidos e notas.' add_label='Cadastrar primeiro cliente' %}
+{% endif %}

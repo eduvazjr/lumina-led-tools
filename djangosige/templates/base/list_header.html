@@ -1,0 +1,23 @@
+{# Cabeçalho padrão das listagens.                                                       #}
+{# Recebe: subtitle, add_label, add_popup (abre em janela), no_remove, no_add.           #}
+{# Usa do contexto: title_complete (ou title) e add_url.                                #}
+<div class="list-header">
+    <div class="list-heading">
+        <h1 class="page-title">{% firstof title title_complete|lower|capfirst %}</h1>
+        {% if subtitle %}<p class="page-subtitle">{{ subtitle }}</p>{% endif %}
+    </div>
+    <div class="page-actions">
+        {% if not no_remove %}
+        <button type="button" class="btn btn-danger btn-remove" form="form-lista" disabled title="Marque as linhas que deseja remover">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"/></svg>
+            Remover<span class="remove-count"></span>
+        </button>
+        {% endif %}
+        {% if add_url and not no_add %}
+        <a href="{{ add_url }}" class="btn btn-primary{% if add_popup %} popup{% endif %}" title="{{ add_label|default:'Adicionar' }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            {{ add_label|default:'Adicionar' }}
+        </a>
+        {% endif %}
+    </div>
+</div>

@@ -1,73 +1,40 @@
 {%extends 'base/base.html'%}
 
-{%block title%}Unidade{%endblock%}
+{%block title%}Unidades{%endblock%}
 {%block content%}
-<section class="content">
-  <div class="container-fluid lista">
-  
-    <div class="title-header">
-      <h2>UNIDADES</h2>
-    </div>
-    
-    {% include 'base/msg_sucesso.html' %}
+{% url 'cadastro:addunidadeview' as add_url %}
+{% include 'base/list_header.html' with title='Unidades de medida' subtitle='Unidades usadas nos produtos (UN, KG, M...)' add_label='Nova unidade' add_popup=True %}
 
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 lista-content">
-      <div class="card">
-        <form action="" method="post">
-          {% csrf_token %}
-          <div class="header">
-            <h2>
-              UNIDADES CADASTRADAS
-            </h2>
-              <div class="header-btn">
-                <a href="{% url 'cadastro:addunidadeview' %}" class="btn btn-success popup" title="Adicionar unidade"><i class="material-icons">&#xE148;</i><span> ADICIONAR</span></a>
-                <button class="btn btn-red btn-remove"><i class="material-icons">&#xE872;</i></button>
-              </div>
-          </div>
+{% include 'base/msg_sucesso.html' %}
 
-          <div class="body">
-
-           {% include 'base/search.html' %}
-
-           <div class="table-responsive">
-            <table id="lista-database" class="table table-bordered table-striped lista-table">
-              <thead>
+<form id="form-lista" action="" method="post" class="list-card">
+    {% csrf_token %}
+    {% if all_unidades %}
+    <div class="list-toolbar">{% include 'base/search.html' %}</div>
+    <div class="table-wrap">
+        <table id="lista-database" class="table">
+            <thead>
                 <tr>
-                  <th>#ID</th>                   
-                  <th>Sigla</th>
-                  <th>Descrição</th>
-                  <th>Remover</th>
+                    <th class="col-id">#</th>
+                    <th style="width:120px">Sigla</th>
+                    <th>Descrição</th>
+                    {% include 'base/list_check_all.html' %}
                 </tr>
-              </thead>
-
-              <tbody>
-               {% if all_unidades%}
-               {% for unidade in all_unidades %}
-               <tr class="clickable-row popup" href="{% url 'cadastro:editarunidadeview' unidade.id %}">
-                <td>{{unidade.id}}</td>
-                <td>{{unidade.sigla_unidade}}</td>
-                <td>{{unidade.unidade_desc}}</td>
-                <td class="lista-remove">
-                  <input type="checkbox" name="{{unidade.id}}" id="remover-entrada-{{unidade.id}}"/>
-                  <label class="remove-entry-label" for="remover-entrada-{{unidade.id}}"></label>
-                </td>
-              </tr>
-              {% endfor %}
-              {%else%}
-              {%endif%}
+            </thead>
+            <tbody>
+                {% for unidade in all_unidades %}
+                <tr class="clickable-row popup" href="{% url 'cadastro:editarunidadeview' unidade.id %}">
+                    <td class="col-id">{{unidade.id}}</td>
+                    <td><span class="badge">{{unidade.sigla_unidade}}</span></td>
+                    <td><strong>{{unidade.unidade_desc}}</strong></td>
+                    {% include 'base/list_check.html' with obj_id=unidade.id %}
+                </tr>
+                {% endfor %}
             </tbody>
-          </table>
-        </div>
-
-      </div>
-
-    </form>
-
-  </div>
-</div>
-
-</div>
-</section>
-
-
+        </table>
+    </div>
+    {% else %}
+    {% include 'base/list_empty.html' with message='Nenhuma unidade cadastrada' add_label='Nova unidade' add_popup=True %}
+    {% endif %}
+</form>
 {%endblock%}

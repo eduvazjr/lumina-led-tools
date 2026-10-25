@@ -1,0 +1,11 @@
+{# Estado vazio das listagens. Recebe: message, hint, add_label, add_popup. Usa add_url do contexto. #}
+<div class="list-empty">
+    <div class="list-empty-icon" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18M3 12h18M3 17h10"/></svg>
+    </div>
+    <p class="list-empty-title">{{ message|default:'Nenhum registro encontrado' }}</p>
+    {% if hint %}<p class="list-empty-hint">{{ hint }}</p>{% endif %}
+    {% if add_url %}
+    <a href="{{ add_url }}" class="btn btn-primary btn-sm{% if add_popup %} popup{% endif %}">{{ add_label|default:'Adicionar' }}</a>
+    {% endif %}
+</div>

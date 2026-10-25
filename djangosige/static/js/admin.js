@@ -191,7 +191,11 @@ $.Admin.table = {
 
         //Tabela DataTable
         dTable = $('#lista-database').DataTable({
-            "dom" : 'ltipr',
+            "dom" : 'tr<"dt-footer"ilp>',
+            "order" : [],
+            "pageLength" : 25,
+            "autoWidth" : false,
+            "columnDefs" : [{ "orderable" : false, "targets" : "no-sort" }],
             "language" : {
                 "sEmptyTable": "Nenhum registro encontrado",
                 "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
@@ -222,6 +226,13 @@ $.Admin.table = {
             dTable.search($(this).val()).draw();
         });
 
+        //Habilita o botao remover e mostra quantos itens estao marcados
+        var atualizarRemover = function(){
+            var n = $('.lista-remove input[type=checkbox]:checked').length;
+            $btnRemove.prop('disabled', n === 0);
+            $btnRemove.find('.remove-count').text(n ? ' (' + n + ')' : '');
+        };
+
         //Mudar o background do tr quando remover for selecionado
         $('body').on('change', '.lista-remove input[type=checkbox]', function(event){
             if(this.checked){
@@ -229,13 +240,26 @@ $.Admin.table = {
             }else{
                 $(this).parents('tr').removeClass("delete-row");
             }
-            $btnRemove.show()
+            $btnRemove.show();
+            atualizarRemover();
+        });
+
+        //Selecionar todos (apenas as linhas visiveis na pagina atual)
+        $('body').on('change', '.select-all', function(){
+            var checked = this.checked;
+            $(this).closest('table').find('tbody .lista-remove input[type=checkbox]').each(function(){
+                if(this.checked !== checked){
+                    $(this).prop('checked', checked).trigger('change');
+                }
+            });
         });
 
         //Perguntar antes de remover items da database
         $btnRemove.on('click',function(event){
             event.preventDefault();
-            var form = $(this).parents('form');
+            //O botao pode ficar fora do form, ligado a ele pelo atributo form
+            var formId = $(this).attr('form');
+            var form = formId ? $('#' + formId) : $(this).parents('form');
             $.Admin.messages.msgRemove("Os items selecionados serão removidos permanentemente da Base de Dados.");
             $('#btn-sim').one('click', function(){
                 form.submit();
@@ -244,7 +268,7 @@ $.Admin.table = {
 
         //Fazer a linha da table um link para a detail view
         $('body').on('click', '.clickable-row:not(.popup)', function(event){
-            if(!$(event.target).is("input, label, i, .prevent-click-row")){
+            if(!$(event.target).closest("input, label, i, a, button, .prevent-click-row, .lista-remove").length){
                 window.document.location = $(this).data("href");
             }
         });
@@ -2682,15 +2706,16 @@ $.Admin.lancamentoList = {
     init: function(req_urls) {
         var _this = this;
 
-        $('#pagar_conta,#receber_conta').on('click', function(){
+        //Delegado: vale para todas as linhas, inclusive em outras paginas da tabela
+        $('body').on('click', '.js-pagar-conta,.js-receber-conta', function(){
             var parent_row = $(this).parents('tr');
             $('.modal_selecionar_data').modal('show');
-            $('#id_conta_id').val(parent_row.find('td:eq(0)').text());
-            $('#id_data_pagamento').val(parent_row.find('td:eq(2)').text());
-            if($(this).prop('id') == 'receber_conta'){
+            $('#id_conta_id').val($(this).data('id') || $.trim(parent_row.find('td:eq(0)').text()).replace('#', ''));
+            $('#id_data_pagamento').val($(this).data('vencimento') || $.trim(parent_row.find('td:eq(2)').text()));
+            if($(this).hasClass('js-receber-conta')){
                 //Receber conta
                 $('#id_tipo_conta').val('0');
-            }else if($(this).prop('id') == 'pagar_conta'){
+            }else if($(this).hasClass('js-pagar-conta')){
                 //Pagar conta
                 $('#id_tipo_conta').val('1');
             }

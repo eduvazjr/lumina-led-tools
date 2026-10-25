@@ -1,33 +1,31 @@
-<div class="table-responsive">
-  <table id="lista-database" class="table table-bordered table-striped lista-table">
-    <thead>
-      <tr>
-        <th>#ID</th>                   
-        <th>Data</th>
-        <th>Tipo</th>
-        <th>N° de itens</th>
-        <th>Valor total</th>
-        <th>Remover</th>
-      </tr>
-    </thead>
-
-    <tbody>
-     {% if all_movimentos %}
-     {% for movimento in all_movimentos %}
-     <tr class="clickable-row" data-href="{{movimento.get_edit_url}}">
-      <td>{{movimento.id}}</td>
-      <td>{{movimento.format_data_movimento}}</td>
-      <td>{{movimento.get_tipo}}</td>
-      <td>{{movimento.format_quantidade_itens}}</td>
-      <td>{{movimento.format_valor_total}}</td>
-      <td class="lista-remove">
-        <input type="checkbox" name="{{movimento.id}}" id="remover-movimento-{{movimento.id}}"/>
-        <label class="remove-entry-label" for="remover-movimento-{{movimento.id}}"></label>
-      </td>
-    </tr>
-    {% endfor %}
-    {%else%}
-    {%endif%}
-  </tbody>
-</table>
+{% if all_movimentos %}
+<div class="list-toolbar">{% include 'base/search.html' %}</div>
+<div class="table-wrap">
+    <table id="lista-database" class="table">
+        <thead>
+            <tr>
+                <th class="col-id">#</th>
+                <th style="width:120px">Data</th>
+                <th>Tipo</th>
+                <th class="col-num" style="width:110px">Itens</th>
+                <th class="col-num" style="width:140px">Valor total</th>
+                {% include 'base/list_check_all.html' %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for movimento in all_movimentos %}
+            <tr class="clickable-row" data-href="{{movimento.get_edit_url}}">
+                <td class="col-id">{{movimento.id}}</td>
+                <td>{{movimento.format_data_movimento}}</td>
+                <td><strong>{{movimento.get_tipo}}</strong></td>
+                <td class="col-num">{{movimento.format_quantidade_itens}}</td>
+                <td class="col-num"><strong>{{movimento.format_valor_total}}</strong></td>
+                {% include 'base/list_check.html' with obj_id=movimento.id %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
+{% else %}
+{% include 'base/list_empty.html' with message='Nenhum movimento de estoque' hint='Registre entradas, saídas ou transferências pelo botão "Novo movimento".' %}
+{% endif %}

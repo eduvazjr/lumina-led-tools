@@ -1,39 +1,33 @@
-<div class="table-responsive">
-  <table id="lista-database" class="table table-bordered table-striped lista-table">
-    <thead>
-      <tr>
-        <th>#ID</th>                   
-        <th>Descrição</th>
-        <th>Tipo</th>
-        <th>Grupo</th>
-        <th title="pagamento/vencimento">Data</th>
-        <th>Status</th>
-        <th>Cliente/Fornecedor</th>
-        <th>Valor líquido</th>
-        <th>Remover</th>
-      </tr>
-    </thead>
-
-    <tbody>
-     {% if all_lancamentos %}
-     {% for lancamento in all_lancamentos %}
-     <tr class="clickable-row" data-href="{{lancamento.get_edit_url}}">
-      <td>{{lancamento.id}}</td>
-      <td>{{lancamento.descricao}}</td>
-      <td>{{lancamento.get_tipo}}</td>
-      <td>{{lancamento.classificacao|default_if_none:""}}</td>
-      <td>{% if lancamento.data_pagamento %}{{lancamento.format_data_pagamento}}{% elif lancamento.data_vencimento %}{{lancamento.format_data_vencimento}}{% endif %}</td>
-      <td>{% if lancamento.status %}{{lancamento.get_status_display}}{% endif %}</td>
-      <td>{% if lancamento.cliente %}{{lancamento.cliente}}{% elif lancamento.fornecedor %}{{lancamento.fornecedor}}{% endif %}</td>
-      <td>{{lancamento.format_valor_liquido}}</td>
-      <td class="lista-remove">
-        <input type="checkbox" name="{{lancamento.id}}" id="remover-lancamento-{{lancamento.id}}"/>
-        <label class="remove-entry-label" for="remover-lancamento-{{lancamento.id}}"></label>
-      </td>
-    </tr>
-    {% endfor %}
-    {%else%}
-    {%endif%}
-  </tbody>
-</table>
+<div class="list-toolbar">{% include 'base/search.html' %}</div>
+<div class="table-wrap">
+    <table id="lista-database" class="table">
+        <thead>
+            <tr>
+                <th class="col-id">#</th>
+                <th>Descrição</th>
+                <th style="width:110px">Tipo</th>
+                <th style="width:150px">Grupo</th>
+                <th style="width:110px" title="Data do pagamento ou do vencimento">Data</th>
+                <th style="width:110px">Status</th>
+                <th>Cliente / Fornecedor</th>
+                <th class="col-num" style="width:130px">Valor</th>
+                {% include 'base/list_check_all.html' %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for lancamento in all_lancamentos %}
+            <tr class="clickable-row" data-href="{{lancamento.get_edit_url}}">
+                <td class="col-id">{{lancamento.id}}</td>
+                <td><strong>{{lancamento.descricao}}</strong></td>
+                <td>{{lancamento.get_tipo}}</td>
+                <td>{{lancamento.classificacao|default_if_none:"—"}}</td>
+                <td>{% if lancamento.data_pagamento %}{{lancamento.format_data_pagamento}}{% elif lancamento.data_vencimento %}{{lancamento.format_data_vencimento}}{% else %}<span class="cell-muted">—</span>{% endif %}</td>
+                <td>{% if lancamento.status %}<span class="badge">{{lancamento.get_status_display}}</span>{% endif %}</td>
+                <td>{% firstof lancamento.cliente lancamento.fornecedor %}</td>
+                <td class="col-num"><strong>{{lancamento.format_valor_liquido}}</strong></td>
+                {% include 'base/list_check.html' with obj_id=lancamento.id %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>

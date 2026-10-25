@@ -2,84 +2,70 @@
 
 {%block title%}{{title_complete|title}}{%endblock%}
 {%block content%}
-<section class="content">
-  <div class="container-fluid lista">
-  
-    {% include 'base/title_header.html' %}
-    
-    {% include 'base/msg_sucesso.html' %}
-
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 lista-content">
-      <div class="card">
-        <form action="" method="post">
-          {% csrf_token %}
-          <div class="header" style="overflow:visible;">
-            <h2>
-              {{title_complete}}
-            </h2>
-              <div class="header-btn">
-                {% if add_url %}
-                <a href="{{add_url}}" class="btn btn-success"><i class="material-icons">&#xE148;</i><span> ADICIONAR</span></a>
-                {% else %}
-                <div class="dropdown" style="display: inline-block;float:right;">
-                  <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">Adicionar
-                  <span class="caret"></span></button>
-                  <ul class="dropdown-menu pull-right">
-                    <li><a href="{% url 'financeiro:addpagamentoview' %}">Pagamento</a></li>
-                    <li><a href="{% url 'financeiro:addcontapagarview' %}">Conta a pagar</a></li>
-                    <li><a href="{% url 'financeiro:addrecebimentoview' %}">Recebimento</a></li>
-                    <li><a href="{% url 'financeiro:addcontareceberview' %}">Conta a receber</a></li>
-                  </ul>
-                </div>
-                {% endif %}
-                <button class="btn btn-red btn-remove"><i class="material-icons">&#xE872;</i></button>
-              </div>
-          </div>
-
-          <div class="body">
-
-           {% include 'base/search.html' %}
-
-           {% if all_contaspagar %}
-           {% include 'financeiro/lancamento/conta_pagar_list_table.html' %}
-           {% elif all_contasreceber %}
-           {% include 'financeiro/lancamento/conta_receber_list_table.html' %}
-           {% elif all_saidas %}
-           {% include 'financeiro/lancamento/pagamentos_list_table.html' %}
-           {% elif all_entradas %}
-           {% include 'financeiro/lancamento/recebimentos_list_table.html' %}
-           {% elif all_lancamentos %}
-           {% include 'financeiro/lancamento/todos_lancamentos_list_table.html' %}
-           {% else %}
-           Nenhum registro encontrado
-           {% endif %}
-
-      </div>
-
-    </form>
-
-    {% include 'financeiro/lancamento/modal_selecionar_data.html' %}
-
-  </div>
+<div class="list-header">
+    <div class="list-heading">
+        <h1 class="page-title">{{ title_complete|lower|capfirst }}</h1>
+        <p class="page-subtitle">
+            {% if all_contaspagar %}Contas em aberto com fornecedores. Use "Pagar" para dar baixa.
+            {% elif all_contasreceber %}Valores a receber de clientes. Use "Receber" para dar baixa.
+            {% else %}Movimentações financeiras registradas{% endif %}
+        </p>
+    </div>
+    <div class="page-actions">
+        <button type="button" class="btn btn-danger btn-remove" form="form-lista" disabled title="Marque os lançamentos que deseja remover">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"/></svg>
+            Remover<span class="remove-count"></span>
+        </button>
+        {% if add_url %}
+        <a href="{{add_url}}" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            Adicionar
+        </a>
+        {% else %}
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                Novo lançamento <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="{% url 'financeiro:addcontareceberview' %}">Conta a receber</a></li>
+                <li><a href="{% url 'financeiro:addcontapagarview' %}">Conta a pagar</a></li>
+                <li><a href="{% url 'financeiro:addrecebimentoview' %}">Recebimento</a></li>
+                <li><a href="{% url 'financeiro:addpagamentoview' %}">Pagamento</a></li>
+            </ul>
+        </div>
+        {% endif %}
+    </div>
 </div>
 
-</div>
-</section>
+{% include 'base/msg_sucesso.html' %}
 
+<form id="form-lista" action="" method="post" class="list-card">
+    {% csrf_token %}
+    {% if all_contaspagar %}
+    {% include 'financeiro/lancamento/conta_pagar_list_table.html' %}
+    {% elif all_contasreceber %}
+    {% include 'financeiro/lancamento/conta_receber_list_table.html' %}
+    {% elif all_saidas %}
+    {% include 'financeiro/lancamento/pagamentos_list_table.html' %}
+    {% elif all_entradas %}
+    {% include 'financeiro/lancamento/recebimentos_list_table.html' %}
+    {% elif all_lancamentos %}
+    {% include 'financeiro/lancamento/todos_lancamentos_list_table.html' %}
+    {% else %}
+    {% include 'base/list_empty.html' with message='Nenhum lançamento encontrado' hint='Nada por aqui neste momento.' %}
+    {% endif %}
+</form>
 
+{% include 'financeiro/lancamento/modal_selecionar_data.html' %}
 {%endblock%}
 
 {% block js %}
   {% load static %}
-  <!-- JQuery Mask Input Js -->
   <script src="{% static 'js/jquery.mask.js' %}"></script>
-  
   {% include 'base/load_jqueryui.html' %}
-
   {% include 'base/datepicker_js.html' %}
-
   {% include 'base/tooltip_js.html' %}
-
   <script type="text/javascript">
     var req_urls = {}
     req_urls.gerar_lancamento_url = "{% url 'financeiro:gerarlancamento' %}"
@@ -87,5 +73,4 @@
     $.Admin.maskInput.maskLancamento();
     $.Admin.lancamentoList.init(req_urls);
   </script>
-  
 {% endblock %}

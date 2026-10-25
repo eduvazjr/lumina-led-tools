@@ -2,79 +2,45 @@
 
 {%block title%}Usuários{%endblock%}
 {%block content%}
-<section class="content">
-  <div class="container-fluid lista">
-    <div class="lista-header">
-      <h2>USUÁRIOS</h2>
-    </div>
-    
-    {% include 'base/msg_sucesso.html' %}
+{% url 'login:registrarview' as add_url %}
+{% include 'base/list_header.html' with title='Usuários' subtitle='Quem tem acesso ao sistema e com qual perfil' add_label='Novo usuário' %}
 
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 lista-content">
-      <div class="card">
-        <form action="" method="post">
-          {% csrf_token %}
-          <div class="header">
-            <h2>
-              USUÁRIOS CADASTRADOS
-            </h2>
-              <div class="header-btn">
-                <a href="{% url 'login:registrarview' %}" class="btn btn-success"><i class="material-icons">&#xE7FE;</i><span> CRIAR NOVO</span></a>
-                <button class="btn btn-red btn-remove"><i class="material-icons">&#xE872;</i></button>
-              </div>
-          </div>
+{% include 'base/msg_sucesso.html' %}
 
-          <div class="body">
-
-           {% include 'base/search.html' %}
-
-           <div class="table-responsive">
-            <table id="lista-database" class="table table-bordered table-striped lista-table">
-              <thead>
+<form id="form-lista" action="" method="post" class="list-card">
+    {% csrf_token %}
+    {% if all_users %}
+    <div class="list-toolbar">{% include 'base/search.html' %}</div>
+    <div class="table-wrap">
+        <table id="lista-database" class="table">
+            <thead>
                 <tr>
-                  <th>#ID</th>                   
-                  <th>Nome de usuário</th>
-                  <th>Nome</th>
-                  <th>Sobrenome</th>
-                  <th>Status</th>
-                  <th>Remover</th>
+                    <th class="col-id">#</th>
+                    <th>Usuário</th>
+                    <th>Nome</th>
+                    <th style="width:160px">Perfil</th>
+                    {% include 'base/list_check_all.html' %}
                 </tr>
-              </thead>
-
-              <tbody>
-               {% if all_users%}
-               {% for usr in all_users %}
-               <tr class="clickable-row" data-href="{% url 'login:usuariodetailview' usr.id %}">
-                <td>{{usr.id}}</td>
-                <td>{{usr.username}}</td>
-                <td>{{usr.first_name|default_if_none:""}}</td>
-                <td>{{usr.last_name|default_if_none:""}}</td>
-                <td>{%if usr.is_superuser%}Administrador{%else%}Usuário{%endif%}</td>
-                <td class="lista-remove">
-                  {%if not usr.is_superuser%}
-                  <input type="checkbox" name="{{usr.id}}" id="remover-entrada-{{usr.id}}"/>
-                  <label class="remove-entry-label" for="remover-entrada-{{usr.id}}"></label>
-                  {%endif%}
-                </td>
-              </tr>
-              {% endfor %}
-              {%else%}
-              {%endif%}
+            </thead>
+            <tbody>
+                {% for usr in all_users %}
+                <tr class="clickable-row" data-href="{% url 'login:usuariodetailview' usr.id %}">
+                    <td class="col-id">{{usr.id}}</td>
+                    <td><strong>{{usr.username}}</strong></td>
+                    <td>{% if usr.first_name or usr.last_name %}{{usr.first_name}} {{usr.last_name}}{% else %}<span class="cell-muted">—</span>{% endif %}</td>
+                    <td>{% if usr.is_superuser %}<span class="badge badge-led">Administrador</span>{% else %}<span class="badge">Usuário</span>{% endif %}</td>
+                    {% if usr.is_superuser %}
+                    <td class="col-check"><span class="cell-muted" title="Administradores não podem ser removidos por aqui">—</span></td>
+                    {% else %}
+                    {% include 'base/list_check.html' with obj_id=usr.id %}
+                    {% endif %}
+                </tr>
+                {% endfor %}
             </tbody>
-          </table>
-        </div>
-
-      </div>
-
-    </form>
-
-    {% include 'base/modal.html' %}
-
-  </div>
-</div>
-
-</div>
-</section>
-
-
+        </table>
+    </div>
+    {% else %}
+    {% include 'base/list_empty.html' with message='Nenhum usuário cadastrado' add_label='Novo usuário' %}
+    {% endif %}
+</form>
 {%endblock%}

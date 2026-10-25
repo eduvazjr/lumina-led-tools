@@ -3,63 +3,32 @@
 {%block title%}{{title_complete|title}}{%endblock%}
 
 {%block content%}
-<div class="page-header">
-    <div style="display: flex; align-items: center; justify-content: space-between;">
-        <div>
-            <h1 class="page-title">{{title_complete}}</h1>
-            <p class="page-subtitle">Gerencie seus cadastros</p>
-        </div>
-        <div style="display: flex; gap: 12px;">
-            <a href="{{add_url}}" style="text-decoration: none;">
-                <button style="padding: 10px 20px; background: #C2490A; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.15s ease;">
-                    <span style="font-size: 18px;">+</span>
-                    <span>Adicionar</span>
-                </button>
-            </a>
-            <button class="btn-remove" style="padding: 10px 16px; background: transparent; color: #ef4444; border: 1px solid #fecaca; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s ease;">
-                <span style="font-size: 18px;">🗑️</span>
-            </button>
-        </div>
-    </div>
-</div>
+{% if tipo_pessoa == 'cliente' %}
+{% include 'base/list_header.html' with subtitle='Pessoas e empresas para quem você vende' add_label='Novo cliente' %}
+{% elif tipo_pessoa == 'fornecedor' %}
+{% include 'base/list_header.html' with subtitle='Empresas de quem você compra' add_label='Novo fornecedor' %}
+{% elif tipo_pessoa == 'empresa' %}
+{% include 'base/list_header.html' with subtitle='Empresas do grupo que usam o sistema' add_label='Nova empresa' %}
+{% elif tipo_pessoa == 'transportadora' %}
+{% include 'base/list_header.html' with subtitle='Transportadoras usadas nas entregas' add_label='Nova transportadora' %}
+{% else %}
+{% include 'base/list_header.html' %}
+{% endif %}
 
 {% include 'base/msg_sucesso.html' %}
 
-<div class="section">
-    <div class="section-body" style="padding: 0;">
-        <form action="" method="post">
-            {% csrf_token %}
-            
-            <!-- Search Bar -->
-            <div style="padding: 20px; border-bottom: 1px solid #e5e7eb;">
-                {% include 'base/search.html' %}
-            </div>
-
-            <!-- Table -->
-            <div style="overflow-x: auto;">
-                {% if tipo_pessoa == 'cliente' %}
-                {% include 'cadastro/cliente/cliente_list_table.html' %}
-                {% elif tipo_pessoa == 'empresa' %}
-                {% include 'cadastro/empresa/empresa_list_table.html' %}
-                {% elif tipo_pessoa == 'fornecedor' %}
-                {% include 'cadastro/fornecedor/fornecedor_list_table.html' %}
-                {% elif tipo_pessoa == 'transportadora' %}
-                {% include 'cadastro/transportadora/transportadora_list_table.html' %}
-                {% else %}
-                <div class="empty-state">
-                    <div class="empty-state-icon">📋</div>
-                    <div class="empty-state-text">Nenhum registro encontrado</div>
-                </div>
-                {% endif %}
-            </div>
-        </form>
-    </div>
-</div>
-
-<style>
-.btn-remove:hover {
-    background: #fef2f2;
-    border-color: #fca5a5;
-}
-</style>
+<form id="form-lista" action="" method="post" class="list-card">
+    {% csrf_token %}
+    {% if tipo_pessoa == 'cliente' %}
+    {% include 'cadastro/cliente/cliente_list_table.html' %}
+    {% elif tipo_pessoa == 'empresa' %}
+    {% include 'cadastro/empresa/empresa_list_table.html' %}
+    {% elif tipo_pessoa == 'fornecedor' %}
+    {% include 'cadastro/fornecedor/fornecedor_list_table.html' %}
+    {% elif tipo_pessoa == 'transportadora' %}
+    {% include 'cadastro/transportadora/transportadora_list_table.html' %}
+    {% else %}
+    {% include 'base/list_empty.html' %}
+    {% endif %}
+</form>
 {%endblock%}

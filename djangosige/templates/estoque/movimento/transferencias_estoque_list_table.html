@@ -1,37 +1,33 @@
-<div class="table-responsive">
-  <table id="lista-database" class="table table-bordered table-striped lista-table">
-    <thead>
-      <tr>
-        <th>#ID</th>                   
-        <th>Data</th>
-        <th>Tipo</th>
-        <th>Local de origem</th>
-        <th>Local de destino</th>
-        <th>N° de itens</th>
-        <th>Valor total</th>
-        <th>Remover</th>
-      </tr>
-    </thead>
-
-    <tbody>
-     {% if all_transferencias %}
-     {% for transferencia in all_transferencias %}
-     <tr class="clickable-row" data-href="{{transferencia.get_edit_url}}">
-      <td>{{transferencia.id}}</td>
-      <td>{{transferencia.format_data_movimento}}</td>
-      <td>Transferência</td>
-      <td>{{transferencia.local_estoque_orig|default_if_none:""}}</td>
-      <td>{{transferencia.local_estoque_dest|default_if_none:""}}</td>
-      <td>{{transferencia.format_quantidade_itens}}</td>
-      <td>{{transferencia.format_valor_total}}</td>
-      <td class="lista-remove">
-        <input type="checkbox" name="{{transferencia.id}}" id="remover-movimento-{{transferencia.id}}"/>
-        <label class="remove-entry-label" for="remover-movimento-{{transferencia.id}}"></label>
-      </td>
-    </tr>
-    {% endfor %}
-    {%else%}
-    {%endif%}
-  </tbody>
-</table>
+{% if all_transferencias %}
+<div class="list-toolbar">{% include 'base/search.html' %}</div>
+<div class="table-wrap">
+    <table id="lista-database" class="table">
+        <thead>
+            <tr>
+                <th class="col-id">#</th>
+                <th style="width:120px">Data</th>
+                <th>Origem</th>
+                <th>Destino</th>
+                <th class="col-num" style="width:110px">Itens</th>
+                <th class="col-num" style="width:140px">Valor total</th>
+                {% include 'base/list_check_all.html' %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for transferencia in all_transferencias %}
+            <tr class="clickable-row" data-href="{{transferencia.get_edit_url}}">
+                <td class="col-id">{{transferencia.id}}</td>
+                <td>{{transferencia.format_data_movimento}}</td>
+                <td>{{transferencia.local_estoque_orig|default_if_none:"—"}}</td>
+                <td>{{transferencia.local_estoque_dest|default_if_none:"—"}}</td>
+                <td class="col-num">{{transferencia.format_quantidade_itens}}</td>
+                <td class="col-num"><strong>{{transferencia.format_valor_total}}</strong></td>
+                {% include 'base/list_check.html' with obj_id=transferencia.id %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
+{% else %}
+{% include 'base/list_empty.html' with message='Nenhuma transferência entre locais' add_label='Nova transferência' %}
+{% endif %}

@@ -3,262 +3,47 @@
 {%block title%}{{title_complete|title}}{%endblock%}
 
 {%block content%}
-<style>
-.vendas-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 32px;
-}
+{% include 'base/list_header.html' with subtitle='Pedidos dos clientes, do orçamento à entrega' add_label='Novo pedido' %}
 
-.vendas-title h1 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #0f172a;
-    margin-bottom: 4px;
-}
+{% include 'base/msg_sucesso.html' %}
 
-.vendas-title p {
-    font-size: 13px;
-    color: #64748b;
-}
-
-.vendas-actions {
-    display: flex;
-    gap: 12px;
-}
-
-.btn-add-venda {
-    padding: 10px 20px;
-    background: #0f172a;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.15s ease;
-}
-
-.btn-add-venda:hover {
-    background: #1e293b;
-    color: white;
-}
-
-.btn-remove-venda {
-    padding: 10px 16px;
-    background: transparent;
-    color: #ef4444;
-    border: 1px solid #fecaca;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-}
-
-.btn-remove-venda:hover {
-    background: #fef2f2;
-    border-color: #ef4444;
-}
-
-.search-bar {
-    margin-bottom: 20px;
-    padding: 12px 16px;
-    background: #fafbfc;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-}
-
-.search-bar input {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    font-size: 14px;
-}
-
-.vendas-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-}
-
-.vendas-table thead {
-    background: #fafbfc;
-}
-
-.vendas-table th {
-    text-align: left;
-    padding: 12px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-bottom: 2px solid #e5e7eb;
-}
-
-.vendas-table td {
-    padding: 14px 12px;
-    font-size: 14px;
-    color: #334155;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-.vendas-table tr.clickable-row {
-    cursor: pointer;
-    transition: background 0.15s ease;
-}
-
-.vendas-table tr.clickable-row:hover {
-    background: #fafbfc;
-}
-
-.status-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.status-pendente {
-    background: #fef3c7;
-    color: #92400e;
-}
-
-.status-finalizado {
-    background: #dcfce7;
-    color: #166534;
-}
-
-.status-cancelado {
-    background: #fee2e2;
-    color: #991b1b;
-}
-
-.status-orcamento {
-    background: #FFF3E0;
-    color: #C2490A;
-}
-
-.empty-state {
-    text-align: center;
-    padding: 64px 20px;
-    color: #94a3b8;
-}
-
-.empty-icon {
-    font-size: 64px;
-    opacity: 0.3;
-    margin-bottom: 16px;
-}
-
-.empty-text {
-    font-size: 16px;
-    margin-bottom: 8px;
-}
-
-.empty-hint {
-    font-size: 13px;
-}
-
-.valor-total {
-    font-family: 'Consolas', monospace;
-    font-weight: 600;
-    color: #0f172a;
-}
-</style>
-
-<div style="max-width: 1400px; margin: 0 auto; padding: 32px 20px;">
-    {% include 'base/msg_sucesso.html' %}
-
-    <div class="vendas-header">
-        <div class="vendas-title">
-            <h1>{{title_complete}}</h1>
-            <p>Gerenciar pedidos de venda</p>
-        </div>
-        <div class="vendas-actions">
-            <a href="{{add_url}}" class="btn-add-venda">
-                <span>+</span>
-                <span>Novo Pedido</span>
-            </a>
-            <button type="submit" form="form-remover" class="btn-remove-venda" title="Remover selecionados">
-                🗑️
-            </button>
-        </div>
+<form id="form-lista" action="" method="post" class="list-card">
+    {% csrf_token %}
+    {% if all_pedidos %}
+    <div class="list-toolbar">{% include 'base/search.html' %}</div>
+    <div class="table-wrap">
+        <table id="lista-database" class="table">
+            <thead>
+                <tr>
+                    <th class="col-id">#</th>
+                    <th style="width:120px">Status</th>
+                    <th>Cliente</th>
+                    <th style="width:140px">Entrega</th>
+                    <th class="col-num" style="width:140px">Total</th>
+                    {% include 'base/list_check_all.html' %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in all_pedidos %}
+                <tr class="clickable-row" data-href="{% url 'vendas:editarpedidovendaview' pedido.id %}">
+                    <td class="col-id">{{pedido.id}}</td>
+                    <td>
+                        {% if pedido.status == '0' %}<span class="badge badge-info">Orçamento</span>
+                        {% elif pedido.status == '1' %}<span class="badge badge-warning">Pendente</span>
+                        {% elif pedido.status == '2' %}<span class="badge badge-success">Finalizado</span>
+                        {% else %}<span class="badge badge-danger">Cancelado</span>{% endif %}
+                    </td>
+                    <td><strong>{{pedido.cliente|default_if_none:"Sem cliente"}}</strong></td>
+                    <td>{{pedido.format_data_entrega|default_if_none:"—"}}</td>
+                    <td class="col-num"><strong>{{pedido.format_valor_total}}</strong></td>
+                    {% include 'base/list_check.html' with obj_id=pedido.id %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-
-    <form id="form-remover" action="" method="post">
-        {% csrf_token %}
-
-        {% include 'base/search.html' %}
-
-        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;">
-            <table class="vendas-table">
-                <thead>
-                    <tr>
-                        <th style="width: 80px;">#ID</th>
-                        <th style="width: 140px;">Status</th>
-                        <th>Cliente</th>
-                        <th style="width: 160px;">Data de Entrega</th>
-                        <th style="width: 140px;">Total</th>
-                        <th style="width: 80px; text-align: center;">Remover</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if all_pedidos %}
-                    {% for pedido in all_pedidos %}
-                    <tr class="clickable-row" data-href="{% url 'vendas:editarpedidovendaview' pedido.id %}"
-                        onclick="window.location='{% url 'vendas:editarpedidovendaview' pedido.id %}';">
-                        <td><strong>{{pedido.id}}</strong></td>
-                        <td>
-                            {% if pedido.status == '0' %}
-                            <span class="status-badge status-orcamento">Orçamento</span>
-                            {% elif pedido.status == '1' %}
-                            <span class="status-badge status-pendente">Pendente</span>
-                            {% elif pedido.status == '2' %}
-                            <span class="status-badge status-finalizado">Finalizado</span>
-                            {% else %}
-                            <span class="status-badge status-cancelado">Cancelado</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <strong>{{pedido.cliente|default_if_none:"Sem cliente"}}</strong>
-                        </td>
-                        <td>
-                            {{pedido.format_data_entrega|default_if_none:"-"}}
-                        </td>
-                        <td class="valor-total">
-                            {{pedido.format_valor_total}}
-                        </td>
-                        <td style="text-align: center;" onclick="event.stopPropagation();">
-                            <input type="checkbox" 
-                                   name="{{pedido.id}}" 
-                                   id="remover-entrada-{{pedido.id}}"
-                                   style="width: 16px; height: 16px; cursor: pointer;"/>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    {% else %}
-                    <tr>
-                        <td colspan="6">
-                            <div class="empty-state">
-                                <div class="empty-icon">🛒</div>
-                                <div class="empty-text">Nenhum pedido de venda cadastrado</div>
-                                <div class="empty-hint">Clique em "Novo Pedido" para começar</div>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endif %}
-                </tbody>
-            </table>
-        </div>
-    </form>
-</div>
-
+    {% else %}
+    {% include 'base/list_empty.html' with message='Nenhum pedido de venda' hint='Crie um pedido direto ou gere a partir de um orçamento aprovado.' add_label='Novo pedido' %}
+    {% endif %}
+</form>
 {%endblock%}

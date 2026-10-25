@@ -1,4 +1,4 @@
-{% load static %}<!DOCTYPE html>
+{% load static %}{# Aumente ao publicar mudanças em led-ui.css ou admin.js, para o navegador não usar a versão em cache #}{% with ui_v='3' %}<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="{% static 'css/iconfont/material-icons.css' %}" rel="stylesheet">
-    <link href="{% static 'css/led-ui.css' %}" rel="stylesheet">
+    <link href="{% static 'css/led-ui.css' %}?v={{ ui_v }}" rel="stylesheet">
     <script src="{% static 'js/jquery/jquery-3.0.0.min.js' %}"></script>
 </head>
 <body class="{% block body_class %}{% endblock %}">
@@ -238,7 +238,7 @@
 
     <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
-    <script src="{% static 'js/admin.js' %}"></script>
+    <script src="{% static 'js/admin.js' %}?v={{ ui_v }}"></script>
     <script>
         (function () {
             var body = document.body;
@@ -266,3 +266,4 @@
     {% endblock %}
 </body>
 </html>
+{% endwith %}

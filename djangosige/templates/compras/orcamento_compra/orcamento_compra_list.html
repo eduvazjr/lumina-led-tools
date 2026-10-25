@@ -3,278 +3,55 @@
 {%block title%}{{title_complete|title}}{%endblock%}
 
 {%block content%}
-<style>
-.orcamentos-compra-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 32px;
-}
+{% include 'base/list_header.html' with subtitle='Cotações com fornecedores, abertas e finalizadas' add_label='Novo orçamento' %}
 
-.orcamentos-compra-title h1 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #0f172a;
-    margin-bottom: 4px;
-}
+{% include 'base/msg_sucesso.html' %}
 
-.orcamentos-compra-title p {
-    font-size: 13px;
-    color: #64748b;
-}
-
-.orcamentos-compra-actions {
-    display: flex;
-    gap: 12px;
-}
-
-.btn-add {
-    padding: 10px 20px;
-    background: #0f172a;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.15s ease;
-}
-
-.btn-add:hover {
-    background: #A63D08;
-    color: white;
-}
-
-.btn-remove {
-    padding: 10px 16px;
-    background: transparent;
-    color: #ef4444;
-    border: 1px solid #fecaca;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.btn-remove:hover {
-    background: #fef2f2;
-    border-color: #ef4444;
-}
-
-.orcamentos-compra-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-}
-
-.orcamentos-compra-table thead {
-    background: #fafbfc;
-}
-
-.orcamentos-compra-table th {
-    text-align: left;
-    padding: 12px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-bottom: 2px solid #e5e7eb;
-}
-
-.orcamentos-compra-table td {
-    padding: 14px 12px;
-    font-size: 14px;
-    color: #334155;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-.orcamentos-compra-table tr.clickable-row {
-    cursor: pointer;
-    transition: background 0.15s ease;
-}
-
-.orcamentos-compra-table tr.clickable-row:hover {
-    background: #fafbfc;
-}
-
-.status-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.status-aberto {
-    background: #FFF3E0;
-    color: #C2490A;
-}
-
-.status-aprovado {
-    background: #dcfce7;
-    color: #166534;
-}
-
-.status-cancelado {
-    background: #fee2e2;
-    color: #991b1b;
-}
-
-.action-btn {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    transition: all 0.15s ease;
-}
-
-.btn-gerar-pedido {
-    background: #dcfce7;
-    color: #166534;
-}
-
-.btn-gerar-pedido:hover {
-    background: #bbf7d0;
-}
-
-.btn-cancelar {
-    background: #fee2e2;
-    color: #991b1b;
-}
-
-.btn-cancelar:hover {
-    background: #fecaca;
-}
-
-.empty-state {
-    text-align: center;
-    padding: 64px 20px;
-    color: #94a3b8;
-}
-
-.empty-icon {
-    font-size: 64px;
-    opacity: 0.3;
-    margin-bottom: 16px;
-}
-
-.valor-total {
-    font-family: 'Consolas', monospace;
-    font-weight: 600;
-    color: #0f172a;
-}
-</style>
-
-<div style="max-width: 1600px; margin: 0 auto; padding: 32px 20px;">
-    {% include 'base/msg_sucesso.html' %}
-
-    <div class="orcamentos-compra-header">
-        <div class="orcamentos-compra-title">
-            <h1>{{title_complete}}</h1>
-            <p>Orçamentos de compra abertos e finalizados</p>
-        </div>
-        <div class="orcamentos-compra-actions">
-            <a href="{{add_url}}" class="btn-add">
-                <span>+</span>
-                <span>Novo Orçamento</span>
-            </a>
-            <button type="submit" form="form-remover" class="btn-remove" title="Remover selecionados">
-                🗑️
-            </button>
-        </div>
+<form id="form-lista" action="" method="post" class="list-card">
+    {% csrf_token %}
+    {% if all_orcamentos %}
+    <div class="list-toolbar">{% include 'base/search.html' %}</div>
+    <div class="table-wrap">
+        <table id="lista-database" class="table">
+            <thead>
+                <tr>
+                    <th class="col-id">#</th>
+                    <th style="width:120px">Status</th>
+                    <th>Fornecedor</th>
+                    <th style="width:130px">Vencimento</th>
+                    <th class="col-num" style="width:140px">Total</th>
+                    <th class="col-actions no-sort">Ações</th>
+                    {% include 'base/list_check_all.html' %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for orcamento in all_orcamentos %}
+                <tr class="clickable-row" data-href="{% url 'compras:editarorcamentocompraview' orcamento.id %}">
+                    <td class="col-id">{{orcamento.id}}</td>
+                    <td>
+                        {% if orcamento.status == '0' %}<span class="badge badge-warning">Aberto</span>
+                        {% elif orcamento.status == '1' %}<span class="badge badge-success">Aprovado</span>
+                        {% else %}<span class="badge badge-danger">Cancelado</span>{% endif %}
+                    </td>
+                    <td><strong>{{orcamento.fornecedor|default_if_none:"Sem fornecedor"}}</strong></td>
+                    <td>{{orcamento.format_data_vencimento|default_if_none:"—"}}</td>
+                    <td class="col-num"><strong>{{orcamento.format_valor_total}}</strong></td>
+                    <td class="col-actions">
+                        {% if orcamento.status == '0' %}
+                        <span class="row-actions">
+                            <a href="{% url 'compras:gerarpedidocompra' orcamento.id %}" class="btn btn-sm btn-soft-success" title="Gerar pedido de compra a partir deste orçamento">Gerar pedido</a>
+                            <a href="{% url 'compras:cancelarorcamentocompra' orcamento.id %}" class="btn btn-sm btn-soft-danger" onclick="return confirm('Cancelar este orçamento?');">Cancelar</a>
+                        </span>
+                        {% else %}<span class="cell-muted">—</span>{% endif %}
+                    </td>
+                    {% include 'base/list_check.html' with obj_id=orcamento.id %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-
-    <form id="form-remover" action="" method="post">
-        {% csrf_token %}
-
-        {% include 'base/search.html' %}
-
-        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;">
-            <table class="orcamentos-compra-table">
-                <thead>
-                    <tr>
-                        <th style="width: 70px;">#ID</th>
-                        <th style="width: 130px;">Status</th>
-                        <th>Fornecedor</th>
-                        <th style="width: 150px;">Vencimento</th>
-                        <th style="width: 130px;">Total</th>
-                        <th style="width: 130px; text-align: center;">Ações</th>
-                        <th style="width: 80px; text-align: center;">Remover</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if all_orcamentos %}
-                    {% for orcamento in all_orcamentos %}
-                    <tr class="clickable-row" data-href="{% url 'compras:editarorcamentocompraview' orcamento.id %}"
-                        onclick="window.location='{% url 'compras:editarorcamentocompraview' orcamento.id %}';">
-                        <td><strong>{{orcamento.id}}</strong></td>
-                        <td>
-                            {% if orcamento.status == '0' %}
-                            <span class="status-badge status-aberto">Aberto</span>
-                            {% elif orcamento.status == '1' %}
-                            <span class="status-badge status-aprovado">Aprovado</span>
-                            {% else %}
-                            <span class="status-badge status-cancelado">Cancelado</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <strong>{{orcamento.fornecedor|default_if_none:"Sem fornecedor"}}</strong>
-                        </td>
-                        <td>
-                            {{orcamento.format_data_vencimento|default_if_none:"-"}}
-                        </td>
-                        <td class="valor-total">
-                            {{orcamento.format_valor_total}}
-                        </td>
-                        <td style="text-align: center;" onclick="event.stopPropagation();">
-                            {% if orcamento.status == '0' %}
-                            <a href="{% url 'compras:gerarpedidocompra' orcamento.id %}" 
-                               class="action-btn btn-gerar-pedido" 
-                               title="Gerar pedido">
-                                ✓ Gerar Pedido
-                            </a>
-                            <a href="{% url 'compras:cancelarorcamentocompra' orcamento.id %}" 
-                               class="action-btn btn-cancelar" 
-                               title="Cancelar orçamento"
-                               onclick="return confirm('Deseja cancelar este orçamento?');">
-                                ✗ Cancelar
-                            </a>
-                            {% else %}
-                            <span style="color: #94a3b8; font-size: 13px;">-</span>
-                            {% endif %}
-                        </td>
-                        <td style="text-align: center;" onclick="event.stopPropagation();">
-                            <input type="checkbox" 
-                                   name="{{orcamento.id}}" 
-                                   id="remover-entrada-{{orcamento.id}}"
-                                   style="width: 16px; height: 16px; cursor: pointer;"/>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    {% else %}
-                    <tr>
-                        <td colspan="7">
-                            <div class="empty-state">
-                                <div class="empty-icon">📋</div>
-                                <div style="font-size: 16px; margin-bottom: 8px;">Nenhum orçamento de compra cadastrado</div>
-                                <div style="font-size: 13px;">Clique em "Novo Orçamento" para começar</div>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endif %}
-                </tbody>
-            </table>
-        </div>
-    </form>
-</div>
-
+    {% else %}
+    {% include 'base/list_empty.html' with message='Nenhum orçamento de compra' hint='Registre cotações dos fornecedores e transforme em pedido com um clique.' add_label='Novo orçamento' %}
+    {% endif %}
+</form>
 {%endblock%}

@@ -1,35 +1,33 @@
-<div class="table-responsive">
-  <table id="lista-database" class="table table-bordered table-striped lista-table">
-    <thead>
-      <tr>
-        <th>#ID</th>                   
-        <th>Data</th>
-        <th>Tipo</th>
-        <th>Fornecedor</th>
-        <th>N° de itens</th>
-        <th>Valor total</th>
-        <th>Remover</th>
-      </tr>
-    </thead>
-
-    <tbody>
-     {% if all_entradas %}
-     {% for entrada in all_entradas %}
-     <tr class="clickable-row" data-href="{{entrada.get_edit_url}}">
-      <td>{{entrada.id}}</td>
-      <td>{{entrada.format_data_movimento}}</td>
-      <td>{{entrada.get_tipo_movimento_display}}</td>
-      <td>{{entrada.fornecedor|default_if_none:""}}</td>
-      <td>{{entrada.format_quantidade_itens}}</td>
-      <td>{{entrada.format_valor_total}}</td>
-      <td class="lista-remove">
-        <input type="checkbox" name="{{entrada.id}}" id="remover-movimento-{{entrada.id}}"/>
-        <label class="remove-entry-label" for="remover-movimento-{{entrada.id}}"></label>
-      </td>
-    </tr>
-    {% endfor %}
-    {%else%}
-    {%endif%}
-  </tbody>
-</table>
+{% if all_entradas %}
+<div class="list-toolbar">{% include 'base/search.html' %}</div>
+<div class="table-wrap">
+    <table id="lista-database" class="table">
+        <thead>
+            <tr>
+                <th class="col-id">#</th>
+                <th style="width:120px">Data</th>
+                <th style="width:160px">Tipo</th>
+                <th>Fornecedor</th>
+                <th class="col-num" style="width:110px">Itens</th>
+                <th class="col-num" style="width:140px">Valor total</th>
+                {% include 'base/list_check_all.html' %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for entrada in all_entradas %}
+            <tr class="clickable-row" data-href="{{entrada.get_edit_url}}">
+                <td class="col-id">{{entrada.id}}</td>
+                <td>{{entrada.format_data_movimento}}</td>
+                <td>{{entrada.get_tipo_movimento_display}}</td>
+                <td><strong>{{entrada.fornecedor|default_if_none:"—"}}</strong></td>
+                <td class="col-num">{{entrada.format_quantidade_itens}}</td>
+                <td class="col-num"><strong>{{entrada.format_valor_total}}</strong></td>
+                {% include 'base/list_check.html' with obj_id=entrada.id %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
+{% else %}
+{% include 'base/list_empty.html' with message='Nenhuma entrada de estoque' add_label='Nova entrada' %}
+{% endif %}
