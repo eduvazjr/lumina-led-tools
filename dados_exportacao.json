@@ -1,0 +1,6026 @@
+[
+  {
+    "model": "cadastro.pessoa",
+    "pk": 1,
+    "fields": {
+      "nome_razao_social": "Amarante",
+      "tipo_pessoa": "PJ",
+      "inscricao_municipal": "",
+      "informacoes_adicionais": "",
+      "data_criacao": "2026-10-21 21:34:38.821638",
+      "data_edicao": "2026-10-21 21:34:38.822639"
+    }
+  },
+  {
+    "model": "cadastro.pessoa",
+    "pk": 2,
+    "fields": {
+      "nome_razao_social": "Nakasaki",
+      "tipo_pessoa": "PJ",
+      "inscricao_municipal": "",
+      "informacoes_adicionais": "",
+      "data_criacao": "2026-10-21 21:34:39.201119",
+      "data_edicao": "2026-10-21 21:34:39.201119"
+    }
+  },
+  {
+    "model": "cadastro.pessoa",
+    "pk": 3,
+    "fields": {
+      "nome_razao_social": "Lucas",
+      "tipo_pessoa": "PJ",
+      "inscricao_municipal": "",
+      "informacoes_adicionais": "",
+      "data_criacao": "2026-10-21 21:34:40.140656",
+      "data_edicao": "2026-10-21 21:34:40.140656"
+    }
+  },
+  {
+    "model": "cadastro.pessoa",
+    "pk": 4,
+    "fields": {
+      "nome_razao_social": "Terra",
+      "tipo_pessoa": "PJ",
+      "inscricao_municipal": "",
+      "informacoes_adicionais": "",
+      "data_criacao": "2026-10-21 21:34:41.016313",
+      "data_edicao": "2026-10-21 21:34:41.016313"
+    }
+  },
+  {
+    "model": "cadastro.pessoa",
+    "pk": 5,
+    "fields": {
+      "nome_razao_social": "Max",
+      "tipo_pessoa": "PJ",
+      "inscricao_municipal": "",
+      "informacoes_adicionais": "",
+      "data_criacao": "2026-10-21 21:34:41.029930",
+      "data_edicao": "2026-10-21 21:34:41.029930"
+    }
+  },
+  {
+    "model": "cadastro.pessoa",
+    "pk": 6,
+    "fields": {
+      "nome_razao_social": "Yé",
+      "tipo_pessoa": "PJ",
+      "inscricao_municipal": "",
+      "informacoes_adicionais": "",
+      "data_criacao": "2026-10-21 21:34:41.091685",
+      "data_edicao": "2026-10-21 21:34:41.091685"
+    }
+  },
+  {
+    "model": "cadastro.fornecedor",
+    "pk": 1,
+    "fields": {
+      "pessoa_ptr_id": 1,
+      "ramo": ""
+    }
+  },
+  {
+    "model": "cadastro.fornecedor",
+    "pk": 2,
+    "fields": {
+      "pessoa_ptr_id": 2,
+      "ramo": ""
+    }
+  },
+  {
+    "model": "cadastro.fornecedor",
+    "pk": 3,
+    "fields": {
+      "pessoa_ptr_id": 3,
+      "ramo": ""
+    }
+  },
+  {
+    "model": "cadastro.fornecedor",
+    "pk": 4,
+    "fields": {
+      "pessoa_ptr_id": 4,
+      "ramo": ""
+    }
+  },
+  {
+    "model": "cadastro.fornecedor",
+    "pk": 5,
+    "fields": {
+      "pessoa_ptr_id": 5,
+      "ramo": ""
+    }
+  },
+  {
+    "model": "cadastro.fornecedor",
+    "pk": 6,
+    "fields": {
+      "pessoa_ptr_id": 6,
+      "ramo": ""
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 1,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "1965",
+      "data_emissao": "2026-07-09",
+      "data_vencimento": "2026-08-08",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.835579",
+      "atualizado_em": "2026-10-21 21:34:38.835579",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 2,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "5900",
+      "data_emissao": "2026-07-09",
+      "data_vencimento": "2026-08-08",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.843762",
+      "atualizado_em": "2026-10-21 21:34:38.843762",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 3,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "16840",
+      "data_emissao": "2026-07-15",
+      "data_vencimento": "2026-08-14",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.849763",
+      "atualizado_em": "2026-10-21 21:34:38.849763",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 4,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "49520",
+      "data_emissao": "2026-07-16",
+      "data_vencimento": "2026-08-15",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.855976",
+      "atualizado_em": "2026-10-21 21:34:38.855976",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 5,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "23200",
+      "data_emissao": "2026-07-27",
+      "data_vencimento": "2026-08-26",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.862508",
+      "atualizado_em": "2026-10-21 21:34:38.862508",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 6,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "128560",
+      "data_emissao": "2026-07-24",
+      "data_vencimento": "2026-08-23",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.868511",
+      "atualizado_em": "2026-10-21 21:34:38.868511",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 7,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "9825",
+      "data_emissao": "2026-07-29",
+      "data_vencimento": "2026-08-28",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.874508",
+      "atualizado_em": "2026-10-21 21:34:38.874508",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 8,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "42100",
+      "data_emissao": "2026-08-03",
+      "data_vencimento": "2026-09-02",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.881235",
+      "atualizado_em": "2026-10-21 21:34:38.881235",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 9,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "22150",
+      "data_emissao": "2026-08-03",
+      "data_vencimento": "2026-09-02",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.886740",
+      "atualizado_em": "2026-10-21 21:34:38.886740",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 10,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "380",
+      "data_emissao": "2026-08-04",
+      "data_vencimento": "2026-09-03",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.893164",
+      "atualizado_em": "2026-10-21 21:34:38.893164",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 11,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "279360",
+      "data_emissao": "2026-08-04",
+      "data_vencimento": "2026-09-03",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.898367",
+      "atualizado_em": "2026-10-21 21:34:38.898367",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 12,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "4560",
+      "data_emissao": "2026-08-04",
+      "data_vencimento": "2026-09-03",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.904616",
+      "atualizado_em": "2026-10-21 21:34:38.905451",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 13,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "85050",
+      "data_emissao": "2026-08-05",
+      "data_vencimento": "2026-09-04",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.911453",
+      "atualizado_em": "2026-10-21 21:34:38.911453",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 14,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "8360",
+      "data_emissao": "2026-08-05",
+      "data_vencimento": "2026-09-04",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.918466",
+      "atualizado_em": "2026-10-21 21:34:38.918466",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 15,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "83935",
+      "data_emissao": "2026-08-05",
+      "data_vencimento": "2026-09-04",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.923483",
+      "atualizado_em": "2026-10-21 21:34:38.923483",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 16,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "85050",
+      "data_emissao": "2026-08-10",
+      "data_vencimento": "2026-09-09",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.930567",
+      "atualizado_em": "2026-10-21 21:34:38.930567",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 17,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "84150",
+      "data_emissao": "2026-08-11",
+      "data_vencimento": "2026-09-10",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.935724",
+      "atualizado_em": "2026-10-21 21:34:38.935724",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 18,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "9120",
+      "data_emissao": "2026-08-11",
+      "data_vencimento": "2026-09-10",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.941741",
+      "atualizado_em": "2026-10-21 21:34:38.941741",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 19,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "11400",
+      "data_emissao": "2026-08-10",
+      "data_vencimento": "2026-09-09",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.946745",
+      "atualizado_em": "2026-10-21 21:34:38.946745",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 20,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "47800",
+      "data_emissao": "2026-08-12",
+      "data_vencimento": "2026-09-11",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.953905",
+      "atualizado_em": "2026-10-21 21:34:38.953905",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 21,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "61220",
+      "data_emissao": "2026-08-13",
+      "data_vencimento": "2026-09-12",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.958904",
+      "atualizado_em": "2026-10-21 21:34:38.958904",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 22,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "85050",
+      "data_emissao": "2026-08-13",
+      "data_vencimento": "2026-09-12",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.965257",
+      "atualizado_em": "2026-10-21 21:34:38.965257",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 23,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "70600",
+      "data_emissao": "2026-08-14",
+      "data_vencimento": "2026-09-13",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.970257",
+      "atualizado_em": "2026-10-21 21:34:38.971253",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 24,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "30590",
+      "data_emissao": "2026-08-17",
+      "data_vencimento": "2026-09-16",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.978452",
+      "atualizado_em": "2026-10-21 21:34:38.978452",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 25,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "86055",
+      "data_emissao": "2026-08-17",
+      "data_vencimento": "2026-09-16",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.983453",
+      "atualizado_em": "2026-10-21 21:34:38.983453",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 26,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "84500",
+      "data_emissao": "2026-08-18",
+      "data_vencimento": "2026-09-17",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.989618",
+      "atualizado_em": "2026-10-21 21:34:38.989618",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 27,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "90320",
+      "data_emissao": "2026-08-19",
+      "data_vencimento": "2026-09-18",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:38.997284",
+      "atualizado_em": "2026-10-21 21:34:38.997284",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 28,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "28250",
+      "data_emissao": "2026-08-19",
+      "data_vencimento": "2026-09-18",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.002280",
+      "atualizado_em": "2026-10-21 21:34:39.002280",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 29,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "33300",
+      "data_emissao": "2026-08-20",
+      "data_vencimento": "2026-09-19",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.008801",
+      "atualizado_em": "2026-10-21 21:34:39.008801",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 30,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "84385",
+      "data_emissao": "2026-08-21",
+      "data_vencimento": "2026-09-20",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.012871",
+      "atualizado_em": "2026-10-21 21:34:39.012871",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 31,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "60180",
+      "data_emissao": "2026-08-21",
+      "data_vencimento": "2026-09-20",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.019889",
+      "atualizado_em": "2026-10-21 21:34:39.019889",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 32,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "104385",
+      "data_emissao": "2026-08-24",
+      "data_vencimento": "2026-09-23",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.025888",
+      "atualizado_em": "2026-10-21 21:34:39.025888",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 33,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "99200",
+      "data_emissao": "2026-08-24",
+      "data_vencimento": "2026-09-23",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.030159",
+      "atualizado_em": "2026-10-21 21:34:39.030159",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 34,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "84640",
+      "data_emissao": "2026-08-25",
+      "data_vencimento": "2026-09-24",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.036155",
+      "atualizado_em": "2026-10-21 21:34:39.036155",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 35,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "63700",
+      "data_emissao": "2026-08-25",
+      "data_vencimento": "2026-09-24",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.043156",
+      "atualizado_em": "2026-10-21 21:34:39.043156",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 36,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "80000",
+      "data_emissao": "2026-08-26",
+      "data_vencimento": "2026-09-25",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.048307",
+      "atualizado_em": "2026-10-21 21:34:39.048307",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 37,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "249130",
+      "data_emissao": "2026-08-27",
+      "data_vencimento": "2026-09-26",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.053307",
+      "atualizado_em": "2026-10-21 21:34:39.053307",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 38,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "247700",
+      "data_emissao": "2026-08-28",
+      "data_vencimento": "2026-09-27",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.059334",
+      "atualizado_em": "2026-10-21 21:34:39.059334",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 39,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "7200",
+      "data_emissao": "2026-08-28",
+      "data_vencimento": "2026-09-27",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.064326",
+      "atualizado_em": "2026-10-21 21:34:39.064326",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 40,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "21600",
+      "data_emissao": "2026-08-31",
+      "data_vencimento": "2026-09-30",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.071467",
+      "atualizado_em": "2026-10-21 21:34:39.071467",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 41,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "287380",
+      "data_emissao": "2026-09-04",
+      "data_vencimento": "2026-10-04",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.079577",
+      "atualizado_em": "2026-10-21 21:34:39.079577",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 42,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "14400",
+      "data_emissao": "2026-09-03",
+      "data_vencimento": "2026-10-03",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.084580",
+      "atualizado_em": "2026-10-21 21:34:39.084580",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 43,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "1505",
+      "data_emissao": "2026-09-03",
+      "data_vencimento": "2026-10-03",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.091741",
+      "atualizado_em": "2026-10-21 21:34:39.091741",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 44,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "238080",
+      "data_emissao": "2026-09-16",
+      "data_vencimento": "2026-10-16",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.097759",
+      "atualizado_em": "2026-10-21 21:34:39.097759",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 45,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "263740",
+      "data_emissao": "2026-09-23",
+      "data_vencimento": "2026-10-23",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.104101",
+      "atualizado_em": "2026-10-21 21:34:39.104101",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 46,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "498",
+      "data_emissao": "2026-09-23",
+      "data_vencimento": "2026-10-23",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.110232",
+      "atualizado_em": "2026-10-21 21:34:39.110232",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 47,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "6400",
+      "data_emissao": "2026-09-23",
+      "data_vencimento": "2026-10-23",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.115479",
+      "atualizado_em": "2026-10-21 21:34:39.115479",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 48,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "217440",
+      "data_emissao": "2026-09-28",
+      "data_vencimento": "2026-10-28",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.122476",
+      "atualizado_em": "2026-10-21 21:34:39.122476",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 49,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "237435",
+      "data_emissao": "2026-09-30",
+      "data_vencimento": "2026-10-30",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.127478",
+      "atualizado_em": "2026-10-21 21:34:39.127478",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 50,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "13950",
+      "data_emissao": "2026-09-30",
+      "data_vencimento": "2026-10-30",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.134339",
+      "atualizado_em": "2026-10-21 21:34:39.134339",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 51,
+    "fields": {
+      "descricao": "Compra Amarante",
+      "valor": "6260",
+      "data_emissao": "2026-10-01",
+      "data_vencimento": "2026-10-31",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Amarante",
+      "criado_em": "2026-10-21 21:34:39.141174",
+      "atualizado_em": "2026-10-21 21:34:39.141174",
+      "fornecedor_id": 1
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 52,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "1573643",
+      "data_emissao": "2022-12-15",
+      "data_vencimento": "2023-01-14",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.212132",
+      "atualizado_em": "2026-10-21 21:34:39.212132",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 53,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "1882089",
+      "data_emissao": "2023-01-13",
+      "data_vencimento": "2023-02-12",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.219241",
+      "atualizado_em": "2026-10-21 21:34:39.219241",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 54,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "454640",
+      "data_emissao": "2023-01-24",
+      "data_vencimento": "2023-02-23",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.225312",
+      "atualizado_em": "2026-10-21 21:34:39.225312",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 55,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "1340410",
+      "data_emissao": "2023-02-09",
+      "data_vencimento": "2023-03-11",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.232313",
+      "atualizado_em": "2026-10-21 21:34:39.232313",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 56,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "629160",
+      "data_emissao": "2023-02-16",
+      "data_vencimento": "2023-03-18",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.237316",
+      "atualizado_em": "2026-10-21 21:34:39.237316",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 57,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "813000",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.244479",
+      "atualizado_em": "2026-10-21 21:34:39.244479",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 58,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "737848",
+      "data_emissao": "2023-03-15",
+      "data_vencimento": "2023-04-14",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.249491",
+      "atualizado_em": "2026-10-21 21:34:39.249491",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 59,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "204310",
+      "data_emissao": "2023-03-29",
+      "data_vencimento": "2023-04-28",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.255670",
+      "atualizado_em": "2026-10-21 21:34:39.255670",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 60,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "198449",
+      "data_emissao": "2023-04-05",
+      "data_vencimento": "2023-05-05",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.260668",
+      "atualizado_em": "2026-10-21 21:34:39.260668",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 61,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "242520",
+      "data_emissao": "2023-04-13",
+      "data_vencimento": "2023-05-13",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.267184",
+      "atualizado_em": "2026-10-21 21:34:39.267184",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 62,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "496840",
+      "data_emissao": "2023-04-27",
+      "data_vencimento": "2023-05-27",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.273182",
+      "atualizado_em": "2026-10-21 21:34:39.273182",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 63,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "358370",
+      "data_emissao": "2023-05-04",
+      "data_vencimento": "2023-06-03",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.281179",
+      "atualizado_em": "2026-10-21 21:34:39.281179",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 64,
+    "fields": {
+      "descricao": "Depositos que nao cairam",
+      "valor": "135000",
+      "data_emissao": "2023-05-08",
+      "data_vencimento": "2023-06-07",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.286184",
+      "atualizado_em": "2026-10-21 21:34:39.286184",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 65,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "342658",
+      "data_emissao": "2023-05-08",
+      "data_vencimento": "2023-06-07",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.292658",
+      "atualizado_em": "2026-10-21 21:34:39.292658",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 66,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "204520",
+      "data_emissao": "2023-05-18",
+      "data_vencimento": "2023-06-17",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.298644",
+      "atualizado_em": "2026-10-21 21:34:39.298644",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 67,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "38240",
+      "data_emissao": "2023-05-23",
+      "data_vencimento": "2023-06-22",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.305647",
+      "atualizado_em": "2026-10-21 21:34:39.305647",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 68,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "209665",
+      "data_emissao": "2023-06-01",
+      "data_vencimento": "2023-07-01",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.312680",
+      "atualizado_em": "2026-10-21 21:34:39.312680",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 69,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "87180",
+      "data_emissao": "2023-06-09",
+      "data_vencimento": "2023-07-09",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.317818",
+      "atualizado_em": "2026-10-21 21:34:39.317818",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 70,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "298979",
+      "data_emissao": "2023-06-28",
+      "data_vencimento": "2023-07-28",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.323817",
+      "atualizado_em": "2026-10-21 21:34:39.323817",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 71,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "216775",
+      "data_emissao": "2023-07-10",
+      "data_vencimento": "2023-08-09",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.329878",
+      "atualizado_em": "2026-10-21 21:34:39.329878",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 72,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "195000",
+      "data_emissao": "2023-07-14",
+      "data_vencimento": "2023-08-13",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.336613",
+      "atualizado_em": "2026-10-21 21:34:39.336613",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 73,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "350340",
+      "data_emissao": "2023-07-20",
+      "data_vencimento": "2023-08-19",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.342671",
+      "atualizado_em": "2026-10-21 21:34:39.342671",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 74,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "238000",
+      "data_emissao": "2023-07-26",
+      "data_vencimento": "2023-08-25",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.348997",
+      "atualizado_em": "2026-10-21 21:34:39.348997",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 75,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "430700",
+      "data_emissao": "2023-08-03",
+      "data_vencimento": "2023-09-02",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.353998",
+      "atualizado_em": "2026-10-21 21:34:39.353998",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 76,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "817640",
+      "data_emissao": "2023-08-17",
+      "data_vencimento": "2023-09-16",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.360934",
+      "atualizado_em": "2026-10-21 21:34:39.360934",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 77,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "413704",
+      "data_emissao": "2023-08-17",
+      "data_vencimento": "2023-09-16",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.365956",
+      "atualizado_em": "2026-10-21 21:34:39.365956",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 78,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "354973",
+      "data_emissao": "2023-08-23",
+      "data_vencimento": "2023-09-22",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.372951",
+      "atualizado_em": "2026-10-21 21:34:39.372951",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 79,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "333150",
+      "data_emissao": "2023-08-31",
+      "data_vencimento": "2023-09-30",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.378954",
+      "atualizado_em": "2026-10-21 21:34:39.378954",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 80,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "58990",
+      "data_emissao": "2023-08-04",
+      "data_vencimento": "2023-09-03",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.384956",
+      "atualizado_em": "2026-10-21 21:34:39.384956",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 81,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "52840",
+      "data_emissao": "2023-09-15",
+      "data_vencimento": "2023-10-15",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.391956",
+      "atualizado_em": "2026-10-21 21:34:39.391956",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 82,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "189100",
+      "data_emissao": "2023-09-21",
+      "data_vencimento": "2023-10-21",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.398967",
+      "atualizado_em": "2026-10-21 21:34:39.398967",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 83,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "104584",
+      "data_emissao": "2023-09-29",
+      "data_vencimento": "2023-10-29",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.403970",
+      "atualizado_em": "2026-10-21 21:34:39.403970",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 84,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "308012",
+      "data_emissao": "2023-10-05",
+      "data_vencimento": "2023-11-04",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.410184",
+      "atualizado_em": "2026-10-21 21:34:39.410184",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 85,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "553748",
+      "data_emissao": "2023-10-11",
+      "data_vencimento": "2023-11-10",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.416372",
+      "atualizado_em": "2026-10-21 21:34:39.416372",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 86,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "307510",
+      "data_emissao": "2023-10-19",
+      "data_vencimento": "2023-11-18",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.422371",
+      "atualizado_em": "2026-10-21 21:34:39.422371",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 87,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "282708",
+      "data_emissao": "2023-10-25",
+      "data_vencimento": "2023-11-24",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.427375",
+      "atualizado_em": "2026-10-21 21:34:39.427375",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 88,
+    "fields": {
+      "descricao": "Fechamento Mensal",
+      "valor": "254204",
+      "data_emissao": "2023-11-01",
+      "data_vencimento": "2023-12-01",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.433575",
+      "atualizado_em": "2026-10-21 21:34:39.433575",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 89,
+    "fields": {
+      "descricao": "conteiner",
+      "valor": "860824",
+      "data_emissao": "2023-11-09",
+      "data_vencimento": "2023-12-09",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.438705",
+      "atualizado_em": "2026-10-21 21:34:39.438705",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 90,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "802035",
+      "data_emissao": "2023-11-14",
+      "data_vencimento": "2023-12-14",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.444036",
+      "atualizado_em": "2026-10-21 21:34:39.444036",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 91,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "194000",
+      "data_emissao": "2023-11-20",
+      "data_vencimento": "2023-12-20",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.450701",
+      "atualizado_em": "2026-10-21 21:34:39.450701",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 92,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "262408",
+      "data_emissao": "2023-11-30",
+      "data_vencimento": "2023-12-30",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.455922",
+      "atualizado_em": "2026-10-21 21:34:39.455922",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 93,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "226918",
+      "data_emissao": "2023-12-06",
+      "data_vencimento": "2024-01-05",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.461924",
+      "atualizado_em": "2026-10-21 21:34:39.461924",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 94,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "734644",
+      "data_emissao": "2023-12-20",
+      "data_vencimento": "2024-01-19",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.466936",
+      "atualizado_em": "2026-10-21 21:34:39.466936",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 95,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "10740",
+      "data_emissao": "2024-12-28",
+      "data_vencimento": "2025-01-27",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.472938",
+      "atualizado_em": "2026-10-21 21:34:39.472938",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 96,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "149228",
+      "data_emissao": "2024-01-03",
+      "data_vencimento": "2024-02-02",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.480205",
+      "atualizado_em": "2026-10-21 21:34:39.480205",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 97,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "922028",
+      "data_emissao": "2024-01-18",
+      "data_vencimento": "2024-02-17",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.487370",
+      "atualizado_em": "2026-10-21 21:34:39.487370",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 98,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "714040",
+      "data_emissao": "2024-01-25",
+      "data_vencimento": "2024-02-24",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.492368",
+      "atualizado_em": "2026-10-21 21:34:39.492368",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 99,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "566528",
+      "data_emissao": "2024-02-08",
+      "data_vencimento": "2024-03-09",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.499385",
+      "atualizado_em": "2026-10-21 21:34:39.499385",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 100,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "240250",
+      "data_emissao": "2024-02-08",
+      "data_vencimento": "2024-03-09",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.503712",
+      "atualizado_em": "2026-10-21 21:34:39.503712",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 101,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "82590",
+      "data_emissao": "2024-08-15",
+      "data_vencimento": "2024-09-14",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.509885",
+      "atualizado_em": "2026-10-21 21:34:39.509885",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 102,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "465900",
+      "data_emissao": "2024-02-21",
+      "data_vencimento": "2024-03-22",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.515541",
+      "atualizado_em": "2026-10-21 21:34:39.515541",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 103,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "995620",
+      "data_emissao": "2024-02-27",
+      "data_vencimento": "2024-03-28",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.522082",
+      "atualizado_em": "2026-10-21 21:34:39.522082",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 104,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "412990",
+      "data_emissao": "2024-03-07",
+      "data_vencimento": "2024-04-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.527082",
+      "atualizado_em": "2026-10-21 21:34:39.527082",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 105,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "790972",
+      "data_emissao": "2024-03-13",
+      "data_vencimento": "2024-04-12",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.533518",
+      "atualizado_em": "2026-10-21 21:34:39.533518",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 106,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1534790",
+      "data_emissao": "2024-04-04",
+      "data_vencimento": "2024-05-04",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.538518",
+      "atualizado_em": "2026-10-21 21:34:39.538518",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 107,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1419382",
+      "data_emissao": "2024-04-11",
+      "data_vencimento": "2024-05-11",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.544032",
+      "atualizado_em": "2026-10-21 21:34:39.544032",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 108,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "541250",
+      "data_emissao": "2024-04-19",
+      "data_vencimento": "2024-05-19",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.550055",
+      "atualizado_em": "2026-10-21 21:34:39.550055",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 109,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "164336",
+      "data_emissao": "2024-02-05",
+      "data_vencimento": "2024-03-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.556079",
+      "atualizado_em": "2026-10-21 21:34:39.556079",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 110,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "756300",
+      "data_emissao": "2024-05-09",
+      "data_vencimento": "2024-06-08",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.562321",
+      "atualizado_em": "2026-10-21 21:34:39.562321",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 111,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "506730",
+      "data_emissao": "2024-05-31",
+      "data_vencimento": "2024-06-30",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.569500",
+      "atualizado_em": "2026-10-21 21:34:39.569500",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 112,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "88920",
+      "data_emissao": "2024-05-23",
+      "data_vencimento": "2024-06-22",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.576525",
+      "atualizado_em": "2026-10-21 21:34:39.576525",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 113,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "959736",
+      "data_emissao": "2024-06-06",
+      "data_vencimento": "2024-07-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.583488",
+      "atualizado_em": "2026-10-21 21:34:39.583488",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 114,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "244308",
+      "data_emissao": "2024-06-20",
+      "data_vencimento": "2024-07-20",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.588425",
+      "atualizado_em": "2026-10-21 21:34:39.588425",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 115,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "578270",
+      "data_emissao": "2024-06-26",
+      "data_vencimento": "2024-07-26",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.594464",
+      "atualizado_em": "2026-10-21 21:34:39.594464",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 116,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "749861",
+      "data_emissao": "2024-07-04",
+      "data_vencimento": "2024-08-03",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.600151",
+      "atualizado_em": "2026-10-21 21:34:39.600151",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 117,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "351812",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.607342",
+      "atualizado_em": "2026-10-21 21:34:39.607342",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 118,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "604830",
+      "data_emissao": "2024-07-25",
+      "data_vencimento": "2024-08-24",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.613378",
+      "atualizado_em": "2026-10-21 21:34:39.613378",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 119,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "330076",
+      "data_emissao": "2024-08-01",
+      "data_vencimento": "2024-08-31",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.619600",
+      "atualizado_em": "2026-10-21 21:34:39.619600",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 120,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1145970",
+      "data_emissao": "2024-08-08",
+      "data_vencimento": "2024-09-07",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.625619",
+      "atualizado_em": "2026-10-21 21:34:39.625619",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 121,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "240260",
+      "data_emissao": "2024-08-13",
+      "data_vencimento": "2024-09-12",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.631642",
+      "atualizado_em": "2026-10-21 21:34:39.631642",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 122,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "305750",
+      "data_emissao": "2024-08-22",
+      "data_vencimento": "2024-09-21",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.636675",
+      "atualizado_em": "2026-10-21 21:34:39.636675",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 123,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "737908",
+      "data_emissao": "2024-09-04",
+      "data_vencimento": "2024-10-04",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.644226",
+      "atualizado_em": "2026-10-21 21:34:39.644226",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 124,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "140815",
+      "data_emissao": "2024-09-04",
+      "data_vencimento": "2024-10-04",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.651246",
+      "atualizado_em": "2026-10-21 21:34:39.651246",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 125,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1134928",
+      "data_emissao": "2024-09-12",
+      "data_vencimento": "2024-10-12",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.658785",
+      "atualizado_em": "2026-10-21 21:34:39.658785",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 126,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "46300",
+      "data_emissao": "2024-09-17",
+      "data_vencimento": "2024-10-17",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.665857",
+      "atualizado_em": "2026-10-21 21:34:39.665857",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 127,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "97030",
+      "data_emissao": "2024-09-30",
+      "data_vencimento": "2024-10-30",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.672887",
+      "atualizado_em": "2026-10-21 21:34:39.672887",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 128,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "511868",
+      "data_emissao": "2024-10-09",
+      "data_vencimento": "2024-11-08",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.677923",
+      "atualizado_em": "2026-10-21 21:34:39.677923",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 129,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "15538",
+      "data_emissao": "2024-10-16",
+      "data_vencimento": "2024-11-15",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.684954",
+      "atualizado_em": "2026-10-21 21:34:39.684954",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 130,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "161603",
+      "data_emissao": "2024-10-23",
+      "data_vencimento": "2024-11-22",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.689989",
+      "atualizado_em": "2026-10-21 21:34:39.689989",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 131,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "479770",
+      "data_emissao": "2024-11-06",
+      "data_vencimento": "2024-12-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.696748",
+      "atualizado_em": "2026-10-21 21:34:39.696748",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 132,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "363058",
+      "data_emissao": "2024-11-13",
+      "data_vencimento": "2024-12-13",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.701782",
+      "atualizado_em": "2026-10-21 21:34:39.701782",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 133,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "226510",
+      "data_emissao": "2024-11-19",
+      "data_vencimento": "2024-12-19",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.708306",
+      "atualizado_em": "2026-10-21 21:34:39.708306",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 134,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "579100",
+      "data_emissao": "2024-11-28",
+      "data_vencimento": "2024-12-28",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.714338",
+      "atualizado_em": "2026-10-21 21:34:39.714338",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 135,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "815678",
+      "data_emissao": "2024-12-05",
+      "data_vencimento": "2025-01-04",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.720598",
+      "atualizado_em": "2026-10-21 21:34:39.720598",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 136,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "388113",
+      "data_emissao": "2024-12-11",
+      "data_vencimento": "2025-01-10",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.726595",
+      "atualizado_em": "2026-10-21 21:34:39.726595",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 137,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "509595",
+      "data_emissao": "2025-12-26",
+      "data_vencimento": "2026-01-25",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.732919",
+      "atualizado_em": "2026-10-21 21:34:39.732919",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 138,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "319516",
+      "data_emissao": "2025-01-02",
+      "data_vencimento": "2025-02-01",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.738268",
+      "atualizado_em": "2026-10-21 21:34:39.738268",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 139,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "345165",
+      "data_emissao": "2025-01-09",
+      "data_vencimento": "2025-02-08",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.744364",
+      "atualizado_em": "2026-10-21 21:34:39.744364",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 140,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1230652",
+      "data_emissao": "2025-01-15",
+      "data_vencimento": "2025-02-14",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.752285",
+      "atualizado_em": "2026-10-21 21:34:39.752285",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 141,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "461913",
+      "data_emissao": "2025-01-22",
+      "data_vencimento": "2025-02-21",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.757311",
+      "atualizado_em": "2026-10-21 21:34:39.757311",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 142,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "223589",
+      "data_emissao": "2025-01-29",
+      "data_vencimento": "2025-02-28",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.763831",
+      "atualizado_em": "2026-10-21 21:34:39.763831",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 143,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "745014",
+      "data_emissao": "2025-02-04",
+      "data_vencimento": "2025-03-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.768848",
+      "atualizado_em": "2026-10-21 21:34:39.768848",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 144,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "690912",
+      "data_emissao": "2025-02-12",
+      "data_vencimento": "2025-03-14",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.775369",
+      "atualizado_em": "2026-10-21 21:34:39.775369",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 145,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1433870",
+      "data_emissao": "2025-02-24",
+      "data_vencimento": "2025-03-26",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.780458",
+      "atualizado_em": "2026-10-21 21:34:39.780458",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 146,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "236281",
+      "data_emissao": "2025-02-25",
+      "data_vencimento": "2025-03-27",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.786981",
+      "atualizado_em": "2026-10-21 21:34:39.786981",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 147,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "346084",
+      "data_emissao": "2025-03-06",
+      "data_vencimento": "2025-04-05",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.791645",
+      "atualizado_em": "2026-10-21 21:34:39.791645",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 148,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "251478",
+      "data_emissao": "2025-03-17",
+      "data_vencimento": "2025-04-16",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.797825",
+      "atualizado_em": "2026-10-21 21:34:39.797825",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 149,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "477523",
+      "data_emissao": "2025-03-26",
+      "data_vencimento": "2025-04-25",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.802827",
+      "atualizado_em": "2026-10-21 21:34:39.802827",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 150,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "857605",
+      "data_emissao": "2025-03-25",
+      "data_vencimento": "2025-04-24",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.809824",
+      "atualizado_em": "2026-10-21 21:34:39.809824",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 151,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "295907",
+      "data_emissao": "2025-04-03",
+      "data_vencimento": "2025-05-03",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.814822",
+      "atualizado_em": "2026-10-21 21:34:39.814822",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 152,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "465272",
+      "data_emissao": "2025-04-09",
+      "data_vencimento": "2025-05-09",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.821015",
+      "atualizado_em": "2026-10-21 21:34:39.821015",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 153,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "630677",
+      "data_emissao": "2025-04-16",
+      "data_vencimento": "2025-05-16",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.827365",
+      "atualizado_em": "2026-10-21 21:34:39.828362",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 154,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "575580",
+      "data_emissao": "2025-04-22",
+      "data_vencimento": "2025-05-22",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.835378",
+      "atualizado_em": "2026-10-21 21:34:39.835378",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 155,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "710815",
+      "data_emissao": "2025-04-30",
+      "data_vencimento": "2025-05-30",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.840382",
+      "atualizado_em": "2026-10-21 21:34:39.840382",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 156,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "444387",
+      "data_emissao": "2025-05-07",
+      "data_vencimento": "2025-06-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.847542",
+      "atualizado_em": "2026-10-21 21:34:39.847542",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 157,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "641466",
+      "data_emissao": "2025-05-20",
+      "data_vencimento": "2025-06-19",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.852544",
+      "atualizado_em": "2026-10-21 21:34:39.852544",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 158,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1021623",
+      "data_emissao": "2025-05-22",
+      "data_vencimento": "2025-06-21",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.857839",
+      "atualizado_em": "2026-10-21 21:34:39.858836",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 159,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "393751",
+      "data_emissao": "2025-05-29",
+      "data_vencimento": "2025-06-28",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.864096",
+      "atualizado_em": "2026-10-21 21:34:39.864096",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 160,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1044731",
+      "data_emissao": "2025-06-05",
+      "data_vencimento": "2025-07-05",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.869487",
+      "atualizado_em": "2026-10-21 21:34:39.869487",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 161,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "629223",
+      "data_emissao": "2025-06-11",
+      "data_vencimento": "2025-07-11",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.874700",
+      "atualizado_em": "2026-10-21 21:34:39.874700",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 162,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "727644",
+      "data_emissao": "2025-06-17",
+      "data_vencimento": "2025-07-17",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.881709",
+      "atualizado_em": "2026-10-21 21:34:39.881709",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 163,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1284017",
+      "data_emissao": "2025-06-25",
+      "data_vencimento": "2025-07-25",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.886909",
+      "atualizado_em": "2026-10-21 21:34:39.886909",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 164,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "429275",
+      "data_emissao": "2025-07-02",
+      "data_vencimento": "2025-08-01",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.893204",
+      "atualizado_em": "2026-10-21 21:34:39.893204",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 165,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1022808",
+      "data_emissao": "2025-07-10",
+      "data_vencimento": "2025-08-09",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.898499",
+      "atualizado_em": "2026-10-21 21:34:39.898499",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 166,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "605038",
+      "data_emissao": "2025-07-21",
+      "data_vencimento": "2025-08-20",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.903939",
+      "atualizado_em": "2026-10-21 21:34:39.903939",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 167,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1312595",
+      "data_emissao": "2025-07-24",
+      "data_vencimento": "2025-08-23",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.909580",
+      "atualizado_em": "2026-10-21 21:34:39.909580",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 168,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "500201",
+      "data_emissao": "2025-07-30",
+      "data_vencimento": "2025-08-29",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.916582",
+      "atualizado_em": "2026-10-21 21:34:39.917579",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 169,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "518626",
+      "data_emissao": "2025-08-06",
+      "data_vencimento": "2025-09-05",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.923600",
+      "atualizado_em": "2026-10-21 21:34:39.923600",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 170,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "733877",
+      "data_emissao": "2025-08-14",
+      "data_vencimento": "2025-09-13",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.929714",
+      "atualizado_em": "2026-10-21 21:34:39.929714",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 171,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "554222",
+      "data_emissao": "2025-08-21",
+      "data_vencimento": "2025-09-20",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.935714",
+      "atualizado_em": "2026-10-21 21:34:39.935714",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 172,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1665867",
+      "data_emissao": "2025-08-27",
+      "data_vencimento": "2025-09-26",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.942530",
+      "atualizado_em": "2026-10-21 21:34:39.943526",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 173,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "399897",
+      "data_emissao": "2025-09-03",
+      "data_vencimento": "2025-10-03",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.949590",
+      "atualizado_em": "2026-10-21 21:34:39.949590",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 174,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1789242",
+      "data_emissao": "2025-09-16",
+      "data_vencimento": "2025-10-16",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.955735",
+      "atualizado_em": "2026-10-21 21:34:39.955735",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 175,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "990915",
+      "data_emissao": "2025-09-17",
+      "data_vencimento": "2025-10-17",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.960271",
+      "atualizado_em": "2026-10-21 21:34:39.961271",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 176,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "944593",
+      "data_emissao": "2025-09-24",
+      "data_vencimento": "2025-10-24",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.966569",
+      "atualizado_em": "2026-10-21 21:34:39.966569",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 177,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "638246",
+      "data_emissao": "2025-10-01",
+      "data_vencimento": "2025-10-31",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.974584",
+      "atualizado_em": "2026-10-21 21:34:39.974584",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 178,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1394581",
+      "data_emissao": "2025-10-08",
+      "data_vencimento": "2025-11-07",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.981726",
+      "atualizado_em": "2026-10-21 21:34:39.981726",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 179,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1112056",
+      "data_emissao": "2025-10-15",
+      "data_vencimento": "2025-11-14",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.986731",
+      "atualizado_em": "2026-10-21 21:34:39.986731",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 180,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "549217",
+      "data_emissao": "2025-10-29",
+      "data_vencimento": "2025-11-28",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:39.993748",
+      "atualizado_em": "2026-10-21 21:34:39.993748",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 181,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "609641",
+      "data_emissao": "2025-10-28",
+      "data_vencimento": "2025-11-27",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.000327",
+      "atualizado_em": "2026-10-21 21:34:40.000327",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 182,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "643748",
+      "data_emissao": "2025-11-05",
+      "data_vencimento": "2025-12-05",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.006463",
+      "atualizado_em": "2026-10-21 21:34:40.006463",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 183,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1016289",
+      "data_emissao": "2025-11-12",
+      "data_vencimento": "2025-12-12",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.013458",
+      "atualizado_em": "2026-10-21 21:34:40.013458",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 184,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1430466",
+      "data_emissao": "2025-11-25",
+      "data_vencimento": "2025-12-25",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.019509",
+      "atualizado_em": "2026-10-21 21:34:40.019509",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 185,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1765850",
+      "data_emissao": "2025-11-26",
+      "data_vencimento": "2025-12-26",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.024570",
+      "atualizado_em": "2026-10-21 21:34:40.024570",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 186,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1349171",
+      "data_emissao": "2025-12-04",
+      "data_vencimento": "2026-01-03",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.030721",
+      "atualizado_em": "2026-10-21 21:34:40.031719",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 187,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1410529",
+      "data_emissao": "2025-12-10",
+      "data_vencimento": "2026-01-09",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.035722",
+      "atualizado_em": "2026-10-21 21:34:40.035722",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 188,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "792548",
+      "data_emissao": "2025-12-26",
+      "data_vencimento": "2026-01-25",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.042199",
+      "atualizado_em": "2026-10-21 21:34:40.042199",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 189,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "269628",
+      "data_emissao": "2026-12-23",
+      "data_vencimento": "2027-01-22",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.048194",
+      "atualizado_em": "2026-10-21 21:34:40.048194",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 190,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "493760",
+      "data_emissao": "2026-12-30",
+      "data_vencimento": "2027-01-29",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.054795",
+      "atualizado_em": "2026-10-21 21:34:40.054795",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 191,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "630092",
+      "data_emissao": "2026-01-07",
+      "data_vencimento": "2026-02-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.059678",
+      "atualizado_em": "2026-10-21 21:34:40.059678",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 192,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "658514",
+      "data_emissao": "2026-01-15",
+      "data_vencimento": "2026-02-14",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.064675",
+      "atualizado_em": "2026-10-21 21:34:40.064675",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 193,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1676762",
+      "data_emissao": "2026-01-21",
+      "data_vencimento": "2026-02-20",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.069818",
+      "atualizado_em": "2026-10-21 21:34:40.069818",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 194,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1921965",
+      "data_emissao": "2026-01-29",
+      "data_vencimento": "2026-02-28",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.075962",
+      "atualizado_em": "2026-10-21 21:34:40.075962",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 195,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "2501484",
+      "data_emissao": "2026-02-04",
+      "data_vencimento": "2026-03-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.082386",
+      "atualizado_em": "2026-10-21 21:34:40.082386",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 196,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1833118",
+      "data_emissao": "2026-02-12",
+      "data_vencimento": "2026-03-14",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.088385",
+      "atualizado_em": "2026-10-21 21:34:40.088385",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 197,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "718580",
+      "data_emissao": "2026-02-19",
+      "data_vencimento": "2026-03-21",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.093902",
+      "atualizado_em": "2026-10-21 21:34:40.093902",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 198,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1034463",
+      "data_emissao": "2026-02-26",
+      "data_vencimento": "2026-03-28",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.100040",
+      "atualizado_em": "2026-10-21 21:34:40.100040",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 199,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "905210",
+      "data_emissao": "2026-03-04",
+      "data_vencimento": "2026-04-03",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.105041",
+      "atualizado_em": "2026-10-21 21:34:40.105041",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 200,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "606064",
+      "data_emissao": "2026-03-12",
+      "data_vencimento": "2026-04-11",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.112044",
+      "atualizado_em": "2026-10-21 21:34:40.112044",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 201,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1297443",
+      "data_emissao": "2026-03-19",
+      "data_vencimento": "2026-04-18",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.117184",
+      "atualizado_em": "2026-10-21 21:34:40.117184",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 202,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "367111",
+      "data_emissao": "2026-03-25",
+      "data_vencimento": "2026-04-24",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.122181",
+      "atualizado_em": "2026-10-21 21:34:40.122181",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 203,
+    "fields": {
+      "descricao": "fechamento mensal",
+      "valor": "1758631",
+      "data_emissao": "2026-04-02",
+      "data_vencimento": "2026-05-02",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Nakasaki",
+      "criado_em": "2026-10-21 21:34:40.128182",
+      "atualizado_em": "2026-10-21 21:34:40.128182",
+      "fornecedor_id": 2
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 204,
+    "fields": {
+      "descricao": "72 gamer",
+      "valor": "22680",
+      "data_emissao": "2023-11-15",
+      "data_vencimento": "2023-12-15",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.150687",
+      "atualizado_em": "2026-10-21 21:34:40.150687",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 205,
+    "fields": {
+      "descricao": "28 gamer",
+      "valor": "8820",
+      "data_emissao": "2023-11-22",
+      "data_vencimento": "2023-12-22",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.156987",
+      "atualizado_em": "2026-10-21 21:34:40.156987",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 206,
+    "fields": {
+      "descricao": "50 escritorio",
+      "valor": "5000",
+      "data_emissao": "2023-11-22",
+      "data_vencimento": "2023-12-22",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.164434",
+      "atualizado_em": "2026-10-21 21:34:40.164434",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 207,
+    "fields": {
+      "descricao": "174 rdcritotio ",
+      "valor": "18270",
+      "data_emissao": "2023-11-23",
+      "data_vencimento": "2023-12-23",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.170191",
+      "atualizado_em": "2026-10-21 21:34:40.170191",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 208,
+    "fields": {
+      "descricao": "26 gamer ",
+      "valor": "8840",
+      "data_emissao": "2023-11-24",
+      "data_vencimento": "2023-12-24",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.177188",
+      "atualizado_em": "2026-10-21 21:34:40.177188",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 209,
+    "fields": {
+      "descricao": "87 escritorio",
+      "valor": "9135",
+      "data_emissao": "2023-11-24",
+      "data_vencimento": "2023-12-24",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.184253",
+      "atualizado_em": "2026-10-21 21:34:40.184253",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 210,
+    "fields": {
+      "descricao": "260 rodinha",
+      "valor": "10140",
+      "data_emissao": "2023-11-24",
+      "data_vencimento": "2023-12-24",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.189285",
+      "atualizado_em": "2026-10-21 21:34:40.189285",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 211,
+    "fields": {
+      "descricao": "146 escritorio",
+      "valor": "15330",
+      "data_emissao": "2023-11-29",
+      "data_vencimento": "2023-12-29",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.196241",
+      "atualizado_em": "2026-10-21 21:34:40.196241",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 212,
+    "fields": {
+      "descricao": "55 escritorio",
+      "valor": "5775",
+      "data_emissao": "2023-11-30",
+      "data_vencimento": "2023-12-30",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.201655",
+      "atualizado_em": "2026-10-21 21:34:40.201655",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 213,
+    "fields": {
+      "descricao": "98 cadeiras ",
+      "valor": "10290",
+      "data_emissao": "2023-12-14",
+      "data_vencimento": "2024-01-13",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.206656",
+      "atualizado_em": "2026-10-21 21:34:40.206656",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 214,
+    "fields": {
+      "descricao": "310 ESCRITORIOS ",
+      "valor": "32550",
+      "data_emissao": "2024-01-12",
+      "data_vencimento": "2024-02-11",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.212656",
+      "atualizado_em": "2026-10-21 21:34:40.212656",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 215,
+    "fields": {
+      "descricao": "50 gamer ",
+      "valor": "17000",
+      "data_emissao": "2024-01-16",
+      "data_vencimento": "2024-02-15",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.218316",
+      "atualizado_em": "2026-10-21 21:34:40.218316",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 216,
+    "fields": {
+      "descricao": "249 gamer",
+      "valor": "84660",
+      "data_emissao": "2024-01-22",
+      "data_vencimento": "2024-02-21",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.223322",
+      "atualizado_em": "2026-10-21 21:34:40.224315",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 217,
+    "fields": {
+      "descricao": "88 escritorio ",
+      "valor": "9240",
+      "data_emissao": "2024-01-22",
+      "data_vencimento": "2024-02-21",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.230486",
+      "atualizado_em": "2026-10-21 21:34:40.230486",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 218,
+    "fields": {
+      "descricao": "285  escritorio",
+      "valor": "27075",
+      "data_emissao": "2024-04-08",
+      "data_vencimento": "2024-05-08",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.236753",
+      "atualizado_em": "2026-10-21 21:34:40.236753",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 219,
+    "fields": {
+      "descricao": "trimmer",
+      "valor": "132000",
+      "data_emissao": "2024-04-08",
+      "data_vencimento": "2024-05-08",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.241754",
+      "atualizado_em": "2026-10-21 21:34:40.241754",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 220,
+    "fields": {
+      "descricao": "111 cadeiras",
+      "valor": "11655",
+      "data_emissao": "2024-04-16",
+      "data_vencimento": "2024-05-16",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.247752",
+      "atualizado_em": "2026-10-21 21:34:40.247752",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 221,
+    "fields": {
+      "descricao": "232 cadeiras",
+      "valor": "24360",
+      "data_emissao": "2024-04-17",
+      "data_vencimento": "2024-05-17",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.252756",
+      "atualizado_em": "2026-10-21 21:34:40.252756",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 222,
+    "fields": {
+      "descricao": "129 cadeiras conteirner",
+      "valor": "13545",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.259753",
+      "atualizado_em": "2026-10-21 21:34:40.260278",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 223,
+    "fields": {
+      "descricao": "49 cadeiras",
+      "valor": "5145",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.266812",
+      "atualizado_em": "2026-10-21 21:34:40.266812",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 224,
+    "fields": {
+      "descricao": "100 gamer conteiner",
+      "valor": "34000",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.273084",
+      "atualizado_em": "2026-10-21 21:34:40.273084",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 225,
+    "fields": {
+      "descricao": "375 cadeiras",
+      "valor": "39375",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.279085",
+      "atualizado_em": "2026-10-21 21:34:40.279085",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 226,
+    "fields": {
+      "descricao": "159 pressidente ",
+      "valor": "62010",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.284084",
+      "atualizado_em": "2026-10-21 21:34:40.284084",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 227,
+    "fields": {
+      "descricao": "160 presidente ",
+      "valor": "62400",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.292391",
+      "atualizado_em": "2026-10-21 21:34:40.292391",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 228,
+    "fields": {
+      "descricao": "140 presidente ",
+      "valor": "54600",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.297587",
+      "atualizado_em": "2026-10-21 21:34:40.297587",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 229,
+    "fields": {
+      "descricao": "300 gamer",
+      "valor": "99000",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.304236",
+      "atualizado_em": "2026-10-21 21:34:40.304236",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 230,
+    "fields": {
+      "descricao": "200 gamer",
+      "valor": "66000",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.308869",
+      "atualizado_em": "2026-10-21 21:34:40.308869",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 231,
+    "fields": {
+      "descricao": "201 gamer",
+      "valor": "66000",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.315236",
+      "atualizado_em": "2026-10-21 21:34:40.315236",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 232,
+    "fields": {
+      "descricao": "202 gamer",
+      "valor": "66000",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.320232",
+      "atualizado_em": "2026-10-21 21:34:40.321233",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 233,
+    "fields": {
+      "descricao": "58 gamer",
+      "valor": "19140",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.327315",
+      "atualizado_em": "2026-10-21 21:34:40.327315",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 234,
+    "fields": {
+      "descricao": "40 cerca viva ",
+      "valor": "20000",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.332668",
+      "atualizado_em": "2026-10-21 21:34:40.332668",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 235,
+    "fields": {
+      "descricao": "100 caixa",
+      "valor": "18000",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.338820",
+      "atualizado_em": "2026-10-21 21:34:40.338820",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 236,
+    "fields": {
+      "descricao": "113 diretor",
+      "valor": "44070",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.345030",
+      "atualizado_em": "2026-10-21 21:34:40.345030",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 237,
+    "fields": {
+      "descricao": "113 diretor",
+      "valor": "44070",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.351044",
+      "atualizado_em": "2026-10-21 21:34:40.351044",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 238,
+    "fields": {
+      "descricao": "114 diretor",
+      "valor": "44070",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.357186",
+      "atualizado_em": "2026-10-21 21:34:40.357186",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 239,
+    "fields": {
+      "descricao": "115 diretor",
+      "valor": "44070",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.363187",
+      "atualizado_em": "2026-10-21 21:34:40.363187",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 240,
+    "fields": {
+      "descricao": "48 diretor",
+      "valor": "17280",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.368336",
+      "atualizado_em": "2026-10-21 21:34:40.368336",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 241,
+    "fields": {
+      "descricao": "facao 100",
+      "valor": "8000",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.374522",
+      "atualizado_em": "2026-10-21 21:34:40.374522",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 242,
+    "fields": {
+      "descricao": "100 80dentss",
+      "valor": "16000",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.380571",
+      "atualizado_em": "2026-10-21 21:34:40.380571",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 243,
+    "fields": {
+      "descricao": "200motopoda ",
+      "valor": "18000",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.385891",
+      "atualizado_em": "2026-10-21 21:34:40.385891",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 244,
+    "fields": {
+      "descricao": "600 motopoda",
+      "valor": "54000",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.392967",
+      "atualizado_em": "2026-10-21 21:34:40.392967",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 245,
+    "fields": {
+      "descricao": "caixa registradora ",
+      "valor": "18600",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.397967",
+      "atualizado_em": "2026-10-21 21:34:40.397967",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 246,
+    "fields": {
+      "descricao": "fechadura",
+      "valor": "8910",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.404353",
+      "atualizado_em": "2026-10-21 21:34:40.404353",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 247,
+    "fields": {
+      "descricao": "contador",
+      "valor": "14260",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.409323",
+      "atualizado_em": "2026-10-21 21:34:40.409323",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 248,
+    "fields": {
+      "descricao": "cadeira",
+      "valor": "7150",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.415539",
+      "atualizado_em": "2026-10-21 21:34:40.415539",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 249,
+    "fields": {
+      "descricao": "280 cadeiras",
+      "valor": "35560",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.420371",
+      "atualizado_em": "2026-10-21 21:34:40.420371",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 250,
+    "fields": {
+      "descricao": "2993 cadeiras gamer ",
+      "valor": "1301955",
+      "data_emissao": "2025-01-20",
+      "data_vencimento": "2025-02-19",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.427573",
+      "atualizado_em": "2026-10-21 21:34:40.427573",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 251,
+    "fields": {
+      "descricao": "2995 cadeiras",
+      "valor": "1183025",
+      "data_emissao": "2025-01-30",
+      "data_vencimento": "2025-03-01",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.434724",
+      "atualizado_em": "2026-10-21 21:34:40.434724",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 252,
+    "fields": {
+      "descricao": "zero um ",
+      "valor": "381095",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.440885",
+      "atualizado_em": "2026-10-21 21:34:40.440885",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 253,
+    "fields": {
+      "descricao": "presidente ",
+      "valor": "99660",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.447155",
+      "atualizado_em": "2026-10-21 21:34:40.447155",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 254,
+    "fields": {
+      "descricao": "zero um ",
+      "valor": "65065",
+      "data_emissao": "2025-02-28",
+      "data_vencimento": "2025-03-30",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.453518",
+      "atualizado_em": "2026-10-21 21:34:40.453518",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 255,
+    "fields": {
+      "descricao": "zero um ",
+      "valor": "57200",
+      "data_emissao": "2025-02-28",
+      "data_vencimento": "2025-03-30",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.458032",
+      "atualizado_em": "2026-10-21 21:34:40.458032",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 256,
+    "fields": {
+      "descricao": "zero um ",
+      "valor": "65780",
+      "data_emissao": "2025-03-07",
+      "data_vencimento": "2025-04-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.465030",
+      "atualizado_em": "2026-10-21 21:34:40.465030",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 257,
+    "fields": {
+      "descricao": "zero um ",
+      "valor": "37180",
+      "data_emissao": "2025-03-07",
+      "data_vencimento": "2025-04-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.472046",
+      "atualizado_em": "2026-10-21 21:34:40.472046",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 258,
+    "fields": {
+      "descricao": "zero um ",
+      "valor": "1219920",
+      "data_emissao": "2025-03-18",
+      "data_vencimento": "2025-04-17",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.477046",
+      "atualizado_em": "2026-10-21 21:34:40.477046",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 259,
+    "fields": {
+      "descricao": "zero um ",
+      "valor": "1089000",
+      "data_emissao": "2025-03-19",
+      "data_vencimento": "2025-04-18",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.483048",
+      "atualizado_em": "2026-10-21 21:34:40.483048",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 260,
+    "fields": {
+      "descricao": "gamer ",
+      "valor": "910480",
+      "data_emissao": "2025-03-20",
+      "data_vencimento": "2025-04-19",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.489044",
+      "atualizado_em": "2026-10-21 21:34:40.489044",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 261,
+    "fields": {
+      "descricao": "zero um ",
+      "valor": "1254400",
+      "data_emissao": "2025-03-26",
+      "data_vencimento": "2025-04-25",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.494647",
+      "atualizado_em": "2026-10-21 21:34:40.494647",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 262,
+    "fields": {
+      "descricao": "zero um ",
+      "valor": "65065",
+      "data_emissao": "2025-03-27",
+      "data_vencimento": "2025-04-26",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.499995",
+      "atualizado_em": "2026-10-21 21:34:40.499995",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 263,
+    "fields": {
+      "descricao": "gamer 195",
+      "valor": "74100",
+      "data_emissao": "2025-03-31",
+      "data_vencimento": "2025-04-30",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.507046",
+      "atualizado_em": "2026-10-21 21:34:40.507046",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 264,
+    "fields": {
+      "descricao": "gamer 196",
+      "valor": "74480",
+      "data_emissao": "2025-04-01",
+      "data_vencimento": "2025-05-01",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.513074",
+      "atualizado_em": "2026-10-21 21:34:40.513074",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 265,
+    "fields": {
+      "descricao": "gamer  197",
+      "valor": "74860",
+      "data_emissao": "2025-04-01",
+      "data_vencimento": "2025-05-01",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.519177",
+      "atualizado_em": "2026-10-21 21:34:40.519177",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 266,
+    "fields": {
+      "descricao": "gamer  194",
+      "valor": "73720",
+      "data_emissao": "2025-04-02",
+      "data_vencimento": "2025-05-02",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.526341",
+      "atualizado_em": "2026-10-21 21:34:40.526341",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 267,
+    "fields": {
+      "descricao": "zero um ",
+      "valor": "59343",
+      "data_emissao": "2025-04-02",
+      "data_vencimento": "2025-05-02",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.531810",
+      "atualizado_em": "2026-10-21 21:34:40.531810",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 268,
+    "fields": {
+      "descricao": "fita",
+      "valor": "5280",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.537825",
+      "atualizado_em": "2026-10-21 21:34:40.537825",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 269,
+    "fields": {
+      "descricao": "gamer 197",
+      "valor": "74860",
+      "data_emissao": "2025-04-16",
+      "data_vencimento": "2025-05-16",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.543820",
+      "atualizado_em": "2026-10-21 21:34:40.543820",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 270,
+    "fields": {
+      "descricao": "zero um ",
+      "valor": "67925",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.550152",
+      "atualizado_em": "2026-10-21 21:34:40.550152",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 271,
+    "fields": {
+      "descricao": "cadeira preidente ",
+      "valor": "629280",
+      "data_emissao": "2025-04-15",
+      "data_vencimento": "2025-05-15",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.555150",
+      "atualizado_em": "2026-10-21 21:34:40.555150",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 272,
+    "fields": {
+      "descricao": "presidente diferente ",
+      "valor": "168000",
+      "data_emissao": "2025-04-15",
+      "data_vencimento": "2025-05-15",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.562205",
+      "atualizado_em": "2026-10-21 21:34:40.562205",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 273,
+    "fields": {
+      "descricao": "zero um ",
+      "valor": "60060",
+      "data_emissao": "2025-04-16",
+      "data_vencimento": "2025-05-16",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.567330",
+      "atualizado_em": "2026-10-21 21:34:40.567330",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 274,
+    "fields": {
+      "descricao": "cadeira gamer",
+      "valor": "1553440",
+      "data_emissao": "2025-04-18",
+      "data_vencimento": "2025-05-18",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.573329",
+      "atualizado_em": "2026-10-21 21:34:40.574326",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 275,
+    "fields": {
+      "descricao": "escritorio encosto",
+      "valor": "772800",
+      "data_emissao": "2025-04-22",
+      "data_vencimento": "2025-05-22",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.578962",
+      "atualizado_em": "2026-10-21 21:34:40.578962",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 276,
+    "fields": {
+      "descricao": "gamer led",
+      "valor": "479200",
+      "data_emissao": "2025-04-26",
+      "data_vencimento": "2025-05-26",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.585664",
+      "atualizado_em": "2026-10-21 21:34:40.585664",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 277,
+    "fields": {
+      "descricao": "zero um ",
+      "valor": "67210",
+      "data_emissao": "2025-04-25",
+      "data_vencimento": "2025-05-25",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.590795",
+      "atualizado_em": "2026-10-21 21:34:40.590795",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 278,
+    "fields": {
+      "descricao": "zero um ",
+      "valor": "10725",
+      "data_emissao": "2025-05-07",
+      "data_vencimento": "2025-06-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.596987",
+      "atualizado_em": "2026-10-21 21:34:40.596987",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 279,
+    "fields": {
+      "descricao": "zero um ",
+      "valor": "572",
+      "data_emissao": "2025-05-07",
+      "data_vencimento": "2025-06-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.604333",
+      "atualizado_em": "2026-10-21 21:34:40.604333",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 280,
+    "fields": {
+      "descricao": "gamer 71",
+      "valor": "26980",
+      "data_emissao": "2025-05-07",
+      "data_vencimento": "2025-06-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.610151",
+      "atualizado_em": "2026-10-21 21:34:40.610151",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 281,
+    "fields": {
+      "descricao": "gamer 139",
+      "valor": "52820",
+      "data_emissao": "2025-05-12",
+      "data_vencimento": "2025-06-11",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.615268",
+      "atualizado_em": "2026-10-21 21:34:40.615268",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 282,
+    "fields": {
+      "descricao": "gamer 90",
+      "valor": "33300",
+      "data_emissao": "2025-05-14",
+      "data_vencimento": "2025-06-13",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.624707",
+      "atualizado_em": "2026-10-21 21:34:40.624707",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 283,
+    "fields": {
+      "descricao": "gamer 87",
+      "valor": "32190",
+      "data_emissao": "2025-05-14",
+      "data_vencimento": "2025-06-13",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.629921",
+      "atualizado_em": "2026-10-21 21:34:40.629921",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 284,
+    "fields": {
+      "descricao": "gamer 90",
+      "valor": "33300",
+      "data_emissao": "2025-05-15",
+      "data_vencimento": "2025-06-14",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.636588",
+      "atualizado_em": "2026-10-21 21:34:40.636588",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 285,
+    "fields": {
+      "descricao": "gamer 228",
+      "valor": "84360",
+      "data_emissao": "2025-05-16",
+      "data_vencimento": "2025-06-15",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.641050",
+      "atualizado_em": "2026-10-21 21:34:40.641050",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 286,
+    "fields": {
+      "descricao": "gamer  90",
+      "valor": "33300",
+      "data_emissao": "2025-05-16",
+      "data_vencimento": "2025-06-15",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.646730",
+      "atualizado_em": "2026-10-21 21:34:40.646730",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 287,
+    "fields": {
+      "descricao": "gamer 90",
+      "valor": "33300",
+      "data_emissao": "2025-05-21",
+      "data_vencimento": "2025-06-20",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.653031",
+      "atualizado_em": "2026-10-21 21:34:40.653031",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 288,
+    "fields": {
+      "descricao": "gamer 166",
+      "valor": "61420",
+      "data_emissao": "2025-05-22",
+      "data_vencimento": "2025-06-21",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.659759",
+      "atualizado_em": "2026-10-21 21:34:40.659759",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 289,
+    "fields": {
+      "descricao": "zero um ",
+      "valor": "1194270",
+      "data_emissao": "2025-05-17",
+      "data_vencimento": "2025-06-16",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.665927",
+      "atualizado_em": "2026-10-21 21:34:40.665927",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 290,
+    "fields": {
+      "descricao": "gamer  90",
+      "valor": "33300",
+      "data_emissao": "2025-05-23",
+      "data_vencimento": "2025-06-22",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.672589",
+      "atualizado_em": "2026-10-21 21:34:40.672589",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 291,
+    "fields": {
+      "descricao": "gamer 35",
+      "valor": "12950",
+      "data_emissao": "2025-05-27",
+      "data_vencimento": "2025-06-26",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.677770",
+      "atualizado_em": "2026-10-21 21:34:40.677770",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 292,
+    "fields": {
+      "descricao": "gamer 90",
+      "valor": "33300",
+      "data_emissao": "2025-05-27",
+      "data_vencimento": "2025-06-26",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.683593",
+      "atualizado_em": "2026-10-21 21:34:40.683593",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 293,
+    "fields": {
+      "descricao": "gamer conteiner",
+      "valor": "876936",
+      "data_emissao": "2025-05-27",
+      "data_vencimento": "2025-06-26",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.687806",
+      "atualizado_em": "2026-10-21 21:34:40.687806",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 294,
+    "fields": {
+      "descricao": "175 gamer ",
+      "valor": "64750",
+      "data_emissao": "2025-06-05",
+      "data_vencimento": "2025-07-05",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.694214",
+      "atualizado_em": "2026-10-21 21:34:40.694214",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 295,
+    "fields": {
+      "descricao": "200 gamer ",
+      "valor": "74000",
+      "data_emissao": "2025-06-05",
+      "data_vencimento": "2025-07-05",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.700235",
+      "atualizado_em": "2026-10-21 21:34:40.700235",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 296,
+    "fields": {
+      "descricao": "104 gamer ",
+      "valor": "38480",
+      "data_emissao": "2025-06-06",
+      "data_vencimento": "2025-07-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.705373",
+      "atualizado_em": "2026-10-21 21:34:40.705373",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 297,
+    "fields": {
+      "descricao": "69 2 caixas ",
+      "valor": "13110",
+      "data_emissao": "2025-06-06",
+      "data_vencimento": "2025-07-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.710407",
+      "atualizado_em": "2026-10-21 21:34:40.710407",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 298,
+    "fields": {
+      "descricao": "32 gamer ",
+      "valor": "11840",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.716408",
+      "atualizado_em": "2026-10-21 21:34:40.716408",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 299,
+    "fields": {
+      "descricao": "gamer 90",
+      "valor": "33300",
+      "data_emissao": "2025-06-11",
+      "data_vencimento": "2025-07-11",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.721883",
+      "atualizado_em": "2026-10-21 21:34:40.721883",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 300,
+    "fields": {
+      "descricao": "gamer 210",
+      "valor": "77700",
+      "data_emissao": "2025-06-12",
+      "data_vencimento": "2025-07-12",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.727294",
+      "atualizado_em": "2026-10-21 21:34:40.727294",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 301,
+    "fields": {
+      "descricao": "gamer 240",
+      "valor": "88800",
+      "data_emissao": "2025-06-13",
+      "data_vencimento": "2025-07-13",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.733320",
+      "atualizado_em": "2026-10-21 21:34:40.733320",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 302,
+    "fields": {
+      "descricao": "gamer 90",
+      "valor": "33300",
+      "data_emissao": "2025-06-13",
+      "data_vencimento": "2025-07-13",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.739850",
+      "atualizado_em": "2026-10-21 21:34:40.739850",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 303,
+    "fields": {
+      "descricao": "gamer 191",
+      "valor": "70670",
+      "data_emissao": "2025-06-17",
+      "data_vencimento": "2025-07-17",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.747081",
+      "atualizado_em": "2026-10-21 21:34:40.747081",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 304,
+    "fields": {
+      "descricao": "gamer 197",
+      "valor": "72890",
+      "data_emissao": "2025-06-17",
+      "data_vencimento": "2025-07-17",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.753079",
+      "atualizado_em": "2026-10-21 21:34:40.754077",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 305,
+    "fields": {
+      "descricao": "gamer 247",
+      "valor": "91390",
+      "data_emissao": "2025-06-20",
+      "data_vencimento": "2025-07-20",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.759077",
+      "atualizado_em": "2026-10-21 21:34:40.759077",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 306,
+    "fields": {
+      "descricao": "gamer 244",
+      "valor": "90280",
+      "data_emissao": "2025-06-24",
+      "data_vencimento": "2025-07-24",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.764581",
+      "atualizado_em": "2026-10-21 21:34:40.764581",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 307,
+    "fields": {
+      "descricao": "74 gamer ",
+      "valor": "27380",
+      "data_emissao": "2025-06-26",
+      "data_vencimento": "2025-07-26",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.770595",
+      "atualizado_em": "2026-10-21 21:34:40.770595",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 308,
+    "fields": {
+      "descricao": "gamer 246",
+      "valor": "91020",
+      "data_emissao": "2025-06-27",
+      "data_vencimento": "2025-07-27",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.776987",
+      "atualizado_em": "2026-10-21 21:34:40.776987",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 309,
+    "fields": {
+      "descricao": "gamer 98",
+      "valor": "36260",
+      "data_emissao": "2025-07-01",
+      "data_vencimento": "2025-07-31",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.782208",
+      "atualizado_em": "2026-10-21 21:34:40.782208",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 310,
+    "fields": {
+      "descricao": "com 2",
+      "valor": "38000",
+      "data_emissao": "2025-07-01",
+      "data_vencimento": "2025-07-31",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.788039",
+      "atualizado_em": "2026-10-21 21:34:40.788039",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 311,
+    "fields": {
+      "descricao": "com 1",
+      "valor": "60800",
+      "data_emissao": "2025-07-03",
+      "data_vencimento": "2025-08-02",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.793318",
+      "atualizado_em": "2026-10-21 21:34:40.793318",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 312,
+    "fields": {
+      "descricao": "com 2",
+      "valor": "13110",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.798666",
+      "atualizado_em": "2026-10-21 21:34:40.798666",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 313,
+    "fields": {
+      "descricao": "conteiner gamer",
+      "valor": "1467550",
+      "data_emissao": "2025-07-04",
+      "data_vencimento": "2025-08-03",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.804669",
+      "atualizado_em": "2026-10-21 21:34:40.804669",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 314,
+    "fields": {
+      "descricao": "conteiner com 2",
+      "valor": "1249500",
+      "data_emissao": "2025-07-04",
+      "data_vencimento": "2025-08-03",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.809670",
+      "atualizado_em": "2026-10-21 21:34:40.809670",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 315,
+    "fields": {
+      "descricao": "com 2",
+      "valor": "60800",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.816667",
+      "atualizado_em": "2026-10-21 21:34:40.816667",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 316,
+    "fields": {
+      "descricao": "com 2",
+      "valor": "63460",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.821666",
+      "atualizado_em": "2026-10-21 21:34:40.821666",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 317,
+    "fields": {
+      "descricao": "com 3",
+      "valor": "61180",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.829728",
+      "atualizado_em": "2026-10-21 21:34:40.829728",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 318,
+    "fields": {
+      "descricao": "com 2",
+      "valor": "60800",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.835729",
+      "atualizado_em": "2026-10-21 21:34:40.835729",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 319,
+    "fields": {
+      "descricao": "com 2",
+      "valor": "23560",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.843055",
+      "atualizado_em": "2026-10-21 21:34:40.843055",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 320,
+    "fields": {
+      "descricao": "com 3",
+      "valor": "2660",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.848084",
+      "atualizado_em": "2026-10-21 21:34:40.848084",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 321,
+    "fields": {
+      "descricao": "cadeira ch9055pro ",
+      "valor": "17800",
+      "data_emissao": "2026-12-22",
+      "data_vencimento": "2027-01-21",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.855350",
+      "atualizado_em": "2026-10-21 21:34:40.855350",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 322,
+    "fields": {
+      "descricao": "cadeira ch9055pro ",
+      "valor": "35600",
+      "data_emissao": "2026-01-05",
+      "data_vencimento": "2026-02-04",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.860362",
+      "atualizado_em": "2026-10-21 21:34:40.860362",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 323,
+    "fields": {
+      "descricao": "cadeira ch9055pro ",
+      "valor": "24920",
+      "data_emissao": "2026-01-14",
+      "data_vencimento": "2026-02-13",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.866891",
+      "atualizado_em": "2026-10-21 21:34:40.866891",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 324,
+    "fields": {
+      "descricao": "cadeira ch9055pro ",
+      "valor": "106800",
+      "data_emissao": "2026-01-15",
+      "data_vencimento": "2026-02-14",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.871893",
+      "atualizado_em": "2026-10-21 21:34:40.871893",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 325,
+    "fields": {
+      "descricao": "cadeira ch9055pro ",
+      "valor": "53400",
+      "data_emissao": "2026-01-19",
+      "data_vencimento": "2026-02-18",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.877910",
+      "atualizado_em": "2026-10-21 21:34:40.877910",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 326,
+    "fields": {
+      "descricao": "cadeira ch9055pro ",
+      "valor": "43788",
+      "data_emissao": "2026-01-20",
+      "data_vencimento": "2026-02-19",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.882910",
+      "atualizado_em": "2026-10-21 21:34:40.882910",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 327,
+    "fields": {
+      "descricao": "cadeira gamer ",
+      "valor": "1308160",
+      "data_emissao": "2026-03-12",
+      "data_vencimento": "2026-04-11",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.890036",
+      "atualizado_em": "2026-10-21 21:34:40.890036",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 328,
+    "fields": {
+      "descricao": "cadeira gamer ",
+      "valor": "1308160",
+      "data_emissao": "2026-03-13",
+      "data_vencimento": "2026-04-12",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.895195",
+      "atualizado_em": "2026-10-21 21:34:40.895195",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 329,
+    "fields": {
+      "descricao": "cadeira gamer ch9051pro",
+      "valor": "1260000",
+      "data_emissao": "2026-05-18",
+      "data_vencimento": "2026-06-17",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.901230",
+      "atualizado_em": "2026-10-21 21:34:40.902226",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 330,
+    "fields": {
+      "descricao": "cadeira ch9060",
+      "valor": "304920",
+      "data_emissao": "2026-05-18",
+      "data_vencimento": "2026-06-17",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.906284",
+      "atualizado_em": "2026-10-21 21:34:40.906284",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 331,
+    "fields": {
+      "descricao": "cadeira gamer ch9051pro",
+      "valor": "1260000",
+      "data_emissao": "2026-05-18",
+      "data_vencimento": "2026-06-17",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.913604",
+      "atualizado_em": "2026-10-21 21:34:40.913604",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 332,
+    "fields": {
+      "descricao": "cadeira gamer ch9051pro",
+      "valor": "1293600",
+      "data_emissao": "2026-05-18",
+      "data_vencimento": "2026-06-17",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.919823",
+      "atualizado_em": "2026-10-21 21:34:40.919823",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 333,
+    "fields": {
+      "descricao": "cadeira ch9050pro",
+      "valor": "1104400",
+      "data_emissao": "2026-06-12",
+      "data_vencimento": "2026-07-12",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.926967",
+      "atualizado_em": "2026-10-21 21:34:40.926967",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 334,
+    "fields": {
+      "descricao": "caixa papelao",
+      "valor": "65260",
+      "data_emissao": "2026-06-12",
+      "data_vencimento": "2026-07-12",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.932967",
+      "atualizado_em": "2026-10-21 21:34:40.932967",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 335,
+    "fields": {
+      "descricao": "ch9052",
+      "valor": "582750",
+      "data_emissao": "2026-06-25",
+      "data_vencimento": "2026-07-25",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.938598",
+      "atualizado_em": "2026-10-21 21:34:40.938598",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 336,
+    "fields": {
+      "descricao": "ch9062",
+      "valor": "319200",
+      "data_emissao": "2026-06-25",
+      "data_vencimento": "2026-07-25",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.944719",
+      "atualizado_em": "2026-10-21 21:34:40.944719",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 337,
+    "fields": {
+      "descricao": "ch9060",
+      "valor": "167580",
+      "data_emissao": "2026-06-25",
+      "data_vencimento": "2026-07-25",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.950703",
+      "atualizado_em": "2026-10-21 21:34:40.950703",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 338,
+    "fields": {
+      "descricao": "cadeira gamer ch9051pro",
+      "valor": "1260000",
+      "data_emissao": "2026-07-09",
+      "data_vencimento": "2026-08-08",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.955837",
+      "atualizado_em": "2026-10-21 21:34:40.955837",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 339,
+    "fields": {
+      "descricao": "cadeira gamer ch9051pro",
+      "valor": "1260000",
+      "data_emissao": "2026-07-25",
+      "data_vencimento": "2026-08-24",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.962036",
+      "atualizado_em": "2026-10-21 21:34:40.962036",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 340,
+    "fields": {
+      "descricao": "ch9052",
+      "valor": "612720",
+      "data_emissao": "2026-08-31",
+      "data_vencimento": "2026-09-30",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.968419",
+      "atualizado_em": "2026-10-21 21:34:40.968419",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 341,
+    "fields": {
+      "descricao": "ch9062",
+      "valor": "344400",
+      "data_emissao": "2026-08-31",
+      "data_vencimento": "2026-09-30",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.974418",
+      "atualizado_em": "2026-10-21 21:34:40.974418",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 342,
+    "fields": {
+      "descricao": "ch9060",
+      "valor": "167580",
+      "data_emissao": "2026-08-31",
+      "data_vencimento": "2026-09-30",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.979418",
+      "atualizado_em": "2026-10-21 21:34:40.979418",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 343,
+    "fields": {
+      "descricao": "caixa registradora ",
+      "valor": "1190322",
+      "data_emissao": "2026-09-04",
+      "data_vencimento": "2026-10-04",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.985537",
+      "atualizado_em": "2026-10-21 21:34:40.985537",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 344,
+    "fields": {
+      "descricao": "ch55pro",
+      "valor": "1118000",
+      "data_emissao": "2026-09-09",
+      "data_vencimento": "2026-10-09",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.990418",
+      "atualizado_em": "2026-10-21 21:34:40.990418",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 345,
+    "fields": {
+      "descricao": "papelao",
+      "valor": "169925",
+      "data_emissao": "2026-09-09",
+      "data_vencimento": "2026-10-09",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:40.996627",
+      "atualizado_em": "2026-10-21 21:34:40.996627",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 346,
+    "fields": {
+      "descricao": "caixa de papelao ",
+      "valor": "21250",
+      "data_emissao": "2026-10-21",
+      "data_vencimento": "2026-11-20",
+      "data_pagamento": null,
+      "status": "pendente",
+      "observacoes": "Importado da aba: Lucas",
+      "criado_em": "2026-10-21 21:34:41.003642",
+      "atualizado_em": "2026-10-21 21:34:41.003642",
+      "fornecedor_id": 3
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 347,
+    "fields": {
+      "descricao": "Conteiner peças",
+      "valor": "4419000",
+      "data_emissao": "2023-05-12",
+      "data_vencimento": "2023-06-11",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Max",
+      "criado_em": "2026-10-21 21:34:41.038360",
+      "atualizado_em": "2026-10-21 21:34:41.038360",
+      "fornecedor_id": 5
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 348,
+    "fields": {
+      "descricao": "Conteiner Torneira 1",
+      "valor": "961646",
+      "data_emissao": "2023-05-15",
+      "data_vencimento": "2023-06-14",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Max",
+      "criado_em": "2026-10-21 21:34:41.043873",
+      "atualizado_em": "2026-10-21 21:34:41.043873",
+      "fornecedor_id": 5
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 349,
+    "fields": {
+      "descricao": "Conteiner torneira 2",
+      "valor": "961646",
+      "data_emissao": "2023-05-15",
+      "data_vencimento": "2023-06-14",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Max",
+      "criado_em": "2026-10-21 21:34:41.049075",
+      "atualizado_em": "2026-10-21 21:34:41.049075",
+      "fornecedor_id": 5
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 350,
+    "fields": {
+      "descricao": "conteiner roçadeira 1",
+      "valor": "1316000",
+      "data_emissao": "2023-05-16",
+      "data_vencimento": "2023-06-15",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Max",
+      "criado_em": "2026-10-21 21:34:41.055212",
+      "atualizado_em": "2026-10-21 21:34:41.055212",
+      "fornecedor_id": 5
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 351,
+    "fields": {
+      "descricao": "conteiner roçadeira 2",
+      "valor": "1316000",
+      "data_emissao": "2023-05-19",
+      "data_vencimento": "2023-06-18",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Max",
+      "criado_em": "2026-10-21 21:34:41.061315",
+      "atualizado_em": "2026-10-21 21:34:41.061315",
+      "fornecedor_id": 5
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 352,
+    "fields": {
+      "descricao": "conteiner roçadeira 3",
+      "valor": "1316000",
+      "data_emissao": "2023-04-24",
+      "data_vencimento": "2023-05-24",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Max",
+      "criado_em": "2026-10-21 21:34:41.066897",
+      "atualizado_em": "2026-10-21 21:34:41.066897",
+      "fornecedor_id": 5
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 353,
+    "fields": {
+      "descricao": "conteiner roçadeira 4",
+      "valor": "1316000",
+      "data_emissao": "2023-05-26",
+      "data_vencimento": "2023-06-25",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Max",
+      "criado_em": "2026-10-21 21:34:41.072897",
+      "atualizado_em": "2026-10-21 21:34:41.072897",
+      "fornecedor_id": 5
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 354,
+    "fields": {
+      "descricao": "conteiner roçadeira 5",
+      "valor": "1316000",
+      "data_emissao": "2023-05-30",
+      "data_vencimento": "2023-06-29",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Max",
+      "criado_em": "2026-10-21 21:34:41.077898",
+      "atualizado_em": "2026-10-21 21:34:41.077898",
+      "fornecedor_id": 5
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 355,
+    "fields": {
+      "descricao": "Ponteira 28mm",
+      "valor": "30",
+      "data_emissao": "2023-06-06",
+      "data_vencimento": "2023-07-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Max",
+      "criado_em": "2026-10-21 21:34:41.082901",
+      "atualizado_em": "2026-10-21 21:34:41.082901",
+      "fornecedor_id": 5
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 356,
+    "fields": {
+      "descricao": "Refletores natal",
+      "valor": "320999",
+      "data_emissao": "2023-01-12",
+      "data_vencimento": "2023-02-11",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Yé",
+      "criado_em": "2026-10-21 21:34:41.099685",
+      "atualizado_em": "2026-10-21 21:34:41.099685",
+      "fornecedor_id": 6
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 357,
+    "fields": {
+      "descricao": "Compra Yé",
+      "valor": "11464",
+      "data_emissao": "2023-01-18",
+      "data_vencimento": "2023-02-17",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Yé",
+      "criado_em": "2026-10-21 21:34:41.107201",
+      "atualizado_em": "2026-10-21 21:34:41.107201",
+      "fornecedor_id": 6
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 358,
+    "fields": {
+      "descricao": "Compra Yé",
+      "valor": "1470",
+      "data_emissao": "2023-01-16",
+      "data_vencimento": "2023-02-15",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Yé",
+      "criado_em": "2026-10-21 21:34:41.113814",
+      "atualizado_em": "2026-10-21 21:34:41.113814",
+      "fornecedor_id": 6
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 359,
+    "fields": {
+      "descricao": "Compra Yé",
+      "valor": "2250",
+      "data_emissao": "2023-02-16",
+      "data_vencimento": "2023-03-18",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Yé",
+      "criado_em": "2026-10-21 21:34:41.119833",
+      "atualizado_em": "2026-10-21 21:34:41.119833",
+      "fornecedor_id": 6
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 360,
+    "fields": {
+      "descricao": "Compra Yé",
+      "valor": "750",
+      "data_emissao": "2023-02-24",
+      "data_vencimento": "2023-03-26",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Yé",
+      "criado_em": "2026-10-21 21:34:41.125077",
+      "atualizado_em": "2026-10-21 21:34:41.125077",
+      "fornecedor_id": 6
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 361,
+    "fields": {
+      "descricao": "Compra Yé",
+      "valor": "1500",
+      "data_emissao": "2023-03-06",
+      "data_vencimento": "2023-04-05",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Yé",
+      "criado_em": "2026-10-21 21:34:41.131375",
+      "atualizado_em": "2026-10-21 21:34:41.131375",
+      "fornecedor_id": 6
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 362,
+    "fields": {
+      "descricao": "Compra Yé",
+      "valor": "1500",
+      "data_emissao": "2023-03-10",
+      "data_vencimento": "2023-04-09",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Yé",
+      "criado_em": "2026-10-21 21:34:41.137422",
+      "atualizado_em": "2026-10-21 21:34:41.137422",
+      "fornecedor_id": 6
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 363,
+    "fields": {
+      "descricao": "Compra Yé",
+      "valor": "12000",
+      "data_emissao": "2023-03-17",
+      "data_vencimento": "2023-04-16",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Yé",
+      "criado_em": "2026-10-21 21:34:41.143947",
+      "atualizado_em": "2026-10-21 21:34:41.143947",
+      "fornecedor_id": 6
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 364,
+    "fields": {
+      "descricao": "Compra Yé",
+      "valor": "4490",
+      "data_emissao": "2023-03-30",
+      "data_vencimento": "2023-04-29",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Yé",
+      "criado_em": "2026-10-21 21:34:41.148484",
+      "atualizado_em": "2026-10-21 21:34:41.148484",
+      "fornecedor_id": 6
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 365,
+    "fields": {
+      "descricao": "Compra Yé",
+      "valor": "8298",
+      "data_emissao": "2023-04-06",
+      "data_vencimento": "2023-05-06",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Yé",
+      "criado_em": "2026-10-21 21:34:41.153986",
+      "atualizado_em": "2026-10-21 21:34:41.153986",
+      "fornecedor_id": 6
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 366,
+    "fields": {
+      "descricao": "Compra Yé",
+      "valor": "3142",
+      "data_emissao": "2023-04-17",
+      "data_vencimento": "2023-05-17",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Yé",
+      "criado_em": "2026-10-21 21:34:41.159987",
+      "atualizado_em": "2026-10-21 21:34:41.159987",
+      "fornecedor_id": 6
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 367,
+    "fields": {
+      "descricao": "Compra Yé",
+      "valor": "1550",
+      "data_emissao": "2023-04-18",
+      "data_vencimento": "2023-05-18",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Yé",
+      "criado_em": "2026-10-21 21:34:41.164989",
+      "atualizado_em": "2026-10-21 21:34:41.164989",
+      "fornecedor_id": 6
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 368,
+    "fields": {
+      "descricao": "Compra Yé",
+      "valor": "34020",
+      "data_emissao": "2023-04-25",
+      "data_vencimento": "2023-05-25",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Yé",
+      "criado_em": "2026-10-21 21:34:41.317933",
+      "atualizado_em": "2026-10-21 21:34:41.317933",
+      "fornecedor_id": 6
+    }
+  },
+  {
+    "model": "gerencial.pagamentofornecedor",
+    "pk": 369,
+    "fields": {
+      "descricao": "Compra Yé",
+      "valor": "6360",
+      "data_emissao": "2023-04-27",
+      "data_vencimento": "2023-05-27",
+      "data_pagamento": null,
+      "status": "vencido",
+      "observacoes": "Importado da aba: Yé",
+      "criado_em": "2026-10-21 21:34:41.327122",
+      "atualizado_em": "2026-10-21 21:34:41.327122",
+      "fornecedor_id": 6
+    }
+  }
+]
