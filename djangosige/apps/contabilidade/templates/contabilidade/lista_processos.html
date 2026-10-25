@@ -1,0 +1,73 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}Processos Contábeis{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'contabilidade/css/contabilidade.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="hg-contabilidade">
+    <div class="page-header">
+        <h1>Processos Contábeis</h1>
+        <a href="{% url 'contabilidade:novo_processo' %}" class="btn btn-primary">+ Novo Processo</a>
+    </div>
+    
+    <div class="filters">
+        <form method="get">
+            <input type="text" name="q" value="{{ busca }}" placeholder="Buscar processo..." class="search-input">
+            <select name="status" class="status-filter">
+                <option value="">Todos os status</option>
+                <option value="entrada" {% if status_filtro == "entrada" %}selected{% endif %}>Entrada de Cliente</option>
+                <option value="legalizacao" {% if status_filtro == "legalizacao" %}selected{% endif %}>Legalização</option>
+                <option value="dp" {% if status_filtro == "dp" %}selected{% endif %}>DP</option>
+                <option value="fiscal" {% if status_filtro == "fiscal" %}selected{% endif %}>Fiscal</option>
+                <option value="contabil" {% if status_filtro == "contabil" %}selected{% endif %}>Contábil</option>
+                <option value="concluido" {% if status_filtro == "concluido" %}selected{% endif %}>Concluído</option>
+            </select>
+            <button type="submit" class="btn btn-secondary">Filtrar</button>
+        </form>
+    </div>
+    
+    <div class="processos-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Cliente</th>
+                    <th>Status</th>
+                    <th>Responsável</th>
+                    <th>Data Abertura</th>
+                    <th>Progresso</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for processo in processos %}
+                <tr>
+                    <td><strong>{{ processo.numero_processo }}</strong></td>
+                    <td>{{ processo.cliente }}</td>
+                    <td><span class="processo-status status-{{ processo.status }}">{{ processo.get_status_display }}</span></td>
+                    <td>{{ processo.responsavel }}</td>
+                    <td>{{ processo.data_abertura|date:"d/m/Y" }}</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: {{ processo.get_progresso }}%"></div>
+                        </div>
+                        <span class="progress-text">{{ processo.get_progresso|floatformat:0 }}%</span>
+                    </td>
+                    <td>
+                        <a href="{% url 'contabilidade:detalhe_processo' processo.pk %}" class="btn-small">Ver</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="empty-state">Nenhum processo encontrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

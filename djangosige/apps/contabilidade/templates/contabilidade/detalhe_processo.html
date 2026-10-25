@@ -1,0 +1,108 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}Processo {{ processo.numero_processo }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'contabilidade/css/contabilidade.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="hg-contabilidade">
+    <div class="breadcrumb">
+        <a href="{% url 'contabilidade:dashboard' %}">Dashboard</a> /
+        <a href="{% url 'contabilidade:lista_processos' %}">Processos</a> /
+        <span>{{ processo.numero_processo }}</span>
+    </div>
+    
+    <div class="processo-header">
+        <div>
+            <h1>{{ processo.numero_processo }}</h1>
+            <p class="cliente-name">{{ processo.cliente }}</p>
+        </div>
+        <span class="processo-status status-{{ processo.status }}">{{ processo.get_status_display }}</span>
+    </div>
+    
+    <div class="progress-container">
+        <h3>Progresso do Processo</h3>
+        <div class="progress-steps">
+            <div class="progress-step {% if processo.get_etapa_atual >= 1 %}completed{% endif %}">
+                <div class="step-circle">1</div>
+                <span>Entrada</span>
+            </div>
+            <div class="progress-step {% if processo.get_etapa_atual >= 2 %}completed{% endif %}">
+                <div class="step-circle">2</div>
+                <span>Legalização</span>
+            </div>
+            <div class="progress-step {% if processo.get_etapa_atual >= 3 %}completed{% endif %}">
+                <div class="step-circle">3</div>
+                <span>DP</span>
+            </div>
+            <div class="progress-step {% if processo.get_etapa_atual >= 4 %}completed{% endif %}">
+                <div class="step-circle">4</div>
+                <span>Fiscal</span>
+            </div>
+            <div class="progress-step {% if processo.get_etapa_atual >= 5 %}completed{% endif %}">
+                <div class="step-circle">5</div>
+                <span>Contábil</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modulos-grid">
+        <a href="{% url 'contabilidade:entrada_cliente' processo.pk %}" class="modulo-card {% if tem_entrada %}has-data{% endif %}">
+            <h3>1. Entrada de Cliente</h3>
+            <p>Contato inicial, coleta de informações e definição de escopo</p>
+            {% if tem_entrada %}<span class="badge-ok">✓ Cadastrado</span>{% endif %}
+        </a>
+        
+        <a href="{% url 'contabilidade:legalizacao' processo.pk %}" class="modulo-card {% if tem_legalizacao %}has-data{% endif %}">
+            <h3>2. Legalização</h3>
+            <p>Abertura, CNPJ, inscrições e alvarás</p>
+            {% if tem_legalizacao %}<span class="badge-ok">✓ Cadastrado</span>{% endif %}
+        </a>
+        
+        <a href="{% url 'contabilidade:departamento_pessoal' processo.pk %}" class="modulo-card {% if tem_dp %}has-data{% endif %}">
+            <h3>3. Departamento Pessoal</h3>
+            <p>Folha, admissões, férias e eSocial</p>
+            {% if tem_dp %}<span class="badge-ok">✓ Cadastrado</span>{% endif %}
+        </a>
+        
+        <a href="{% url 'contabilidade:fiscal' processo.pk %}" class="modulo-card {% if tem_fiscal %}has-data{% endif %}">
+            <h3>4. Fiscal</h3>
+            <p>Notas fiscais, tributos e obrigações acessórias</p>
+            {% if tem_fiscal %}<span class="badge-ok">✓ Cadastrado</span>{% endif %}
+        </a>
+        
+        <a href="{% url 'contabilidade:contabil' processo.pk %}" class="modulo-card {% if tem_contabil %}has-data{% endif %}">
+            <h3>5. Contábil</h3>
+            <p>Lançamentos, conciliação e demonstrações</p>
+            {% if tem_contabil %}<span class="badge-ok">✓ Cadastrado</span>{% endif %}
+        </a>
+    </div>
+    
+    <div class="info-section">
+        <h3>Informações do Processo</h3>
+        <div class="info-grid">
+            <div class="info-item">
+                <label>Data de Abertura</label>
+                <span>{{ processo.data_abertura|date:"d/m/Y H:i" }}</span>
+            </div>
+            <div class="info-item">
+                <label>Responsável</label>
+                <span>{{ processo.responsavel }}</span>
+            </div>
+            <div class="info-item">
+                <label>Equipe</label>
+                <span>{% for user in processo.equipe.all %}{{ user }}{% if not forloop.last %}, {% endif %}{% empty %}Nenhum membro{% endfor %}</span>
+            </div>
+            {% if processo.observacoes %}
+            <div class="info-item full-width">
+                <label>Observações</label>
+                <p>{{ processo.observacoes }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}Novo Processo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'contabilidade/css/contabilidade.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="hg-contabilidade">
+    <div class="page-header">
+        <h1>Novo Processo Contábil</h1>
+    </div>
+    
+    <div class="form-container">
+        <form method="post" class="hg-form">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label>{{ form.numero_processo.label }}</label>
+                {{ form.numero_processo }}
+                {% if form.numero_processo.errors %}
+                    <span class="error">{{ form.numero_processo.errors }}</span>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label>{{ form.cliente.label }}</label>
+                {{ form.cliente }}
+                {% if form.cliente.errors %}
+                    <span class="error">{{ form.cliente.errors }}</span>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label>{{ form.empresa.label }}</label>
+                {{ form.empresa }}
+            </div>
+            
+            <div class="form-group">
+                <label>{{ form.status.label }}</label>
+                {{ form.status }}
+            </div>
+            
+            <div class="form-group">
+                <label>{{ form.equipe.label }}</label>
+                {{ form.equipe }}
+            </div>
+            
+            <div class="form-group">
+                <label>{{ form.observacoes.label }}</label>
+                {{ form.observacoes }}
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Criar Processo</button>
+                <a href="{% url 'contabilidade:lista_processos' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

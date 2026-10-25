@@ -67,6 +67,9 @@ INSTALLED_APPS = [
     'djangosige.apps.gerencial',
     'djangosige.apps.financeiro_grupo',
     'djangosige.apps.juridico',
+    
+    # HG Contabilidade - Sistema completo de contabilidade
+    'djangosige.apps.contabilidade',
 ]
 
 

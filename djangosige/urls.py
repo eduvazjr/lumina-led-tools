@@ -20,6 +20,9 @@ urlpatterns = [
     url(r'^gerencial/', include('djangosige.apps.gerencial.urls')),
     url(r'^financeiro-grupo/', include('djangosige.apps.financeiro_grupo.urls')),
     url(r'^juridico/', include('djangosige.apps.juridico.urls')),
+    
+    # HG Contabilidade - Sistema completo de contabilidade
+    url(r'^contabilidade/', include('djangosige.apps.contabilidade.urls')),
 ]
 
 if DEBUG is True:

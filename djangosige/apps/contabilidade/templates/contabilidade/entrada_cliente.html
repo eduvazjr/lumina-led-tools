@@ -1,0 +1,38 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}Entrada de Cliente{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'contabilidade/css/contabilidade.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="hg-contabilidade">
+    <div class="breadcrumb">
+        <a href="{% url 'contabilidade:dashboard' %}">Dashboard</a> /
+        <a href="{% url 'contabilidade:detalhe_processo' processo.pk %}">{{ processo.numero_processo }}</a> /
+        <span>Entrada de Cliente</span>
+    </div>
+    
+    <div class="module-header">
+        <div>
+            <h1>Módulo 1: Entrada de Cliente</h1>
+            <p>{{ processo.cliente }}</p>
+        </div>
+        <span class="module-badge">Etapa 1/5</span>
+    </div>
+    
+    <div class="form-container">
+        <form method="post" class="hg-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a href="{% url 'contabilidade:detalhe_processo' processo.pk %}" class="btn btn-secondary">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
