@@ -3,49 +3,118 @@
 {%block title%}Dashboard{%endblock%}
 
 {%block content%}
-<div class="page-header">
-    <h1 class="page-title">Dashboard</h1>
-    <p class="page-subtitle">Visão geral do sistema - {{ data_atual }}</p>
+{% with a=alertas h=agenda_hoje %}
+<div class="dash-header">
+    <div>
+        <h1 class="page-title">Olá, {{ request.user.first_name|default:request.user.username }}</h1>
+        <p class="page-subtitle">Resumo do dia {{ data_atual }}{% if user_empresa %} · {{ user_empresa }}{% endif %}</p>
+    </div>
+    <div class="dash-actions">
+        {% if perms.vendas.add_orcamentovenda %}
+        <a href="{% url 'vendas:addorcamentovendaview' %}" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            Novo orçamento
+        </a>
+        {% endif %}
+        {% if perms.cadastro.add_cliente %}
+        <a href="{% url 'cadastro:addclienteview' %}" class="btn">Novo cliente</a>
+        {% endif %}
+        {% if perms.financeiro.add_entrada %}
+        <a href="{% url 'financeiro:addcontareceberview' %}" class="btn">Conta a receber</a>
+        {% endif %}
+    </div>
 </div>
 
-<div class="stats-grid">
-    {% if perms.cadastro.view_cliente %}
-    <div class="stat-card">
-        <div class="stat-header">
-            <span class="stat-label">Clientes</span>
-            <div class="stat-icon">👥</div>
-        </div>
-        <div class="stat-value">{{ quantidade_cadastro.clientes }}</div>
-        <div class="stat-description">
-            <a href="{% url 'cadastro:listaclientesview' %}" class="stat-link">Ver todos →</a>
-        </div>
+{# ---------- Caixa ---------- #}
+<div class="kpi-grid">
+    <div class="kpi kpi-highlight">
+        <span class="kpi-label">Saldo em caixa</span>
+        <span class="kpi-value">
+            <small>R$</small>
+            {% if movimento_dia %}{{ movimento_dia.saldo_final|floatformat:"2g" }}{% elif saldo == '0,00' %}0,00{% else %}{{ saldo|floatformat:"2g" }}{% endif %}
+        </span>
+        <span class="kpi-foot">{% if movimento_dia %}Atualizado com o movimento de hoje{% else %}Último fechamento registrado{% endif %}</span>
     </div>
-    {% endif %}
-
-    {% if perms.cadastro.view_fornecedor %}
-    <div class="stat-card">
-        <div class="stat-header">
-            <span class="stat-label">Fornecedores</span>
-            <div class="stat-icon">🏢</div>
-        </div>
-        <div class="stat-value">{{ quantidade_cadastro.fornecedores }}</div>
-        <div class="stat-description">
-            <a href="{% url 'cadastro:listafornecedoresview' %}" class="stat-link">Ver todos →</a>
-        </div>
+    <div class="kpi">
+        <span class="kpi-label kpi-pos">Entradas hoje</span>
+        <span class="kpi-value"><small>R$</small>{% if movimento_dia %}{{ movimento_dia.entradas|floatformat:"2g" }}{% else %}0,00{% endif %}</span>
+        <span class="kpi-foot">{{ h.contas_receber_hoje }} conta{{ h.contas_receber_hoje|pluralize }} a receber vencendo hoje</span>
     </div>
-    {% endif %}
-
-    {% if perms.cadastro.view_produto %}
-    <div class="stat-card">
-        <div class="stat-header">
-            <span class="stat-label">Produtos</span>
-            <div class="stat-icon">📦</div>
-        </div>
-        <div class="stat-value">{{ quantidade_cadastro.produtos }}</div>
-        <div class="stat-description">
-            <a href="{% url 'cadastro:listaprodutosview' %}" class="stat-link">Ver todos →</a>
-        </div>
+    <div class="kpi">
+        <span class="kpi-label kpi-neg">Saídas hoje</span>
+        <span class="kpi-value"><small>R$</small>{% if movimento_dia %}{{ movimento_dia.saidas|floatformat:"2g" }}{% else %}0,00{% endif %}</span>
+        <span class="kpi-foot">{{ h.contas_pagar_hoje }} conta{{ h.contas_pagar_hoje|pluralize }} a pagar vencendo hoje</span>
     </div>
+    {% if perms.financeiro.acesso_fluxodecaixa %}
+    <a href="{% url 'financeiro:fluxodecaixaview' %}" class="kpi kpi-link">
+        <span class="kpi-label">Fluxo de caixa</span>
+        <span class="kpi-cta">Ver relatório
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+        <span class="kpi-foot">Entradas e saídas por período</span>
+    </a>
     {% endif %}
 </div>
+
+<div class="dash-columns">
+    {# ---------- Pendências ---------- #}
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">Precisa de atenção</h2>
+            {% with total=a.contas_receber_atrasadas|add:a.contas_pagar_atrasadas|add:a.orcamentos_venda_vencidos|add:a.pedidos_venda_atrasados|add:a.orcamentos_compra_vencidos|add:a.pedidos_compra_atrasados|add:a.produtos_baixo_estoque %}
+            {% if total %}<span class="badge badge-danger">{{ total }} pendência{{ total|pluralize:"s" }}</span>{% else %}<span class="badge badge-success">Tudo em dia</span>{% endif %}
+            {% endwith %}
+        </div>
+        <ul class="item-list">
+            {% include 'base/dash_item.html' with n=a.contas_receber_atrasadas label='Contas a receber atrasadas' url_name='financeiro:listacontareceberatrasadasview' tone='danger' %}
+            {% include 'base/dash_item.html' with n=a.contas_pagar_atrasadas label='Contas a pagar atrasadas' url_name='financeiro:listacontapagaratrasadasview' tone='danger' %}
+            {% include 'base/dash_item.html' with n=a.orcamentos_venda_vencidos label='Orçamentos de venda vencidos' url_name='vendas:listaorcamentovendavencidoview' tone='warning' %}
+            {% include 'base/dash_item.html' with n=a.pedidos_venda_atrasados label='Pedidos de venda atrasados' url_name='vendas:listapedidovendaatrasadosview' tone='warning' %}
+            {% include 'base/dash_item.html' with n=a.orcamentos_compra_vencidos label='Orçamentos de compra vencidos' url_name='compras:listaorcamentocompravencidosview' tone='warning' %}
+            {% include 'base/dash_item.html' with n=a.pedidos_compra_atrasados label='Pedidos de compra atrasados' url_name='compras:listapedidocompraatrasadosview' tone='warning' %}
+            {% include 'base/dash_item.html' with n=a.produtos_baixo_estoque label='Produtos com estoque baixo' url_name='cadastro:listaprodutosbaixoestoqueview' tone='warning' %}
+        </ul>
+    </section>
+
+    {# ---------- Agenda ---------- #}
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">Agenda de hoje</h2>
+            <span class="text-muted" style="font-size:13px">{{ data_atual }}</span>
+        </div>
+        <ul class="item-list">
+            {% include 'base/dash_item.html' with n=h.contas_receber_hoje label='Contas a receber' url_name='financeiro:listacontareceberhojeview' tone='info' %}
+            {% include 'base/dash_item.html' with n=h.contas_pagar_hoje label='Contas a pagar' url_name='financeiro:listacontapagarhojeview' tone='info' %}
+            {% include 'base/dash_item.html' with n=h.orcamento_venda_hoje label='Orçamentos de venda vencendo' url_name='vendas:listaorcamentovendahojeview' tone='info' %}
+            {% include 'base/dash_item.html' with n=h.pedido_venda_hoje label='Entregas de pedidos de venda' url_name='vendas:listapedidovendahojeview' tone='info' %}
+            {% include 'base/dash_item.html' with n=h.orcamento_compra_hoje label='Orçamentos de compra vencendo' url_name='compras:listaorcamentocomprahojeview' tone='info' %}
+            {% include 'base/dash_item.html' with n=h.pedido_compra_hoje label='Recebimentos de pedidos de compra' url_name='compras:listapedidocomprahojeview' tone='info' %}
+        </ul>
+    </section>
+</div>
+
+{# ---------- Cadastros ---------- #}
+<section class="section">
+    <div class="section-header">
+        <h2 class="section-title">Cadastros</h2>
+    </div>
+    <div class="count-grid">
+        {% if perms.cadastro.view_cliente %}
+        <a href="{% url 'cadastro:listaclientesview' %}" class="count-item"><span class="count-value">{{ quantidade_cadastro.clientes }}</span><span class="count-label">Clientes</span></a>
+        {% endif %}
+        {% if perms.cadastro.view_fornecedor %}
+        <a href="{% url 'cadastro:listafornecedoresview' %}" class="count-item"><span class="count-value">{{ quantidade_cadastro.fornecedores }}</span><span class="count-label">Fornecedores</span></a>
+        {% endif %}
+        {% if perms.cadastro.view_produto %}
+        <a href="{% url 'cadastro:listaprodutosview' %}" class="count-item"><span class="count-value">{{ quantidade_cadastro.produtos }}</span><span class="count-label">Produtos</span></a>
+        {% endif %}
+        {% if perms.cadastro.view_empresa %}
+        <a href="{% url 'cadastro:listaempresasview' %}" class="count-item"><span class="count-value">{{ quantidade_cadastro.empresas }}</span><span class="count-label">Empresas</span></a>
+        {% endif %}
+        {% if perms.cadastro.view_transportadora %}
+        <a href="{% url 'cadastro:listatransportadorasview' %}" class="count-item"><span class="count-value">{{ quantidade_cadastro.transportadoras }}</span><span class="count-label">Transportadoras</span></a>
+        {% endif %}
+    </div>
+</section>
+{% endwith %}
 {%endblock%}

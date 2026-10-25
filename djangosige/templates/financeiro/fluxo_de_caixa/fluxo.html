@@ -270,21 +270,22 @@
         <div class="stat-card">
             <div class="stat-label">Total Entradas</div>
             <div class="stat-value positive">
-                {% widthratio movimentos|length 1 1 as count %}
-                {{ movimentos|last.entradas }}
+                {% with ultimo=movimentos|last %}{{ ultimo.entradas }}{% endwith %}
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-label">Total Saídas</div>
             <div class="stat-value negative">
-                {{ movimentos|last.saidas }}
+                {% with ultimo=movimentos|last %}{{ ultimo.saidas }}{% endwith %}
             </div>
         </div>
         <div class="stat-card">
+            {% with ultimo=movimentos|last %}
             <div class="stat-label">Saldo Final</div>
-            <div class="stat-value {% if movimentos|last.saldo_final < 0 %}negative{% else %}positive{% endif %}">
-                {{ movimentos|last.saldo_final }}
+            <div class="stat-value {% if ultimo.saldo_final < 0 %}negative{% else %}positive{% endif %}">
+                {{ ultimo.saldo_final }}
             </div>
+            {% endwith %}
         </div>
     </div>
     {% endif %}

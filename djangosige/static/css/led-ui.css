@@ -239,6 +239,77 @@ img, svg { vertical-align: middle; }
 .stat-link { color: var(--brand-600); font-weight: 500; text-decoration: none; }
 .stat-link:hover { color: var(--brand-700); text-decoration: underline; text-underline-offset: 3px; }
 
+/* ---------- Dashboard ---------- */
+.dash-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+.dash-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 20px; }
+.kpi {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  color: inherit; text-decoration: none;
+}
+.kpi-label { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+.kpi-value { font-size: 26px; line-height: 1.15; font-weight: 600; letter-spacing: -.02em; color: var(--text); font-variant-numeric: tabular-nums; }
+.kpi-value small { font-size: 14px; font-weight: 500; color: var(--text-muted); margin-right: 4px; letter-spacing: 0; }
+.kpi-pos::before, .kpi-neg::before {
+  content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px;
+  border-radius: 2px; vertical-align: 1px;
+}
+.kpi-pos::before { background: var(--success); }
+.kpi-neg::before { background: var(--danger); }
+.kpi-foot { font-size: 12.5px; color: var(--text-muted); }
+.kpi-highlight { background: var(--ink-950); border-color: var(--ink-950); }
+.kpi-highlight .kpi-label, .kpi-highlight .kpi-foot, .kpi-highlight .kpi-value small { color: rgba(245, 240, 234, .65); }
+.kpi-highlight .kpi-value { color: #fff; }
+.kpi-link { transition: border-color .15s, box-shadow .15s; }
+.kpi-link:hover { border-color: var(--brand-500); box-shadow: var(--shadow-sm); color: inherit; }
+.kpi-cta { display: inline-flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 600; color: var(--brand-600); }
+.kpi-link:hover .kpi-cta svg { transform: translateX(2px); }
+.kpi-cta svg { transition: transform .15s; }
+
+.dash-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.dash-columns > .section { margin-bottom: 20px; }
+@media (max-width: 1100px) { .dash-columns { grid-template-columns: 1fr; gap: 0; } }
+
+.item-list { list-style: none; margin: 0; padding: 6px; }
+.item-row {
+  display: flex; align-items: center; gap: 12px;
+  height: 44px; padding: 0 12px;
+  border-radius: var(--radius);
+  color: var(--text); text-decoration: none; font-size: 14px;
+}
+.item-row:hover { background: var(--gray-50); color: var(--text); }
+.item-row.is-zero { color: var(--text-muted); }
+.item-label { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.dot-danger { background: var(--danger); }
+.dot-warning { background: #D97706; }
+.dot-info { background: var(--brand-500); }
+.dot-muted { background: var(--gray-300); }
+.item-count { min-width: 28px; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--gray-400); }
+.count-danger { color: var(--danger); }
+.count-warning { color: var(--warning); }
+.count-info { color: var(--text); }
+.item-chevron { color: var(--gray-300); flex: none; }
+.item-row:hover .item-chevron { color: var(--gray-500); }
+
+.count-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.count-item {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 16px 20px;
+  border-right: 1px solid var(--gray-100);
+  color: inherit; text-decoration: none;
+}
+.count-item:last-child { border-right: 0; }
+.count-item:hover { background: var(--gray-25); color: inherit; }
+.count-value { font-size: 22px; font-weight: 600; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.count-label { font-size: 13px; color: var(--text-muted); }
+
 /* ---------- Botões ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;

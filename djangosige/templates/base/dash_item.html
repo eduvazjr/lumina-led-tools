@@ -1,0 +1,9 @@
+{# Linha de pendência/agenda do dashboard. Recebe: n, label, url_name, tone (danger|warning|info). #}
+<li>
+    <a href="{% url url_name %}" class="item-row{% if not n %} is-zero{% endif %}">
+        <span class="item-dot dot-{% if n %}{{ tone }}{% else %}muted{% endif %}" aria-hidden="true"></span>
+        <span class="item-label">{{ label }}</span>
+        <span class="item-count{% if n %} count-{{ tone }}{% endif %}">{{ n|default:0 }}</span>
+        <svg class="item-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </a>
+</li>
