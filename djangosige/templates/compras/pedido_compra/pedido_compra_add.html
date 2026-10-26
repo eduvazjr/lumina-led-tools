@@ -1,361 +1,46 @@
 {%extends 'base/base.html'%}
 
 {%block title%}{{title_complete|title}}{%endblock%}
-
 {%block content%}
-<style>
-.venda-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 32px 20px;
-}
+<section class="content">
+  <div class="container-fluid">
 
-.venda-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 32px;
-}
+    {% include 'base/title_header.html' %}
 
-.back-button {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    color: #64748b;
-    text-decoration: none;
-    transition: all 0.15s ease;
-}
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="row">
+        <div class="card">
 
-.back-button:hover {
-    background: #f1f5f9;
-    border-color: #cbd5e1;
-}
+          <!--Header-->
+          <div class="header">
 
-.venda-title-group h1 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #0f172a;
-    margin-bottom: 4px;
-}
+            <h2>
+              <a href="{{return_url}}"><i class="material-icons">&#xE5C4;</i></a><span class="card-title">{{title_complete|lower|capfirst}}</span>
+            </h2>
+            <div><small>Campos marcados com <strong style="color:red;">*</strong> são obrigatórios.</small></div>
 
-.venda-title-group p {
-    font-size: 13px;
-    color: #64748b;
-}
+          </div>
+          <!--# Header-->
 
-.tabs {
-    display: flex;
-    gap: 4px;
-    border-bottom: 2px solid #e5e7eb;
-    margin-bottom: 32px;
-    overflow-x: auto;
-}
+          <form id="venda_form_add" role="form" action="" method="post">
+            {% csrf_token %}
+            
+            {% include 'compras/compra_form.html' %}
 
-.tab {
-    padding: 12px 20px;
-    background: transparent;
-    border: none;
-    color: #64748b;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -2px;
-    transition: all 0.15s ease;
-    white-space: nowrap;
-}
+          </form>
 
-.tab:hover {
-    color: #0f172a;
-}
-
-.tab.active {
-    color: #C2490A;
-    border-bottom-color: #C2490A;
-}
-
-.tab-content {
-    display: none;
-}
-
-.tab-content.active {
-    display: block;
-    animation: fadeIn 0.2s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-4px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.form-section {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 24px;
-    margin-bottom: 20px;
-}
-
-.form-section-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #0f172a;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-}
-
-.form-grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
-.form-grid-3 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-group label {
-    font-size: 13px;
-    font-weight: 500;
-    color: #334155;
-    margin-bottom: 6px;
-}
-
-.form-group label .required {
-    color: #ef4444;
-    margin-left: 2px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    padding: 10px 12px;
-    font-size: 14px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    background: #ffffff;
-    color: #0f172a;
-    transition: all 0.15s ease;
-    font-family: inherit;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.form-group textarea {
-    min-height: 100px;
-    resize: vertical;
-}
-
-.form-actions {
-    display: flex;
-    gap: 12px;
-    padding: 24px;
-    background: #fafbfc;
-    border-top: 1px solid #e5e7eb;
-    position: sticky;
-    bottom: 0;
-    z-index: 10;
-}
-
-.btn-primary-form {
-    padding: 12px 24px;
-    background: #C2490A;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.btn-primary-form:hover {
-    background: #A63D08;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(255, 145, 0, 0.3);
-}
-
-.btn-secondary-form {
-    padding: 12px 24px;
-    background: transparent;
-    color: #64748b;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
-.btn-secondary-form:hover {
-    background: #f1f5f9;
-    border-color: #cbd5e1;
-}
-
-.help-text {
-    font-size: 12px;
-    color: #94a3b8;
-    margin-top: 4px;
-}
-
-.error-message {
-    font-size: 12px;
-    color: #ef4444;
-    margin-top: 4px;
-}
-
-@media (max-width: 768px) {
-    .form-grid-2,
-    .form-grid-3 {
-        grid-template-columns: 1fr;
-    }
-}
-</style>
-
-<div class="venda-container">
-    <div class="venda-header">
-        <a href="{{return_url}}" class="back-button">←</a>
-        <div class="venda-title-group">
-            <h1>{{title_complete}}</h1>
-            <p>Campos marcados com <span style="color: #ef4444;">*</span> são obrigatórios</p>
         </div>
+      </div>
     </div>
 
-    <form id="venda_form_add" role="form" action="" method="post">
-        {% csrf_token %}
+  </div>
+</section>
 
-        <!-- Tabs -->
-        <div class="tabs">
-            <button type="button" class="tab active" data-tab="informacoes">
-                Informações
-            </button>
-            <button type="button" class="tab" data-tab="cliente">
-                Cliente
-            </button>
-            <button type="button" class="tab" data-tab="transporte">
-                Transporte
-            </button>
-            <button type="button" class="tab" data-tab="produtos">
-                Produtos
-            </button>
-            <button type="button" class="tab" data-tab="pagamento">
-                Pagamento
-            </button>
-            <button type="button" class="tab" data-tab="estoque">
-                Estoque
-            </button>
-        </div>
-
-        <!-- Tab Content -->
-        <div class="tab-content active" id="tab-informacoes">
-            {% include 'vendas/venda_form.html' %}
-        </div>
-
-        <div class="tab-content" id="tab-cliente">
-            <div class="form-section">
-                <h3 class="form-section-title">Dados do Cliente</h3>
-                <p style="text-align: center; color: #94a3b8; padding: 40px;">
-                    Selecione um cliente na aba "Produtos" ou use a busca
-                </p>
-            </div>
-        </div>
-
-        <div class="tab-content" id="tab-transporte">
-            <div class="form-section">
-                <h3 class="form-section-title">Informações de Transporte</h3>
-                <p style="text-align: center; color: #94a3b8; padding: 40px;">
-                    Configure o transporte do pedido
-                </p>
-            </div>
-        </div>
-
-        <div class="tab-content" id="tab-produtos">
-            <div class="form-section">
-                <h3 class="form-section-title">Produtos do Pedido</h3>
-                <p style="text-align: center; color: #94a3b8; padding: 40px;">
-                    Adicione produtos ao pedido
-                </p>
-            </div>
-        </div>
-
-        <div class="tab-content" id="tab-pagamento">
-            <div class="form-section">
-                <h3 class="form-section-title">Condições de Pagamento</h3>
-                <p style="text-align: center; color: #94a3b8; padding: 40px;">
-                    Configure as condições de pagamento
-                </p>
-            </div>
-        </div>
-
-        <div class="tab-content" id="tab-estoque">
-            <div class="form-section">
-                <h3 class="form-section-title">Movimentação de Estoque</h3>
-                <p style="text-align: center; color: #94a3b8; padding: 40px;">
-                    Controle de estoque do pedido
-                </p>
-            </div>
-        </div>
-
-        <!-- Form Actions -->
-        <div class="form-actions">
-            <button type="submit" class="btn-primary-form">
-                <span>💾</span>
-                <span>Salvar Pedido</span>
-            </button>
-            <a href="{{return_url}}" class="btn-secondary-form">
-                Cancelar
-            </a>
-        </div>
-    </form>
-</div>
-
-<script>
-// Tab switching
-document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', function() {
-        // Remove active from all tabs
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        
-        // Add active to clicked tab
-        this.classList.add('active');
-        const tabId = 'tab-' + this.dataset.tab;
-        document.getElementById(tabId).classList.add('active');
-    });
-});
-</script>
-
-{% include 'vendas/venda_jsblock.html' %} 
 
 {%endblock%}
+
+{% block js %}
+    
+  {% include 'compras/compra_jsblock.html' %} 
+  
+{% endblock %}

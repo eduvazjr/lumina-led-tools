@@ -1,156 +1,132 @@
-<div class="form-section">
-    <h3 class="form-section-title">Tipo de Pessoa</h3>
-    <div class="form-grid">
-        <div class="form-group">
-            <label>Tipo <span class="required">*</span></label>
-            <div style="display: flex; gap: 24px; padding: 12px 0;">
-                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                    <input type="radio" name="{{form.prefix}}-tipo_pessoa" id="fisica" value="PF" 
-                           {% if form.tipo_pessoa.value == 'PF' %}checked="checked"{% endif %}/>
-                    <span style="font-weight: 500; color: #334155;">Pessoa Física</span>
-                </label>
-                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                    <input type="radio" name="{{form.prefix}}-tipo_pessoa" id="juridica" value="PJ" 
-                           {% if form.tipo_pessoa.value == 'PJ' %}checked="checked"{% endif %}/>
-                    <span style="font-weight: 500; color: #334155;">Pessoa Jurídica</span>
-                </label>
-            </div>
-            {% if form.tipo_pessoa.errors %}
-            <div class="error-message">{% for error in form.tipo_pessoa.errors %}{{error}}{% endfor %}</div>
-            {% endif %}
-        </div>
+<div class="col-sm-12" style="margin-top:15px;">
+  <div class="form-group">
+    <div class="form-line">
+      <input type="radio" name="{{form.prefix}}-tipo_pessoa" id="fisica" value="PF" {% if form.tipo_pessoa.value == 'PF' %}checked="checked"{% endif %}/>
+      <label for="fisica"><strong>Pessoa Física</strong></label>
+      <input type="radio" name="{{form.prefix}}-tipo_pessoa" id="juridica" value="PJ" {% if form.tipo_pessoa.value == 'PJ' %}checked="checked"{% endif %}/>
+      <label for="juridica"><strong>Pessoa Jurídica</strong></label>
+      <strong style="color:red;"> *</strong>
+      {% if form.tipo_pessoa.errors %}<label class="error">{% for error in form.tipo_pessoa.errors %}{{error}}{% endfor %}</label>{% endif %}
     </div>
+  </div>
 </div>
 
-<div class="form-section">
-    <h3 class="form-section-title">Dados Principais</h3>
-    <div class="form-grid-2">
-        <div class="form-group">
-            <label>{{form.nome_razao_social.label}} <span class="required">*</span></label>
-            {{form.nome_razao_social}}
-            {% if form.nome_razao_social.errors %}
-            <div class="error-message">{% for error in form.nome_razao_social.errors %}{{error}}{% endfor %}</div>
-            {% endif %}
-        </div>
-
-        <div class="form-group {{pessoa_juridica_form.prefix}}">
-            <label>{{pessoa_juridica_form.nome_fantasia.label}}</label>
-            {{pessoa_juridica_form.nome_fantasia}}
-            {% if pessoa_juridica_form.nome_fantasia.errors %}
-            <div class="error-message">{% for error in pessoa_juridica_form.nome_fantasia.errors %}{{error}}{% endfor %}</div>
-            {% endif %}
-        </div>
+<div class="col-sm-6">
+  <div class="form-group">
+    <div class="form-line">
+      <label>{{form.nome_razao_social.label}}</label><strong style="color:red;"> *</strong>
+      {% if form.nome_razao_social.errors %}<label class="error">{% for error in form.nome_razao_social.errors %}{{error}}{% endfor %}</label>{% endif %}
+      {{form.nome_razao_social}}
     </div>
+  </div>
 </div>
 
-<div class="form-section">
-    <h3 class="form-section-title">Documentos</h3>
-    <div class="form-grid-3">
-        <div class="form-group {{pessoa_juridica_form.prefix}}">
-            <label>{{pessoa_juridica_form.cnpj.label}}</label>
-            {{pessoa_juridica_form.cnpj}}
-            <div class="help-text">Formato: 00.000.000/0000-00</div>
-            {% if pessoa_juridica_form.cnpj.errors %}
-            <div class="error-message">{% for error in pessoa_juridica_form.cnpj.errors %}{{error}}{% endfor %}</div>
-            {% endif %}
-        </div>
-
-        <div class="form-group {{pessoa_fisica_form.prefix}}">
-            <label>{{pessoa_fisica_form.cpf.label}}</label>
-            {{pessoa_fisica_form.cpf}}
-            <div class="help-text">Formato: 000.000.000-00</div>
-            {% if pessoa_fisica_form.cpf.errors %}
-            <div class="error-message">{% for error in pessoa_fisica_form.cpf.errors %}{{error}}{% endfor %}</div>
-            {% endif %}
-        </div>
-
-        <div class="form-group {{pessoa_fisica_form.prefix}}">
-            <label>{{pessoa_fisica_form.rg.label}}</label>
-            {{pessoa_fisica_form.rg}}
-            {% if pessoa_fisica_form.rg.errors %}
-            <div class="error-message">{% for error in pessoa_fisica_form.rg.errors %}{{error}}{% endfor %}</div>
-            {% endif %}
-        </div>
-
-        <div class="form-group {{pessoa_fisica_form.prefix}}">
-            <label>{{pessoa_fisica_form.nascimento.label}}</label>
-            {{pessoa_fisica_form.nascimento}}
-            {% if pessoa_fisica_form.nascimento.errors %}
-            <div class="error-message">{% for error in pessoa_fisica_form.nascimento.errors %}{{error}}{% endfor %}</div>
-            {% endif %}
-        </div>
-
-        <div class="form-group {{pessoa_juridica_form.prefix}}">
-            <label>{{pessoa_juridica_form.inscricao_estadual.label}}</label>
-            {{pessoa_juridica_form.inscricao_estadual}}
-            {% if pessoa_juridica_form.inscricao_estadual.errors %}
-            <div class="error-message">{% for error in pessoa_juridica_form.inscricao_estadual.errors %}{{error}}{% endfor %}</div>
-            {% endif %}
-        </div>
-
-        <div class="form-group">
-            <label>{{form.inscricao_municipal.label}}</label>
-            {{form.inscricao_municipal}}
-            {% if form.inscricao_municipal.errors %}
-            <div class="error-message">{% for error in form.inscricao_municipal.errors %}{{error}}{% endfor %}</div>
-            {% endif %}
-        </div>
+<div class="col-sm-6 {{pessoa_juridica_form.prefix}}">
+  <div class="form-group">
+    <div class="form-line">
+      <label>{{pessoa_juridica_form.nome_fantasia.label}}</label>
+      {% if pessoa_juridica_form.nome_fantasia.errors %}<label class="error">{% for error in pessoa_juridica_form.nome_fantasia.errors %}{{error}}{% endfor %}</label>{% endif %}
+      {{pessoa_juridica_form.nome_fantasia}}
     </div>
+  </div>
 </div>
 
-<div class="form-section">
-    <h3 class="form-section-title">Informações Adicionais</h3>
-    <div class="form-grid-2">
-        <div class="form-group {{pessoa_juridica_form.prefix}}">
-            <label>{{pessoa_juridica_form.responsavel.label}}</label>
-            {{pessoa_juridica_form.responsavel}}
-            {% if pessoa_juridica_form.responsavel.errors %}
-            <div class="error-message">{% for error in pessoa_juridica_form.responsavel.errors %}{{error}}{% endfor %}</div>
-            {% endif %}
-        </div>
-
-        <div class="form-group">
-            <label>{{form.limite_de_credito.label}}</label>
-            {{form.limite_de_credito}}
-            <div class="help-text">Valor em R$</div>
-            {% if form.limite_de_credito.errors %}
-            <div class="error-message">{% for error in form.limite_de_credito.errors %}{{error}}{% endfor %}</div>
-            {% endif %}
-        </div>
+<div class="col-sm-6 {{pessoa_juridica_form.prefix}}">
+  <div class="form-group">
+    <div class="form-line">
+      <label>{{pessoa_juridica_form.cnpj.label}}</label>
+      {% if pessoa_juridica_form.cnpj.errors %}<label class="error">{% for error in pessoa_juridica_form.cnpj.errors %}{{error}}{% endfor %}</label>{% endif %}
+      {{pessoa_juridica_form.cnpj}}
     </div>
-
-    <div class="form-grid">
-        <div class="form-group">
-            <label>{{form.informacoes_adicionais.label}}</label>
-            {{form.informacoes_adicionais}}
-            <div class="help-text">Observações e anotações sobre o cliente</div>
-            {% if form.informacoes_adicionais.errors %}
-            <div class="error-message">{% for error in form.informacoes_adicionais.errors %}{{error}}{% endfor %}</div>
-            {% endif %}
-        </div>
-    </div>
+  </div>
 </div>
 
-<script>
-// Toggle fields based on tipo_pessoa
-document.querySelectorAll('input[name="{{form.prefix}}-tipo_pessoa"]').forEach(radio => {
-    radio.addEventListener('change', function() {
-        const pfElements = document.querySelectorAll('.{{pessoa_fisica_form.prefix}}');
-        const pjElements = document.querySelectorAll('.{{pessoa_juridica_form.prefix}}');
-        
-        if (this.value === 'PF') {
-            pfElements.forEach(el => el.style.display = 'flex');
-            pjElements.forEach(el => el.style.display = 'none');
-        } else {
-            pfElements.forEach(el => el.style.display = 'none');
-            pjElements.forEach(el => el.style.display = 'flex');
-        }
-    });
-});
+<div class="col-sm-6 {{pessoa_fisica_form.prefix}}">
+  <div class="form-group">
+    <div class="form-line">
+      <label>{{pessoa_fisica_form.cpf.label}}</label>
+      {% if pessoa_fisica_form.cpf.errors %}<label class="error">{% for error in pessoa_fisica_form.cpf.errors %}{{error}}{% endfor %}</label>{% endif %}
+      {{pessoa_fisica_form.cpf}}
+    </div>
+  </div>
+</div>
 
-// Trigger on load
-const checkedRadio = document.querySelector('input[name="{{form.prefix}}-tipo_pessoa"]:checked');
-if (checkedRadio) {
-    checkedRadio.dispatchEvent(new Event('change'));
-}
-</script>
+<div class="col-sm-6 {{pessoa_fisica_form.prefix}}">
+  <div class="form-group">
+    <div class="form-line">
+      <label>{{pessoa_fisica_form.rg.label}}</label>
+      {% if pessoa_fisica_form.rg.errors %}<label class="error">{% for error in pessoa_fisica_form.rg.errors %}{{error}}{% endfor %}</label>{% endif %}
+      {{pessoa_fisica_form.rg}}
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 {{pessoa_fisica_form.prefix}}">
+  <div class="form-group">
+    <div class="form-line">
+      <label>{{pessoa_fisica_form.nascimento.label}}</label>
+      {% if pessoa_fisica_form.nascimento.errors %}<label class="error">{% for error in pessoa_fisica_form.nascimento.errors %}{{error}}{% endfor %}</label>{% endif %}
+      {{pessoa_fisica_form.nascimento}}
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 {{pessoa_juridica_form.prefix}}">
+  <div class="form-group">
+    <div class="form-line">
+      <label>{{pessoa_juridica_form.inscricao_estadual.label}}</label>
+      {% if pessoa_juridica_form.inscricao_estadual.errors %}<label class="error">{% for error in pessoa_juridica_form.inscricao_estadual.errors %}{{error}}{% endfor %}</label>{% endif %}
+      {{pessoa_juridica_form.inscricao_estadual}}
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6">
+  <div class="form-group">
+    <div class="form-line">
+      <label>{{form.inscricao_municipal.label}}</label>
+      {% if form.inscricao_municipal.errors %}<label class="error">{% for error in form.inscricao_municipal.errors %}{{error}}{% endfor %}</label>{% endif %}
+      {{form.inscricao_municipal}}
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 {{pessoa_juridica_form.prefix}}">
+  <div class="form-group">
+    <div class="form-line">
+      <label>{{pessoa_juridica_form.responsavel.label}}</label>
+      {% if pessoa_juridica_form.responsavel.errors %}<label class="error">{% for error in pessoa_juridica_form.responsavel.errors %}{{error}}{% endfor %}</label>{% endif %}
+      {{pessoa_juridica_form.responsavel}}
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 {{pessoa_juridica_form.prefix}}">
+  <div class="form-group">
+    <div class="form-line">
+      <label>{{pessoa_juridica_form.sit_fiscal.label}}</label>
+      {% if pessoa_juridica_form.sit_fiscal.errors %}<label class="error">{% for error in pessoa_juridica_form.sit_fiscal.errors %}{{error}}{% endfor %}</label>{% endif %}
+      {{pessoa_juridica_form.sit_fiscal}}
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 {{pessoa_juridica_form.prefix}}">
+  <div class="form-group">
+    <div class="form-line">
+      <label>{{pessoa_juridica_form.suframa.label}}</label>
+      {% if pessoa_juridica_form.suframa.errors %}<label class="error">{% for error in pessoa_juridica_form.suframa.errors %}{{error}}{% endfor %}</label>{% endif %}
+      {{pessoa_juridica_form.suframa}}
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6">
+  <div class="form-group">
+    <div class="form-line">
+      <label>{{form.informacoes_adicionais.label}}</label>
+      {% if form.informacoes_adicionais.errors %}<label class="error">{% for error in form.informacoes_adicionais.errors %}{{error}}{% endfor %}</label>{% endif %}
+      {{form.informacoes_adicionais}}
+    </div>
+  </div>
+</div>

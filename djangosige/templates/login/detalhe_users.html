@@ -8,7 +8,7 @@
     {% include 'base/msg_sucesso.html' %}
 
     <div class="block-header">
-      <h2>USUÁRIO</h2>
+      <h2>Usuário</h2>
     </div>
     <div class="block-content">
       <div class="card">
@@ -22,7 +22,7 @@
             <form action="{% url 'login:deletarusuarioview' user_match.id %}" method="post">
               {% csrf_token %}
               <input type="hidden" name="user_id" value="{{user_match.id}}">
-              <button class="btn btn-red" type="submit"><i class="material-icons">&#xE872;</i><span> REMOVER</span></button>
+              <button class="btn btn-red" type="submit"><i class="material-icons">&#xE872;</i><span> Remover</span></button>
             </form>
             {%endif%}
           </div>
@@ -63,7 +63,7 @@
               </table>
 
             </div>
-            <a href="{% url 'login:permissoesusuarioview' user_match.id %}" style="margin:15px;float:right;" class="btn btn-primary">EDITAR PERMISSÕES</a>
+            <a href="{% url 'login:permissoesusuarioview' user_match.id %}" style="margin:15px;float:right;" class="btn btn-primary">Editar permissões</a>
         </div>
       </div>
     </div>

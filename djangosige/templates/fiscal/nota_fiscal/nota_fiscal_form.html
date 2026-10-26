@@ -3,21 +3,21 @@
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     
     <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active"><a href="#tab_dados_nfe" data-toggle="tab">DADOS NF-E</a></li>
+      <li role="presentation" class="active"><a href="#tab_dados_nfe" data-toggle="tab">Dados NF-e</a></li>
       {% if saida %}
-      <li role="presentation"><a href="#tab_venda" data-toggle="tab">VENDA</a></li>
-      <li role="presentation"><a href="#tab_emit_dest" data-toggle="tab">EMITENTE/DESTINATÁRIO</a></li>
-      <li role="presentation"><a href="#tab_cobr" data-toggle="tab">COBRANÇA</a></li>
-      <li role="presentation"><a href="#tab_aut" data-toggle="tab">AUTORIZAÇÃO DOWNLOAD</a></li>
+      <li role="presentation"><a href="#tab_venda" data-toggle="tab">Venda</a></li>
+      <li role="presentation"><a href="#tab_emit_dest" data-toggle="tab">Emitente/destinatário</a></li>
+      <li role="presentation"><a href="#tab_cobr" data-toggle="tab">Cobrança</a></li>
+      <li role="presentation"><a href="#tab_aut" data-toggle="tab">Autorização download</a></li>
         {% if edit_nfe %}
-      <li role="presentation"><a href="#validacao" data-toggle="tab">VALIDAÇÃO</a></li>
+      <li role="presentation"><a href="#validacao" data-toggle="tab">Validação</a></li>
       <li role="presentation"><a href="#sefaz" data-toggle="tab">SEFAZ</a></li>
         {% endif %}
       {% elif entrada %}
-      <li role="presentation"><a href="#tab_compra" data-toggle="tab">COMPRA</a></li>
-      <li role="presentation"><a href="#tab_emit_dest" data-toggle="tab">EMITENTE/DESTINATÁRIO</a></li>
+      <li role="presentation"><a href="#tab_compra" data-toggle="tab">Compra</a></li>
+      <li role="presentation"><a href="#tab_emit_dest" data-toggle="tab">Emitente/destinatário</a></li>
       {% endif %}
-      <li role="presentation"><a href="#tab_inf_ad" data-toggle="tab">INFORMAÇÕES ADICIONAIS</a></li>
+      <li role="presentation"><a href="#tab_inf_ad" data-toggle="tab">Informações adicionais</a></li>
     </ul>
 
     <div class="tab-content">
@@ -615,7 +615,7 @@
           <div class="col-sm-6">
             <div class="form-group">
               <div class="form-line">
-                <label>TOTAL (R$)</label>
+                <label>Total (R$)</label>
                 <span class="form-control display-venda-field" id="total_venda"></span>
               </div>
             </div>
@@ -855,7 +855,7 @@
           <div class="col-sm-6">
             <div class="form-group">
               <div class="form-line">
-                <label>TOTAL (R$)</label>
+                <label>Total (R$)</label>
                 <span class="form-control display-compra-field" id="total_compra"></span>
               </div>
             </div>
@@ -1001,7 +1001,7 @@
   </div>
 
   {% if object.status_nfe != '1' and object.status_nfe != '2' and object.status_nfe != '8' or not object%}
-  <button class="btn btn-success foot-btn" type="submit"><i class="material-icons">&#xE148;</i><span> SALVAR</span></button>
+  <button class="btn btn-success foot-btn" type="submit">Salvar</button>
   {% endif %}
 </div>
 <!--#Body-->

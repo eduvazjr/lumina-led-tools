@@ -1,15 +1,15 @@
 <ul class="nav nav-tabs" role="tablist">
-  <li role="presentation" class="active"><a href="#tab_inf_gerais" data-toggle="tab">INFORMAÇÕES GERAIS</a></li>
+  <li role="presentation" class="active"><a href="#tab_inf_gerais" data-toggle="tab">Informações gerais</a></li>
   {% if tipo_pessoa == 'transportadora' %}
-  <li role="presentation"><a href="#tab_veiculo" data-toggle="tab">VEÍCULO</a></li>
+  <li role="presentation"><a href="#tab_veiculo" data-toggle="tab">Veículo</a></li>
   {% endif %}
-  <li role="presentation"><a href="#tab_endereco" data-toggle="tab">ENDEREÇO</a></li>
-  <li role="presentation"><a href="#tab_contato" data-toggle="tab">CONTATO</a></li>
-  <li role="presentation"><a href="#tab_banco" data-toggle="tab">DADOS BANCÁRIOS</a></li>
-  <li role="presentation"><a href="#tab_documento" data-toggle="tab">DOCUMENTOS ADICIONAIS</a></li>
+  <li role="presentation"><a href="#tab_endereco" data-toggle="tab">Endereço</a></li>
+  <li role="presentation"><a href="#tab_contato" data-toggle="tab">Contato</a></li>
+  <li role="presentation"><a href="#tab_banco" data-toggle="tab">Dados bancários</a></li>
+  <li role="presentation"><a href="#tab_documento" data-toggle="tab">Documentos adicionais</a></li>
   {% if tipo_pessoa == 'cliente' and object %}
-  <li role="presentation"><a href="#tab_vendas" data-toggle="tab">VENDAS</a></li>
+  <li role="presentation"><a href="#tab_vendas" data-toggle="tab">Vendas</a></li>
   {% elif tipo_pessoa == 'fornecedor' and object %}
-  <li role="presentation"><a href="#tab_compras" data-toggle="tab">COMPRAS</a></li>
+  <li role="presentation"><a href="#tab_compras" data-toggle="tab">Compras</a></li>
   {% endif %}
 </ul>
