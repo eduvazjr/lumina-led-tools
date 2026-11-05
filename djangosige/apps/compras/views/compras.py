@@ -17,10 +17,10 @@ from djangosige.apps.estoque.models import ProdutoEstocado, EntradaEstoque, Iten
 from djangosige.apps.login.models import Usuario
 from djangosige.configs.settings import MEDIA_ROOT
 
+from djangosige.apps.base.pdf import html_para_pdf
+
 from datetime import datetime
 from pathlib import Path
-
-# from weasyprint import HTML  # Temporariamente desabilitado no Windows
 
 
 class AdicionarCompraView(CustomCreateView):
@@ -133,6 +133,7 @@ class AdicionarPedidoCompraView(AdicionarCompraView):
 
 
 class CompraListView(CustomListView):
+    list_select_related = ('fornecedor',)
 
     def get_context_data(self, **kwargs):
         context = super(CompraListView, self).get_context_data(**kwargs)
@@ -547,7 +548,13 @@ class GerarPDFCompra(CustomView):
             'hoje': timezone.now(),
         }
         html_string = render_to_string('base/pdf/relatorio_documento.html', context)
-        pdf_bytes = HTML(string=html_string, base_url=MEDIA_ROOT).write_pdf()
+        pdf_bytes = html_para_pdf(html_string, base_url=MEDIA_ROOT)
+        if pdf_bytes is None:
+            messages.error(self.request, 'Não foi possível gerar o PDF: o gerador de PDF '
+                           '(WeasyPrint) não está instalado neste servidor.')
+            if isinstance(compra, OrcamentoCompra):
+                return redirect('compras:listaorcamentocompraview')
+            return redirect('compras:listapedidocompraview')
 
         resp = HttpResponse(pdf_bytes, content_type='application/pdf')
         return resp

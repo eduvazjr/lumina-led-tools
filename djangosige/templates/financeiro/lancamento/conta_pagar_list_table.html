@@ -6,7 +6,8 @@
             <tr>
                 <th class="col-id">#</th>
                 <th>Descrição</th>
-                <th style="width:120px">Vencimento</th>
+                <th style="width:210px">Vencimento</th>
+                <th style="width:120px">Nº documento</th>
                 <th style="width:160px">Grupo</th>
                 <th>Fornecedor</th>
                 <th class="col-num" style="width:140px">Valor</th>
@@ -19,7 +20,8 @@
             <tr class="clickable-row" data-href="{% url 'financeiro:editarcontapagarview' conta.id %}">
                 <td class="col-id">{{conta.id}}</td>
                 <td><strong>{{conta.descricao}}</strong></td>
-                <td>{{conta.format_data_vencimento|default_if_none:"—"}}</td>
+                <td>{{conta.format_data_vencimento|default_if_none:"—"}}{% with alerta=conta.alerta_vencimento %}{% if alerta %} <span class="badge badge-{{alerta.tom}}">{{alerta.texto}}</span>{% endif %}{% endwith %}</td>
+                <td>{{conta.numero_documento|default:"—"}}</td>
                 <td>{{conta.classificacao|default_if_none:"—"}}</td>
                 <td>{{conta.fornecedor|default_if_none:"—"}}</td>
                 <td class="col-num"><strong>{{conta.format_valor_liquido}}</strong></td>

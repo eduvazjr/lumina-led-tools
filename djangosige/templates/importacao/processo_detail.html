@@ -1,0 +1,152 @@
+{%extends 'base/base.html'%}
+
+{%block title%}{{processo.referencia}}{%endblock%}
+{%block content%}
+<div class="list-header">
+    <div class="list-heading">
+        <h1 class="page-title"><a href="{% url 'importacao:listaprocessosview' %}" title="Voltar"><i class="material-icons">&#xE5C4;</i></a> {{processo.referencia}}</h1>
+        <p class="page-subtitle">{{processo.mercadoria}} — {{processo.exportador}} ({{processo.pais_origem}}). OC {{processo.numero_ordem_compra}}{% if processo.pedido_compra %}, {{processo.pedido_compra}}{% endif %}.</p>
+    </div>
+    <div class="page-actions">
+        <span class="badge {% if processo.status == 'concluido' %}badge-success{% elif processo.status == 'cancelado' %}badge-danger{% else %}badge-info{% endif %}">{{processo.get_status_display}}</span>
+        <a href="{% url 'importacao:editarprocessoview' processo.id %}" class="btn btn-default">Editar dados</a>
+    </div>
+</div>
+
+{% include 'base/msg_sucesso.html' %}
+
+<div class="kpi-grid">
+    <div class="kpi"><span class="kpi-label">Progresso</span><span class="kpi-value">{{processo.progresso}}%</span><span class="kpi-foot">{% if processo.etapa_atual %}Próxima: {{processo.etapa_atual}}{% else %}Todas as etapas concluídas{% endif %}</span></div>
+    <div class="kpi"><span class="kpi-label">Valor aduaneiro estimado</span><span class="kpi-value"><small>R$</small>{{processo.valor_aduaneiro|floatformat:"2g"}}</span><span class="kpi-foot">{{processo.moeda}} a {{processo.taxa_cambio|floatformat:4}} ({{processo.get_incoterm_display}})</span></div>
+    <div class="kpi"><span class="kpi-label">Custo total</span><span class="kpi-value"><small>R$</small>{{processo.custo_total|floatformat:"2g"}}</span><span class="kpi-foot">Inclui R$ {{processo.total_custos|floatformat:"2g"}} em custos lançados</span></div>
+    <div class="kpi"><span class="kpi-label">Devolução do vazio até</span><span class="kpi-value">{{processo.prazo_devolucao|date:"d/m/Y"|default:"—"}}</span><span class="kpi-foot">{% if processo.demurrage_estimada %}Demurrage estimada: R$ {{processo.demurrage_estimada|floatformat:"2g"}}{% else %}Free time de {{processo.free_time_dias}} dias{% endif %}</span></div>
+</div>
+
+<section class="section" id="etapas">
+    <div class="section-header"><h2 class="section-title">Etapas do processo</h2></div>
+    <form method="post" action="#etapas">
+        {% csrf_token %}
+        <input type="hidden" name="secao" value="etapas">
+        {{etapas_formset.management_form}}
+        <div class="table-wrap">
+            <table class="table">
+                <thead><tr><th>Etapa</th><th style="width:150px">Previsão</th><th style="width:150px">Realizada</th><th style="width:90px">Não se aplica</th><th>Observação</th><th style="width:110px">Situação</th></tr></thead>
+                <tbody>
+                    {% for form in etapas_formset %}
+                    <tr>
+                        <td><strong>{{form.instance}}</strong>{{form.id}}</td>
+                        <td>{{form.data_prevista}}{{form.data_prevista.errors}}</td>
+                        <td>{{form.data_realizada}}{{form.data_realizada.errors}}</td>
+                        <td>{{form.nao_aplica}}<label for="{{form.nao_aplica.id_for_label}}"></label></td>
+                        <td>{{form.observacao}}</td>
+                        <td>{% if form.instance.nao_aplica %}<span class="badge">Não se aplica</span>{% elif form.instance.data_realizada %}<span class="badge badge-success">Concluída</span>{% elif form.instance.atrasada %}<span class="badge badge-danger">Atrasada</span>{% else %}<span class="badge badge-info">Pendente</span>{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="section-body"><button class="btn btn-primary" type="submit">Salvar etapas</button></div>
+    </form>
+</section>
+
+{% if processo.modal == 'maritimo' %}
+<section class="section" id="containers" style="margin-top:20px;">
+    <div class="section-header"><h2 class="section-title">Containers</h2><small>A devolução é concluída quando todos os containers têm data de devolução.</small></div>
+    <form method="post" action="#containers">
+        {% csrf_token %}
+        <input type="hidden" name="secao" value="containers">
+        {{containers_formset.management_form}}
+        <div class="table-wrap">
+            <table class="table">
+                <thead><tr><th>Número</th><th>Tipo</th><th>Lacre</th><th style="width:140px">Retirada</th><th style="width:140px">Devolução do vazio</th><th>Local de devolução</th><th style="width:110px">Demurrage</th><th style="width:70px">Excluir</th></tr></thead>
+                <tbody>
+                    {% for form in containers_formset %}
+                    <tr>
+                        <td>{{form.id}}{{form.processo}}{{form.numero}}{{form.numero.errors}}</td>
+                        <td>{{form.tipo}}</td>
+                        <td>{{form.lacre}}</td>
+                        <td>{{form.data_retirada}}{{form.data_retirada.errors}}</td>
+                        <td>{{form.data_devolucao}}{{form.data_devolucao.errors}}</td>
+                        <td>{{form.local_devolucao}}</td>
+                        <td>{% if form.instance.pk and form.instance.dias_demurrage %}<span class="badge badge-danger">{{form.instance.dias_demurrage}} dia{{form.instance.dias_demurrage|pluralize}}</span>{% else %}—{% endif %}</td>
+                        <td>{% if form.instance.pk %}{{form.DELETE}}<label for="{{form.DELETE.id_for_label}}"></label>{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="section-body"><button class="btn btn-primary" type="submit">Salvar containers</button></div>
+    </form>
+</section>
+{% endif %}
+
+<section class="section" id="custos" style="margin-top:20px;">
+    <div class="section-header"><h2 class="section-title">Custos e tributos</h2><strong>Total: R$ {{processo.total_custos|floatformat:"2g"}}</strong></div>
+    <form method="post" action="#custos">
+        {% csrf_token %}
+        <input type="hidden" name="secao" value="custos">
+        {{custos_formset.management_form}}
+        <div class="table-wrap">
+            <table class="table">
+                <thead><tr><th style="width:200px">Tipo</th><th>Descrição</th><th style="width:140px">Valor (R$)</th><th style="width:140px">Vencimento</th><th style="width:60px">Pago</th><th style="width:70px">Excluir</th></tr></thead>
+                <tbody>
+                    {% for form in custos_formset %}
+                    <tr>
+                        <td>{{form.id}}{{form.processo}}{{form.tipo}}{{form.tipo.errors}}</td>
+                        <td>{{form.descricao}}</td>
+                        <td>{{form.valor}}{{form.valor.errors}}</td>
+                        <td>{{form.data_vencimento}}{{form.data_vencimento.errors}}</td>
+                        <td>{{form.pago}}<label for="{{form.pago.id_for_label}}"></label></td>
+                        <td>{% if form.instance.pk %}{{form.DELETE}}<label for="{{form.DELETE.id_for_label}}"></label>{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="section-body"><button class="btn btn-primary" type="submit">Salvar custos</button></div>
+    </form>
+</section>
+
+<section class="section" id="documentos" style="margin-top:20px;">
+    <div class="section-header"><h2 class="section-title">Documentos</h2></div>
+    <div class="section-body">
+        {% if documentos %}
+        <form method="post" action="#documentos">
+            {% csrf_token %}
+            <input type="hidden" name="secao" value="documentos">
+            <ul class="list-unstyled">
+                {% for documento in documentos %}
+                <li style="margin-bottom:8px;">
+                    <span class="badge">{{documento.get_tipo_display}}</span>
+                    <a href="{% url 'importacao:documentoview' documento.id %}" target="_blank" rel="noopener">{{documento.nome}}</a>
+                    <button class="btn btn-sm btn-default" type="submit" name="remover" value="{{documento.id}}">Remover</button>
+                </li>
+                {% endfor %}
+            </ul>
+        </form>
+        {% endif %}
+        <form method="post" action="#documentos" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="secao" value="documentos">
+            <div class="row">
+                <div class="col-sm-4 form-group">
+                    <label for="{{documentos_form.tipo.id_for_label}}">{{documentos_form.tipo.label}}</label>
+                    {{documentos_form.tipo}}
+                </div>
+                <div class="col-sm-8 form-group">
+                    <label for="{{documentos_form.arquivos.id_for_label}}">{{documentos_form.arquivos.label}}</label>
+                    {% if documentos_form.arquivos.errors %}<label class="error">{% for error in documentos_form.arquivos.errors %}{{error}} {% endfor %}</label>{% endif %}
+                    {{documentos_form.arquivos}}
+                    <small>{{documentos_form.arquivos.help_text}}</small>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Enviar documentos</button>
+        </form>
+    </div>
+</section>
+{%endblock%}
+
+{% block js %}
+  {% include 'base/load_jqueryui.html' %}
+  {% include 'base/datepicker_js.html' %}
+{% endblock %}

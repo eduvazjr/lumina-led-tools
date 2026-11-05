@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
 
+from unittest import mock, skipUnless
+
 from djangosige.tests.test_case import BaseTestCase
+from djangosige.apps.base import pdf
 from djangosige.apps.cadastro.models import Cliente
 from djangosige.apps.vendas.models import CondicaoPagamento, OrcamentoVenda, PedidoVenda
 from djangosige.apps.estoque.models import LocalEstoque, DEFAULT_LOCAL_ID
@@ -264,6 +267,7 @@ class VendasAjaxRequestViewsTestCase(BaseTestCase):
 
 class VendasAcoesUsuarioViewsTestCase(BaseTestCase):
 
+    @skipUnless(pdf.disponivel(), 'WeasyPrint não está instalado nesta máquina')
     def test_gerar_pdf_orcamento_venda(self):
         # Buscar objeto qualquer
         obj = OrcamentoVenda.objects.order_by('pk').last()
@@ -273,6 +277,17 @@ class VendasAcoesUsuarioViewsTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get('Content-Type'), 'application/pdf')
 
+    def test_gerar_pdf_sem_weasyprint_avisa_usuario(self):
+        obj = OrcamentoVenda.objects.order_by('pk').last()
+        url = reverse('vendas:gerarpdforcamentovenda', kwargs={'pk': obj.pk})
+        with mock.patch('djangosige.apps.vendas.views.vendas.html_para_pdf', return_value=None):
+            response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.redirect_chain[-1][0], reverse('vendas:listaorcamentovendaview'))
+        mensagens = [str(m) for m in response.context['messages']]
+        self.assertTrue(any('Não foi possível gerar o PDF' in m for m in mensagens))
+
+    @skipUnless(pdf.disponivel(), 'WeasyPrint não está instalado nesta máquina')
     def test_gerar_pdf_pedido_venda(self):
         # Buscar objeto qualquer
         obj = PedidoVenda.objects.order_by('pk').last()

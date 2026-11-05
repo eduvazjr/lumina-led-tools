@@ -1,0 +1,68 @@
+{%extends 'base/base.html'%}
+{% load static %}
+
+{%block title%}Importar {{ importacao.titulo }}{%endblock%}
+
+{%block content%}
+<div class="dash-header">
+    <div>
+        <h1 class="page-title">Importar {{ importacao.titulo|lower }}</h1>
+        <p class="page-subtitle">{{ importacao.descricao }}</p>
+    </div>
+</div>
+
+{% include 'base/msg_sucesso.html' %}
+
+<section class="section">
+    <div class="section-header">
+        <h2 class="section-title">Arquivo</h2>
+        {% if tipo == 'planilha' %}<a href="{% static 'guia_importacao.html' %}" target="_blank" rel="noopener" class="stat-link">Como montar a planilha</a>{% endif %}
+    </div>
+    <div class="section-body">
+        <form method="post" action="{% url importacao.url %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="arquivo-importacao">Selecione o arquivo</label>
+                <input type="file" id="arquivo-importacao" name="{{ importacao.campo }}" accept="{{ importacao.aceita }}" class="form-control" required>
+                <p class="page-subtitle">Formatos aceitos: {{ importacao.formatos }}.</p>
+            </div>
+            {% if importacao.fornecedor %}<input type="hidden" name="fornecedor" value="on">{% endif %}
+            <button type="submit" class="btn btn-primary">Importar</button>
+        </form>
+    </div>
+</section>
+
+{% if tipo == 'planilha' %}
+<section class="section">
+    <div class="section-header">
+        <h2 class="section-title">Últimas importações</h2>
+    </div>
+    {% if historico %}
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Usuário</th>
+                    <th class="text-right">Importados</th>
+                    <th class="text-right">Com erro</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for imp in historico %}
+                <tr>
+                    <td>{{ imp.data_importacao|date:"d/m/Y H:i" }}</td>
+                    <td>{{ imp.usuario|default:"—" }}</td>
+                    <td class="text-right">{{ imp.registros_importados }}</td>
+                    <td class="text-right">{% if imp.registros_erro %}<span class="badge badge-danger" title="{{ imp.log_erros }}">{{ imp.registros_erro }}</span>{% else %}0{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="section-body"><p class="page-subtitle">Nenhuma planilha importada ainda.</p></div>
+    {% endif %}
+</section>
+{% endif %}
+{%endblock%}

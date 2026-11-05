@@ -23,8 +23,8 @@ urlpatterns = [
     
     # Módulo 3: Departamento Pessoal
     url(r'^dp/(?P<processo_id>[0-9]+)/$', views.departamento_pessoal, name='departamento_pessoal'),
-    url(r'^dp/(?P<dp_id>[0-9]+)/funcionarios/$', views.funcionarios, name='funcionarios'),
-    url(r'^dp/(?P<dp_id>[0-9]+)/folha/$', views.folha_pagamento, name='folha_pagamento'),
+    url(r'^dp/(?P<dp_id>[0-9]+)/funcionarios/$', views.funcionarios, name='rh_dp_funcionarios'),
+    url(r'^dp/(?P<dp_id>[0-9]+)/folha/$', views.folha_pagamento, name='rh_dp_folhas'),
     
     # Módulo 4: Fiscal
     url(r'^fiscal/(?P<processo_id>[0-9]+)/$', views.fiscal, name='fiscal'),
@@ -37,6 +37,11 @@ urlpatterns = [
     url(r'^contabil/(?P<contabil_id>[0-9]+)/conciliacao/$', views.conciliacao_bancaria, name='conciliacao_bancaria'),
     url(r'^contabil/(?P<contabil_id>[0-9]+)/dre/$', views.demonstracao_resultado, name='demonstracao_resultado'),
     
+    # RH: visão geral de todos os clientes
+    url(r'^rh/funcionarios/$', views.rh_funcionarios, name='rh_funcionarios'),
+    url(r'^rh/folhas/$', views.rh_folhas, name='rh_folhas'),
+    url(r'^rh/departamentos/$', views.rh_departamentos, name='rh_departamentos'),
+
     # Relatórios
     url(r'^relatorios/$', views.relatorios, name='relatorios'),
     url(r'^relatorios/processos/$', views.relatorio_processos, name='relatorio_processos'),

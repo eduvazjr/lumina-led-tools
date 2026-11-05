@@ -14,6 +14,9 @@ urlpatterns = [
         name='listalancamentoview'),
 
     # Contas a pagar
+    # financeiro/contapagar/documento/
+    url(r'contapagar/documento/(?P<pk>[0-9]+)/$',
+        views.DocumentoSaidaView.as_view(), name='documentosaidaview'),
     # financeiro/contapagar/adicionar/
     url(r'contapagar/adicionar/$',
         views.AdicionarContaPagarView.as_view(), name='addcontapagarview'),

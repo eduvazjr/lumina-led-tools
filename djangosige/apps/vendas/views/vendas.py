@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.urls import reverse_lazy
+from django.contrib import messages
 from django.shortcuts import redirect
 from django.http import HttpResponse
 
@@ -15,10 +16,10 @@ from djangosige.apps.cadastro.models import MinhaEmpresa
 from djangosige.apps.login.models import Usuario
 from djangosige.configs.settings import MEDIA_ROOT
 
+from djangosige.apps.base.pdf import html_para_pdf
+
 from datetime import datetime
 from pathlib import Path
-
-# from weasyprint import HTML  # Temporariamente desabilitado no Windows
 
 
 class AdicionarVendaView(CustomCreateView):
@@ -130,6 +131,7 @@ class AdicionarPedidoVendaView(AdicionarVendaView):
 
 
 class VendaListView(CustomListView):
+    list_select_related = ('cliente',)
 
     def get_context_data(self, **kwargs):
         context = super(VendaListView, self).get_context_data(**kwargs)
@@ -481,7 +483,13 @@ class GerarPDFVenda(CustomView):
             'hoje': timezone.now(),
         }
         html_string = render_to_string('base/pdf/relatorio_documento.html', context)
-        pdf_bytes = HTML(string=html_string, base_url=MEDIA_ROOT).write_pdf()
+        pdf_bytes = html_para_pdf(html_string, base_url=MEDIA_ROOT)
+        if pdf_bytes is None:
+            messages.error(self.request, 'Não foi possível gerar o PDF: o gerador de PDF '
+                           '(WeasyPrint) não está instalado neste servidor.')
+            if isinstance(venda, OrcamentoVenda):
+                return redirect('vendas:listaorcamentovendaview')
+            return redirect('vendas:listapedidovendaview')
 
         resp = HttpResponse(pdf_bytes, content_type='application/pdf')
         return resp

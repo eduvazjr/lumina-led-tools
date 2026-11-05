@@ -1,0 +1,72 @@
+{%extends 'base/base.html'%}
+
+{%block title%}Processos de importação{%endblock%}
+{%block content%}
+<div class="list-header">
+    <div class="list-heading">
+        <h1 class="page-title">Processos de importação</h1>
+        <p class="page-subtitle">Mercadorias vindas do exterior, da ordem de compra à devolução do container vazio.</p>
+    </div>
+    <div class="page-actions">
+        <button type="button" class="btn btn-danger btn-remove" form="form-lista" disabled title="Marque os processos que deseja remover">
+            Remover<span class="remove-count"></span>
+        </button>
+        <a href="{{add_url}}" class="btn btn-primary">Novo processo</a>
+    </div>
+</div>
+
+{% include 'base/msg_sucesso.html' %}
+
+{% for alerta in alertas %}
+<div class="alert {% if alerta.gravidade == 'critico' %}alert-danger{% elif alerta.gravidade == 'atencao' %}alert-warning{% else %}alert-info{% endif %}" role="alert">
+    <a href="{{alerta.url}}"><strong>{{alerta.titulo}}</strong></a> — {{alerta.detalhe}}
+</div>
+{% endfor %}
+
+<ul class="nav nav-tabs" style="margin-bottom: 16px;">
+    {% for valor, rotulo in filtros %}
+    <li role="presentation"{% if valor == status_atual %} class="active"{% endif %}><a href="?status={{valor}}">{{rotulo}}</a></li>
+    {% endfor %}
+</ul>
+
+<form id="form-lista" action="" method="post" class="list-card">
+    {% csrf_token %}
+    {% if processos %}
+    <div class="list-toolbar">{% include 'base/search.html' %}</div>
+    <div class="table-wrap">
+        <table id="lista-database" class="table">
+            <thead>
+                <tr>
+                    <th>Referência</th>
+                    <th>Ordem de compra</th>
+                    <th>Exportador</th>
+                    <th>Mercadoria</th>
+                    <th>Origem</th>
+                    <th style="width:110px">Chegada</th>
+                    <th>Etapa atual</th>
+                    <th style="width:90px">Progresso</th>
+                    {% include 'base/list_check_all.html' %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for processo in processos %}
+                <tr class="clickable-row" data-href="{{processo.get_absolute_url}}">
+                    <td><strong>{{processo.referencia}}</strong></td>
+                    <td>{{processo.numero_ordem_compra}}</td>
+                    <td>{{processo.exportador}}</td>
+                    <td>{{processo.mercadoria}}</td>
+                    <td>{{processo.pais_origem}}</td>
+                    <td>{{processo.data_chegada|date:"d/m/Y"|default:"—"}}</td>
+                    <td>{% with etapa=processo.etapa_atual %}{% if etapa %}<span class="badge {% if etapa.atrasada %}badge-danger{% else %}badge-info{% endif %}">{{etapa}}</span>{% else %}<span class="badge badge-success">{{processo.get_status_display}}</span>{% endif %}{% endwith %}</td>
+                    <td>{{processo.progresso}}%</td>
+                    {% include 'base/list_check.html' with obj_id=processo.id %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    {% include 'base/list_empty.html' with message='Nenhum processo encontrado' hint='Crie um processo a partir da ordem de compra.' add_label='Novo processo' %}
+    {% endif %}
+</form>
+{%endblock%}

@@ -1,0 +1,59 @@
+{%extends 'base/base.html'%}
+
+{%block title%}Folhas de pagamento{%endblock%}
+
+{%block content%}
+<div class="list-header">
+    <div class="list-heading">
+        <h1 class="page-title">Folhas de pagamento</h1>
+        <p class="page-subtitle">{% if dp %}Departamento pessoal do processo {{ processo.numero_processo }} · {{ processo.cliente }}{% else %}Folhas mensais de todos os clientes{% endif %}</p>
+    </div>
+    <div class="page-actions">
+        {% if total_pendentes %}<span class="badge badge-warning">{{ total_pendentes }} pendente{{ total_pendentes|pluralize }}</span>{% endif %}
+    </div>
+</div>
+
+<div class="list-card">
+    <div class="list-toolbar agent-filters">
+        <div class="agent-chips" role="group" aria-label="Situação">
+            <a href="?" class="chip{% if not situacao %} is-on{% endif %}">Todas</a>
+            <a href="?situacao=pendentes" class="chip{% if situacao == 'pendentes' %} is-on{% endif %}">Pendentes</a>
+            <a href="?situacao=processadas" class="chip{% if situacao == 'processadas' %} is-on{% endif %}">Processadas</a>
+        </div>
+    </div>
+    {% if folhas %}
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Competência</th>
+                    {% if not dp %}<th>Cliente</th>{% endif %}
+                    <th class="text-right">Proventos</th>
+                    <th class="text-right">Descontos</th>
+                    <th class="text-right">Líquido</th>
+                    <th class="text-right">INSS empresa</th>
+                    <th class="text-right">FGTS</th>
+                    <th>Situação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for folha in folhas %}
+                <tr>
+                    <td><strong>{{ folha.mes_referencia|stringformat:"02d" }}/{{ folha.ano_referencia }}</strong></td>
+                    {% if not dp %}<td><a href="{% url 'contabilidade:detalhe_processo' folha.dp.processo.pk %}" class="stat-link">{{ folha.dp.processo.cliente }}</a></td>{% endif %}
+                    <td class="text-right">R$ {{ folha.total_proventos|floatformat:2 }}</td>
+                    <td class="text-right">R$ {{ folha.total_descontos|floatformat:2 }}</td>
+                    <td class="text-right"><strong>R$ {{ folha.total_liquido|floatformat:2 }}</strong></td>
+                    <td class="text-right">R$ {{ folha.inss_empresa|floatformat:2 }}</td>
+                    <td class="text-right">R$ {{ folha.fgts|floatformat:2 }}</td>
+                    <td>{% if folha.processada %}<span class="badge badge-success">Processada{% if folha.data_pagamento %} · paga {{ folha.data_pagamento|date:"d/m" }}{% endif %}</span>{% else %}<span class="badge badge-warning">Pendente</span>{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    {% include 'base/list_empty.html' with message='Nenhuma folha de pagamento encontrada' hint='As folhas são geradas no departamento pessoal de cada processo contábil.' %}
+    {% endif %}
+</div>
+{%endblock%}

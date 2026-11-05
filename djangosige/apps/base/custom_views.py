@@ -5,6 +5,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 
 from django.shortcuts import redirect
+from django.db.models import QuerySet
 
 from djangosige.apps.base.views_mixins import CheckPermissionMixin, FormValidationMessageMixin
 
@@ -43,12 +44,27 @@ class CustomCreateView(CheckPermissionMixin, FormValidationMessageMixin, CreateV
 
 
 class CustomListView(CheckPermissionMixin, ListView):
+    # Relacoes buscadas junto com a lista (evita uma consulta por linha)
+    list_select_related = ()
+    list_prefetch_related = ()
 
     def __init__(self, *args, **kwargs):
         super(CustomListView, self).__init__(*args, **kwargs)
 
     def get_queryset(self):
         return self.model.objects.all()
+
+    def get_context_data(self, **kwargs):
+        object_list = kwargs.get('object_list', self.object_list)
+        if isinstance(object_list, QuerySet):
+            if self.list_select_related:
+                object_list = object_list.select_related(
+                    *self.list_select_related)
+            if self.list_prefetch_related:
+                object_list = object_list.prefetch_related(
+                    *self.list_prefetch_related)
+            self.object_list = kwargs['object_list'] = object_list
+        return super(CustomListView, self).get_context_data(**kwargs)
 
     # Remover items selecionados da database
     def post(self, request, *args, **kwargs):

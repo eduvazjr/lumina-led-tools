@@ -8,6 +8,8 @@ from djangosige.configs import DEBUG
 app_name = 'base'
 urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^alertas/$', views.AlertasView.as_view(), name='alertasview'),
+    url(r'^importacao/(?P<tipo>[\w-]+)/$', views.ImportacaoView.as_view(), name='importacaoview'),
 ]
 
 if DEBUG:

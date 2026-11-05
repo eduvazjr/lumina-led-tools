@@ -14,4 +14,36 @@
 
     $.Admin.maskInput.maskLancamento();
     $.Admin.lancamentoForm.init(req_urls);
+
+    // Status: a data de pagamento so aparece quando a conta esta paga
+    var statusConta = $('select#id_status');
+    var campoPagamento = $('#campo_data_pagamento');
+    if(statusConta.length && !statusConta.prop('disabled') && campoPagamento.length){
+      var atualizarPagamento = function(){
+        var pago = statusConta.val() === '0';
+        var dataInput = campoPagamento.find('input');
+        campoPagamento.toggle(pago);
+        if(pago && !dataInput.val()){
+          dataInput.val(new Date().toLocaleDateString('pt-BR'));
+        }
+      };
+      statusConta.on('change', atualizarPagamento);
+      atualizarPagamento();
+    }
+
+    // Ao voltar de outra aba (ex.: novo plano de contas), atualiza as opcoes sem perder o que foi digitado
+    $(window).on('focus', function(){
+      $.get(window.location.href, function(html){
+        var pagina = $('<div>').append($.parseHTML(html));
+        ['#id_grupo_plano', '#id_fornecedor', '#id_cliente'].forEach(function(campo){
+          var novas = pagina.find('select' + campo + ' option');
+          var select = $('select' + campo);
+          if(novas.length && select.length){
+            var atual = select.val();
+            select.empty().append(novas);
+            select.val(atual);
+          }
+        });
+      });
+    });
   </script>

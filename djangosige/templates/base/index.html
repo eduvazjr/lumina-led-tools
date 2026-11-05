@@ -25,6 +25,34 @@
     </div>
 </div>
 
+{# ---------- Agente administrativo ---------- #}
+{% with r=agente_resumo %}
+<section class="section agent-panel">
+    <div class="section-header">
+        <div>
+            <h2 class="section-title">Assistente administrativo</h2>
+            <p class="agent-sub">Prazos e riscos encontrados nos dados de todos os módulos</p>
+        </div>
+        <div class="agent-counts">
+            {% if r.critico %}<a href="{% url 'base:alertasview' %}?gravidade=critico" class="badge badge-danger">{{ r.critico }} crítico{{ r.critico|pluralize }}</a>{% endif %}
+            {% if r.atencao %}<a href="{% url 'base:alertasview' %}?gravidade=atencao" class="badge badge-warning">{{ r.atencao }} atenção</a>{% endif %}
+            {% if r.info %}<a href="{% url 'base:alertasview' %}?gravidade=info" class="badge badge-info">{{ r.info }} aviso{{ r.info|pluralize }}</a>{% endif %}
+            {% if not agente_total %}<span class="badge badge-success">Nada pendente</span>{% endif %}
+        </div>
+    </div>
+    {% if agente_alertas %}
+    <ul class="ag-list">
+        {% for alerta in agente_alertas %}{% include 'base/alerta_item.html' %}{% endfor %}
+    </ul>
+    {% if agente_total > agente_alertas|length %}
+    <div class="agent-foot"><a href="{% url 'base:alertasview' %}" class="stat-link">Ver todos os {{ agente_total }} alertas</a></div>
+    {% endif %}
+    {% else %}
+    <p class="agent-empty">Nenhum prazo vencendo nem risco identificado. Tudo em dia.</p>
+    {% endif %}
+</section>
+{% endwith %}
+
 {# ---------- Caixa ---------- #}
 <div class="kpi-grid">
     <div class="kpi kpi-highlight">

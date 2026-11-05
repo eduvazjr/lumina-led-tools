@@ -21,7 +21,7 @@ def dashboard(request):
     periodo = request.GET.get('periodo')
     
     # Query base
-    pagamentos = PagamentoFornecedor.objects.all()
+    pagamentos = PagamentoFornecedor.objects.select_related('fornecedor')
     
     # Aplicar filtros
     if fornecedor_id:

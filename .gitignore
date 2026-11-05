@@ -40,6 +40,7 @@ arquivos/
 setup.py
 djangosige/configs/configs.py
 djangosige/media/imagens/usuarios/
+djangosige/documentos_privados/
 .env
 .venv/
 *.sqlite3

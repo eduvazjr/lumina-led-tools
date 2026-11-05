@@ -31,7 +31,8 @@ DATABASE_URL = config('DATABASE_URL', default=None)
 if DATABASE_URL:
     # Produção: usa PostgreSQL via DATABASE_URL
     DATABASES = {
-        'default': dburl(DATABASE_URL)
+        # conn_max_age reaproveita a conexao entre requisicoes
+        'default': dburl(DATABASE_URL, conn_max_age=600, conn_health_checks=True)
     }
 else:
     # Desenvolvimento: usa SQLite local
@@ -67,6 +68,7 @@ INSTALLED_APPS = [
     'djangosige.apps.gerencial',
     'djangosige.apps.financeiro_grupo',
     'djangosige.apps.juridico',
+    'djangosige.apps.importacao',
     
     # HG Contabilidade - Sistema completo de contabilidade
     'djangosige.apps.contabilidade',
@@ -104,6 +106,8 @@ TEMPLATES = [
                 'djangosige.apps.base.context_version.sige_version',
                 # contexto para a foto de perfil do usuario
                 'djangosige.apps.login.context_user.foto_usuario',
+                # contador de alertas do agente administrativo
+                'djangosige.apps.base.context_alertas.alertas_agente',
             ],
         },
     },
@@ -166,6 +170,9 @@ FIXTURE_DIRS = [
 
 MEDIA_ROOT = os.path.join(APP_ROOT, 'media/')
 MEDIA_URL = 'media/'
+
+# Documentos financeiros e de importacao: fora de MEDIA_ROOT, abertos apenas pelas telas do sistema
+DOCUMENTOS_PRIVADOS_ROOT = os.path.join(APP_ROOT, 'documentos_privados/')
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 

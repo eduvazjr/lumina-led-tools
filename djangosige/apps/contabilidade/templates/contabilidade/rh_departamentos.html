@@ -1,0 +1,53 @@
+{%extends 'base/base.html'%}
+
+{%block title%}Departamentos pessoais{%endblock%}
+
+{%block content%}
+<div class="list-header">
+    <div class="list-heading">
+        <h1 class="page-title">Departamentos pessoais</h1>
+        <p class="page-subtitle">Situação do DP de cada cliente: funcionários, folhas e eSocial</p>
+    </div>
+</div>
+
+<div class="list-card">
+    {% if departamentos %}
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Processo</th>
+                    <th>Cliente</th>
+                    <th class="text-right">Funcionários ativos</th>
+                    <th class="text-right">Folhas pendentes</th>
+                    <th>Última folha</th>
+                    <th>eSocial</th>
+                    <th>Situação</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dp in departamentos %}
+                <tr>
+                    <td><strong>{{ dp.processo.numero_processo }}</strong></td>
+                    <td>{{ dp.processo.cliente }}</td>
+                    <td class="text-right">{{ dp.qtd_funcionarios }}</td>
+                    <td class="text-right">{% if dp.qtd_folhas_pendentes %}<span class="badge badge-warning">{{ dp.qtd_folhas_pendentes }}</span>{% else %}0{% endif %}</td>
+                    <td>{{ dp.ultima_folha_processada|date:"m/Y"|default:"—" }}</td>
+                    <td>{% if dp.esocial_ativo %}<span class="badge badge-success">Ativo</span>{% else %}<span class="badge">Inativo</span>{% endif %}</td>
+                    <td>{% if dp.em_dia %}<span class="badge badge-success">Em dia</span>{% else %}<span class="badge badge-danger">Atrasado</span>{% endif %}</td>
+                    <td class="text-right">
+                        <a href="{% url 'contabilidade:rh_dp_funcionarios' dp.pk %}" class="stat-link">Funcionários</a> ·
+                        <a href="{% url 'contabilidade:rh_dp_folhas' dp.pk %}" class="stat-link">Folhas</a> ·
+                        <a href="{% url 'contabilidade:departamento_pessoal' dp.processo.pk %}" class="stat-link">Editar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    {% include 'base/list_empty.html' with message='Nenhum departamento pessoal cadastrado' hint='O departamento pessoal é criado na etapa DP de cada processo contábil.' %}
+    {% endif %}
+</div>
+{%endblock%}

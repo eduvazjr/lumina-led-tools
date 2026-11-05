@@ -5,12 +5,17 @@ from django.core.validators import MinValueValidator
 from decimal import Decimal
 from django.urls import reverse_lazy
 from django.template.defaultfilters import date
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+from datetime import date as _date
+
+from djangosige.apps.base.storage import DocumentosPrivadosStorage
 
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
 STATUS_CONTA_SAIDA_ESCOLHAS = (
-    (u'0', u'Paga'),
+    (u'0', u'Pago'),
     (u'1', u'A pagar'),
     (u'2', u'Atrasada'),
 )
@@ -76,6 +81,7 @@ class Entrada(Lancamento):
 class Saida(Lancamento):
     fornecedor = models.ForeignKey(
         'cadastro.Fornecedor', related_name="conta_fornecedor", on_delete=models.SET_NULL, null=True, blank=True)
+    numero_documento = models.CharField(max_length=60, blank=True, default='')
     status = models.CharField(
         max_length=1, choices=STATUS_CONTA_SAIDA_ESCOLHAS, default='1')
     grupo_plano = models.ForeignKey(
@@ -89,6 +95,42 @@ class Saida(Lancamento):
 
     def get_tipo(self):
         return 'Saida'
+
+    @property
+    def alerta_vencimento(self):
+        from djangosige.apps.base.agente import DIAS_PROXIMOS
+
+        if self.status == '0' or not self.data_vencimento:
+            return None
+        dias = (self.data_vencimento - _date.today()).days
+        if dias < 0:
+            return {'tom': 'danger', 'texto': 'Vencida há %d dia%s' % (-dias, 's' if dias < -1 else '')}
+        if dias == 0:
+            return {'tom': 'warning', 'texto': 'Vence hoje'}
+        if dias <= DIAS_PROXIMOS:
+            return {'tom': 'info', 'texto': 'Vence em %d dia%s' % (dias, 's' if dias > 1 else '')}
+        return None
+
+
+class DocumentoSaida(models.Model):
+    saida = models.ForeignKey(
+        'financeiro.Saida', related_name="documentos", on_delete=models.CASCADE)
+    arquivo = models.FileField(
+        upload_to='financeiro/%Y/%m/', storage=DocumentosPrivadosStorage())
+    nome = models.CharField(max_length=255)
+    data_envio = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Documento da conta a pagar"
+        ordering = ['id']
+
+    def __str__(self):
+        return self.nome
+
+
+@receiver(post_delete, sender=DocumentoSaida)
+def remover_arquivo_documento(sender, instance, **kwargs):
+    instance.arquivo.delete(save=False)
 
 
 class MovimentoCaixa(models.Model):

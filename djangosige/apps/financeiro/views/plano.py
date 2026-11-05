@@ -27,6 +27,8 @@ class PlanoContasView(CustomTemplateView):
 
         context['all_grupos_entrada'] = grupo_entrada
         context['all_grupos_saida'] = grupo_saida
+        context['voltar_url'] = self.request.session.get(
+            'financeiro_voltar') or reverse_lazy('financeiro:listacontapagarview')
         return context
 
     # Remover items selecionados da database

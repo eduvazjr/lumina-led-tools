@@ -21,7 +21,8 @@ def dashboard(request):
     status = request.GET.get('status')
     
     # Query base
-    transferencias = TransferenciaGrupo.objects.all()
+    transferencias = TransferenciaGrupo.objects.select_related(
+        'empresa_origem', 'empresa_destino')
     
     # Aplicar filtros
     if origem_id:

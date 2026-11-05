@@ -146,6 +146,9 @@ class AdicionarPessoaView(CustomCreateView):
 
 
 class PessoasListView(CustomListView):
+    list_select_related = (
+        'pessoa_fis_info', 'pessoa_jur_info', 'telefone_padrao')
+    list_prefetch_related = ('telefone',)
 
     def __init__(self, *args, **kwargs):
         super(PessoasListView, self).__init__(*args, **kwargs)

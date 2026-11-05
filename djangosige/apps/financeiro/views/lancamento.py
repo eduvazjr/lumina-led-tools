@@ -2,19 +2,20 @@
 
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.shortcuts import redirect
-from django.http import JsonResponse
+from django.shortcuts import redirect, get_object_or_404
+from django.http import JsonResponse, FileResponse
 
 from djangosige.apps.base.custom_views import CustomView, CustomCreateView, CustomListView, CustomUpdateView
 
 from djangosige.apps.financeiro.forms import ContaPagarForm, ContaReceberForm, SaidaForm, EntradaForm
-from djangosige.apps.financeiro.models import Lancamento, Saida, Entrada, MovimentoCaixa
+from djangosige.apps.base.agente import DIAS_PROXIMOS
+from djangosige.apps.financeiro.models import Lancamento, Saida, Entrada, MovimentoCaixa, DocumentoSaida
 from djangosige.apps.vendas.models import PedidoVenda
 from djangosige.apps.compras.models import PedidoCompra
 from djangosige.apps.estoque.models import SaidaEstoque, ItensMovimento, ProdutoEstocado
 
 from itertools import chain
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class MovimentoCaixaMixin(object):
@@ -103,6 +104,7 @@ class AdicionarLancamentoBaseView(CustomCreateView, MovimentoCaixaMixin):
         form_class = self.get_form_class()
         form = form_class(user=request.user)
         form.initial['data_pagamento'] = datetime.today().strftime('%d/%m/%Y')
+        request.session['financeiro_voltar'] = request.get_full_path()
         return self.render_to_response(self.get_context_data(form=form))
 
     def post(self, request, *args, **kwargs):
@@ -118,7 +120,7 @@ class AdicionarLancamentoBaseView(CustomCreateView, MovimentoCaixaMixin):
         request.POST = req_post
 
         form_class = self.get_form_class()
-        form = form_class(request.POST, user=request.user)
+        form = form_class(request.POST, request.FILES, user=request.user)
 
         if form.is_valid():
             self.object = form.save(commit=False)
@@ -143,6 +145,8 @@ class AdicionarLancamentoBaseView(CustomCreateView, MovimentoCaixaMixin):
                     self.object.movimento_caixa = mvmt
 
             self.object.save()
+            form.salvar_documentos(self.object)
+            request.session.pop('financeiro_voltar', None)
             return self.form_valid(form)
 
         return self.form_invalid(form)
@@ -214,6 +218,7 @@ class EditarLancamentoBaseView(CustomUpdateView, MovimentoCaixaMixin):
         self.object = self.get_object()
         form_class = self.get_form_class()
         form = form_class(instance=self.object, user=request.user)
+        request.session['financeiro_voltar'] = request.get_full_path()
         return self.render_to_response(self.get_context_data(form=form))
 
     def post(self, request, *args, **kwargs):
@@ -230,7 +235,7 @@ class EditarLancamentoBaseView(CustomUpdateView, MovimentoCaixaMixin):
         self.object = self.get_object()
         vliquido_previo = self.object.valor_liquido
         form_class = self.get_form_class()
-        form = form_class(request.POST, instance=self.object,
+        form = form_class(request.POST, request.FILES, instance=self.object,
                           user=request.user)
 
         if form.is_valid():
@@ -314,6 +319,8 @@ class EditarLancamentoBaseView(CustomUpdateView, MovimentoCaixaMixin):
                         self.object.movimento_caixa = mvmt
 
             self.object.save()
+            form.salvar_documentos(self.object)
+            request.session.pop('financeiro_voltar', None)
             return self.form_valid(form)
 
         return self.form_invalid(form)
@@ -362,7 +369,7 @@ class EditarEntradaView(EditarLancamentoBaseView):
 
 
 class EditarSaidaView(EditarLancamentoBaseView):
-    form_class = SaidaForm
+    form_class = ContaPagarForm
     model = Saida
     template_name = "financeiro/lancamento/lancamento_edit.html"
     success_url = reverse_lazy('financeiro:listapagamentosview')
@@ -376,6 +383,15 @@ class EditarSaidaView(EditarLancamentoBaseView):
 
 class LancamentoListBaseView(CustomListView, MovimentoCaixaMixin):
     permission_codename = 'view_lancamento'
+
+    @property
+    def list_select_related(self):
+        # Contas a pagar mostram o fornecedor; contas a receber, o cliente
+        if self.model is Saida:
+            return ('fornecedor',)
+        if self.model is Entrada:
+            return ('cliente',)
+        return ()
 
     def get_queryset(self, object, status):
         return object.objects.filter(status__in=status)
@@ -407,8 +423,8 @@ class LancamentoListView(LancamentoListBaseView):
         return context
 
     def get_queryset(self):
-        all_entradas = Entrada.objects.all()
-        all_saidas = Saida.objects.all()
+        all_entradas = Entrada.objects.select_related('cliente')
+        all_saidas = Saida.objects.select_related('fornecedor')
         all_lancamentos = list(chain(all_saidas, all_entradas))
         return all_lancamentos
 
@@ -432,6 +448,40 @@ class LancamentoListView(LancamentoListBaseView):
         return redirect(self.success_url)
 
 
+def alertas_vencimento_contas_pagar():
+    hoje = datetime.now().date()
+    abertas = Saida.objects.filter(status__in=['1', '2'])
+    vencidas = abertas.filter(data_vencimento__lt=hoje).count()
+    vencem_hoje = abertas.filter(data_vencimento=hoje).count()
+    proximas = abertas.filter(
+        data_vencimento__gt=hoje, data_vencimento__lte=hoje + timedelta(days=DIAS_PROXIMOS)).count()
+
+    alertas = []
+    if vencidas:
+        alertas.append({'tom': 'danger', 'texto': '%d conta%s a pagar vencida%s' % (
+            vencidas, 's' if vencidas > 1 else '', 's' if vencidas > 1 else ''),
+            'url': reverse_lazy('financeiro:listacontapagaratrasadasview')})
+    if vencem_hoje:
+        alertas.append({'tom': 'warning', 'texto': '%d conta%s a pagar vence%s hoje' % (
+            vencem_hoje, 's' if vencem_hoje > 1 else '', 'm' if vencem_hoje > 1 else ''),
+            'url': reverse_lazy('financeiro:listacontapagarhojeview')})
+    if proximas:
+        alertas.append({'tom': 'info', 'texto': '%d conta%s a pagar vence%s nos próximos %d dias' % (
+            proximas, 's' if proximas > 1 else '', 'm' if proximas > 1 else '', DIAS_PROXIMOS),
+            'url': None})
+    return alertas
+
+
+class DocumentoSaidaView(CustomView):
+    permission_codename = 'view_lancamento'
+
+    def get(self, request, *args, **kwargs):
+        documento = get_object_or_404(DocumentoSaida, pk=kwargs['pk'])
+        extensao = documento.nome.rsplit('.', 1)[-1].lower()
+        return FileResponse(documento.arquivo.open('rb'), filename=documento.nome,
+                            as_attachment=extensao not in ('pdf', 'jpg', 'jpeg', 'png'))
+
+
 class ContaPagarListView(LancamentoListBaseView):
     template_name = 'financeiro/lancamento/lancamento_list.html'
     model = Saida
@@ -442,6 +492,7 @@ class ContaPagarListView(LancamentoListBaseView):
         context = super(ContaPagarListView, self).get_context_data(**kwargs)
         context['title_complete'] = 'CONTAS A PAGAR'
         context['add_url'] = reverse_lazy('financeiro:addcontapagarview')
+        context['alertas_vencimento'] = alertas_vencimento_contas_pagar()
         return context
 
     def get_queryset(self):

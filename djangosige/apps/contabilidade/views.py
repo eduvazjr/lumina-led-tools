@@ -34,7 +34,7 @@ def dashboard(request):
     processos_concluidos = ProcessoContabil.objects.filter(status='concluido').count()
     
     # Processos recentes
-    processos_recentes = ProcessoContabil.objects.filter(ativo=True).order_by('-data_abertura')[:5]
+    processos_recentes = ProcessoContabil.objects.filter(ativo=True).select_related('cliente').order_by('-data_abertura')[:5]
     
     # Alertas e pendências
     hoje = datetime.now().date()
@@ -303,34 +303,89 @@ def departamento_pessoal(request, processo_id):
 
 @login_required
 def funcionarios(request, dp_id):
-    """Gerenciar funcionários"""
-    
+    """Funcionários de um departamento pessoal"""
+
     dp = get_object_or_404(DepartamentoPessoal, pk=dp_id)
-    funcionarios_lista = dp.funcionarios.all().order_by('nome_completo')
-    
-    context = {
-        'dp': dp,
-        'processo': dp.processo,
-        'funcionarios': funcionarios_lista,
-    }
-    
-    return render(request, 'contabilidade/funcionarios.html', context)
+    return _render_funcionarios(request, dp.funcionarios.all(), dp)
 
 
 @login_required
 def folha_pagamento(request, dp_id):
-    """Gerenciar folhas de pagamento"""
-    
+    """Folhas de pagamento de um departamento pessoal"""
+
     dp = get_object_or_404(DepartamentoPessoal, pk=dp_id)
-    folhas = dp.folhas.all().order_by('-ano_referencia', '-mes_referencia')
-    
+    return _render_folhas(request, dp.folhas.all(), dp)
+
+
+# ==================== RH: VISÃO GERAL DE TODOS OS CLIENTES ====================
+
+def _render_funcionarios(request, funcionarios_qs, dp=None):
+    funcionarios_qs = funcionarios_qs.select_related('dp__processo__cliente').order_by('nome_completo')
+
+    busca = request.GET.get('q', '').strip()
+    situacao = request.GET.get('situacao', '')
+    if busca:
+        funcionarios_qs = funcionarios_qs.filter(
+            Q(nome_completo__icontains=busca) | Q(cpf__icontains=busca) | Q(cargo__icontains=busca)
+        )
+    if situacao == 'ativos':
+        funcionarios_qs = funcionarios_qs.filter(ativo=True)
+    elif situacao == 'desligados':
+        funcionarios_qs = funcionarios_qs.filter(ativo=False)
+
     context = {
         'dp': dp,
-        'processo': dp.processo,
-        'folhas': folhas,
+        'processo': dp.processo if dp else None,
+        'funcionarios': funcionarios_qs,
+        'total_ativos': funcionarios_qs.filter(ativo=True).count(),
+        'folha_salarial': funcionarios_qs.filter(ativo=True).aggregate(total=Sum('salario'))['total'] or 0,
+        'busca': busca,
+        'situacao': situacao,
     }
-    
-    return render(request, 'contabilidade/folha_pagamento.html', context)
+    return render(request, 'contabilidade/rh_funcionarios.html', context)
+
+
+def _render_folhas(request, folhas_qs, dp=None):
+    folhas_qs = folhas_qs.select_related('dp__processo__cliente').order_by('-ano_referencia', '-mes_referencia')
+
+    situacao = request.GET.get('situacao', '')
+    if situacao == 'processadas':
+        folhas_qs = folhas_qs.filter(processada=True)
+    elif situacao == 'pendentes':
+        folhas_qs = folhas_qs.filter(processada=False)
+
+    context = {
+        'dp': dp,
+        'processo': dp.processo if dp else None,
+        'folhas': folhas_qs,
+        'total_pendentes': folhas_qs.filter(processada=False).count(),
+        'situacao': situacao,
+    }
+    return render(request, 'contabilidade/rh_folhas.html', context)
+
+
+@login_required
+def rh_funcionarios(request):
+    """Funcionários de todos os clientes"""
+    return _render_funcionarios(request, Funcionario.objects.all())
+
+
+@login_required
+def rh_folhas(request):
+    """Folhas de pagamento de todos os clientes"""
+    return _render_folhas(request, FolhaPagamento.objects.all())
+
+
+@login_required
+def rh_departamentos(request):
+    """Departamentos pessoais de todos os clientes"""
+
+    departamentos = DepartamentoPessoal.objects.select_related('processo__cliente').annotate(
+        qtd_funcionarios=Count('funcionarios', filter=Q(funcionarios__ativo=True), distinct=True),
+        qtd_folhas_pendentes=Count('folhas', filter=Q(folhas__processada=False), distinct=True),
+    ).order_by('processo__numero_processo')
+
+    return render(request, 'contabilidade/rh_departamentos.html', {'departamentos': departamentos})
 
 
 # ==================== MÓDULO 4: FISCAL ====================

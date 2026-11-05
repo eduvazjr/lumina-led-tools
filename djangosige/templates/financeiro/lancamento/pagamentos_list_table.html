@@ -6,6 +6,7 @@
                 <th class="col-id">#</th>
                 <th>Descrição</th>
                 <th style="width:120px">Pago em</th>
+                <th style="width:120px">Nº documento</th>
                 <th style="width:160px">Grupo</th>
                 <th>Fornecedor</th>
                 <th class="col-num" style="width:140px">Valor</th>
@@ -18,6 +19,7 @@
                 <td class="col-id">{{saida.id}}</td>
                 <td><strong>{{saida.descricao}}</strong></td>
                 <td>{{saida.format_data_pagamento|default_if_none:"—"}}</td>
+                <td>{{saida.numero_documento|default:"—"}}</td>
                 <td>{{saida.classificacao|default_if_none:"—"}}</td>
                 <td>{{saida.fornecedor|default_if_none:"—"}}</td>
                 <td class="col-num"><strong>{{saida.format_valor_liquido}}</strong></td>

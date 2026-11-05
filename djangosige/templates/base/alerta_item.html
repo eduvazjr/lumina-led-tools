@@ -1,0 +1,15 @@
+{# Um alerta do agente administrativo. Recebe: alerta. #}
+<li>
+    <a href="{{ alerta.url|default:'#' }}" class="ag-row ag-{{ alerta.gravidade }}">
+        <span class="ag-mark" aria-hidden="true"></span>
+        <span class="ag-body">
+            <span class="ag-title">{{ alerta.titulo }}</span>
+            {% if alerta.detalhe %}<span class="ag-detail">{{ alerta.detalhe }}</span>{% endif %}
+        </span>
+        <span class="ag-meta">
+            <span class="ag-tag">{{ alerta.modulo }}</span>
+            {% if alerta.gravidade == 'critico' %}<span class="ag-level">Crítico</span>{% elif alerta.gravidade == 'atencao' %}<span class="ag-level">Atenção</span>{% else %}<span class="ag-level">Aviso</span>{% endif %}
+        </span>
+        <svg class="item-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </a>
+</li>

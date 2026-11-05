@@ -40,6 +40,12 @@
 
 {% include 'base/msg_sucesso.html' %}
 
+{% for alerta in alertas_vencimento %}
+<div class="alert alert-{{alerta.tom}}" role="alert">
+    <strong>{{alerta.texto}}</strong>{% if alerta.url %} — <a href="{{alerta.url}}">ver contas</a>{% endif %}
+</div>
+{% endfor %}
+
 <form id="form-lista" action="" method="post" class="list-card">
     {% csrf_token %}
     {% if all_contaspagar %}

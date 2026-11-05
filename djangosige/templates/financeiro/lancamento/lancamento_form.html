@@ -17,10 +17,22 @@
           <label>{{form.status.label}}</label>{% if form.status.field.required %}<strong style="color:red;"> *</strong>{% endif %}
           {% if form.status.errors %}<label class="error">{% for error in form.status.errors %}{{error}}{% endfor %}</label>{% endif %}
           {{form.status}}
-          <input type="hidden" id="id_status" name="status" value="{{form.status.initial}}" />
+          {% if not form.status_editavel %}<input type="hidden" id="id_status" name="status" value="{{form.status.initial}}" />{% endif %}
         </div>
       </div>
     </div>
+
+    {% if form.numero_documento %}
+    <div class="col-sm-6">
+      <div class="form-group">
+        <div class="form-line">
+          <label>{{form.numero_documento.label}}</label>
+          {% if form.numero_documento.errors %}<label class="error">{% for error in form.numero_documento.errors %}{{error}}{% endfor %}</label>{% endif %}
+          {{form.numero_documento}}
+        </div>
+      </div>
+    </div>
+    {% endif %}
 
     {% if form.fornecedor %}
     <div class="col-sm-6">
@@ -73,8 +85,8 @@
       </div>
     </div>
 
-    {% if form.status.initial == '0' %}
-    <div class="col-sm-6">
+    {% if form.status.initial == '0' or form.status_editavel %}
+    <div class="col-sm-6" id="campo_data_pagamento">
       <div class="form-group">
         <div class="form-line">
           <label>{{form.data_pagamento.label}}</label>{% if form.data_pagamento.field.required %}<strong style="color:red;"> *</strong>{% endif %}
@@ -143,6 +155,28 @@
         </div>
       </div>
     </div>
+
+    {% if form.documentos %}
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="id_documentos">{{form.documentos.label}}</label>
+        {% if form.documentos.errors %}<label class="error">{% for error in form.documentos.errors %}{{error}} {% endfor %}</label>{% endif %}
+        {{form.documentos}}
+        <small>{{form.documentos.help_text}}</small>
+        {% if form.instance.pk and form.instance.documentos.all %}
+        <ul class="list-unstyled" style="margin-top: 12px;">
+          {% for documento in form.instance.documentos.all %}
+          <li style="margin-bottom: 6px;">
+            <a href="{% url 'financeiro:documentosaidaview' documento.id %}" target="_blank" rel="noopener">{{documento.nome}}</a>
+            <input type="checkbox" name="remover_documento" id="remover_documento_{{documento.id}}" value="{{documento.id}}" />
+            <label for="remover_documento_{{documento.id}}">Remover ao salvar</label>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
 
   </div>
   

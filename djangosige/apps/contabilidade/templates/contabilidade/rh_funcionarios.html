@@ -1,0 +1,61 @@
+{%extends 'base/base.html'%}
+
+{%block title%}Funcionários{%endblock%}
+
+{%block content%}
+<div class="list-header">
+    <div class="list-heading">
+        <h1 class="page-title">Funcionários</h1>
+        <p class="page-subtitle">{% if dp %}Departamento pessoal do processo {{ processo.numero_processo }} · {{ processo.cliente }}{% else %}Funcionários de todos os clientes com departamento pessoal{% endif %}</p>
+    </div>
+    <div class="page-actions">
+        <span class="badge badge-success">{{ total_ativos }} ativo{{ total_ativos|pluralize }}</span>
+        <span class="badge badge-led">Folha salarial R$ {{ folha_salarial|floatformat:2 }}</span>
+    </div>
+</div>
+
+<div class="list-card">
+    <form method="get" class="list-toolbar agent-filters">
+        <div class="agent-chips" role="group" aria-label="Situação">
+            <a href="?q={{ busca|urlencode }}" class="chip{% if not situacao %} is-on{% endif %}">Todos</a>
+            <a href="?situacao=ativos&q={{ busca|urlencode }}" class="chip{% if situacao == 'ativos' %} is-on{% endif %}">Ativos</a>
+            <a href="?situacao=desligados&q={{ busca|urlencode }}" class="chip{% if situacao == 'desligados' %} is-on{% endif %}">Desligados</a>
+        </div>
+        <input type="hidden" name="situacao" value="{{ situacao }}">
+        <label class="sr-only" for="busca-funcionario">Buscar</label>
+        <input type="search" name="q" id="busca-funcionario" value="{{ busca }}" class="form-control agent-select" placeholder="Nome, CPF ou cargo">
+    </form>
+    {% if funcionarios %}
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Cargo</th>
+                    {% if not dp %}<th>Cliente</th>{% endif %}
+                    <th>Admissão</th>
+                    <th class="text-right">Salário</th>
+                    <th>Situação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for f in funcionarios %}
+                <tr>
+                    <td><strong>{{ f.nome_completo }}</strong></td>
+                    <td>{{ f.cpf }}</td>
+                    <td>{{ f.cargo }}</td>
+                    {% if not dp %}<td><a href="{% url 'contabilidade:detalhe_processo' f.dp.processo.pk %}" class="stat-link">{{ f.dp.processo.cliente }}</a></td>{% endif %}
+                    <td>{{ f.data_admissao|date:"d/m/Y" }}</td>
+                    <td class="text-right">R$ {{ f.salario|floatformat:2 }}</td>
+                    <td>{% if f.ativo %}<span class="badge badge-success">Ativo</span>{% else %}<span class="badge badge-danger" title="{{ f.motivo_demissao }}">Desligado {{ f.data_demissao|date:"d/m/Y" }}</span>{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    {% include 'base/list_empty.html' with message='Nenhum funcionário encontrado' hint='Os funcionários são cadastrados no departamento pessoal de cada processo contábil.' %}
+    {% endif %}
+</div>
+{%endblock%}

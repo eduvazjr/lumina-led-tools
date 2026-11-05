@@ -9,8 +9,15 @@ from djangosige.apps.cadastro.models import Cliente, Fornecedor, Produto, Empres
 from djangosige.apps.vendas.models import OrcamentoVenda, PedidoVenda
 from djangosige.apps.compras.models import OrcamentoCompra, PedidoCompra
 from djangosige.apps.financeiro.models import MovimentoCaixa, Entrada, Saida
+from djangosige.apps.base import agente
 
 from datetime import datetime
+
+
+def alertas_do_agente():
+    # O dashboard sempre roda a analise na hora e renova o cache usado no topo
+    agente.limpar_cache()
+    return agente.alertas_em_cache()
 
 
 class IndexView(TemplateView):
@@ -75,6 +82,79 @@ class IndexView(TemplateView):
             else:
                 context['saldo'] = '0,00'
 
+        alertas_agente = alertas_do_agente()
+        context['agente_alertas'] = alertas_agente[:8]
+        context['agente_total'] = len(alertas_agente)
+        context['agente_resumo'] = agente.contar(alertas_agente)
+
+        return context
+
+
+class AlertasView(TemplateView):
+    template_name = 'base/alertas.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(AlertasView, self).get_context_data(**kwargs)
+        alertas = alertas_do_agente()
+        context['agente_resumo'] = agente.contar(alertas)
+        context['modulos'] = sorted({a.modulo for a in alertas})
+
+        gravidade = self.request.GET.get('gravidade')
+        modulo = self.request.GET.get('modulo')
+        if gravidade:
+            alertas = [a for a in alertas if a.gravidade == gravidade]
+        if modulo:
+            alertas = [a for a in alertas if a.modulo == modulo]
+        context['alertas'] = alertas
+        context['filtro_gravidade'] = gravidade or ''
+        context['filtro_modulo'] = modulo or ''
+        context['data_atual'] = datetime.now().strftime('%d/%m/%Y')
+        return context
+
+
+class ImportacaoView(TemplateView):
+    template_name = 'base/importacao.html'
+
+    TIPOS = {
+        'planilha': {
+            'titulo': 'Planilha de pagamentos',
+            'descricao': 'Lança pagamentos a fornecedores no controle gerencial a partir de um arquivo CSV ou Excel.',
+            'url': 'gerencial:importar_planilha',
+            'campo': 'arquivo',
+            'aceita': '.csv,.xlsx,.xls',
+            'formatos': 'CSV (separado por ponto e vírgula), XLSX ou XLS',
+        },
+        'nfe-entrada': {
+            'titulo': 'NF-e de entrada',
+            'descricao': 'Cadastra uma nota fiscal recebida de fornecedor a partir do arquivo XML.',
+            'url': 'fiscal:importarnotafiscalentrada',
+            'campo': 'arquivo_xml',
+            'aceita': '.xml,text/xml',
+            'formatos': 'XML da NF-e enviado pelo fornecedor',
+            'fornecedor': True,
+        },
+        'nfe-saida': {
+            'titulo': 'NF-e de saída',
+            'descricao': 'Cadastra uma nota fiscal emitida em outro sistema a partir do arquivo XML.',
+            'url': 'fiscal:importarnotafiscalsaida',
+            'campo': 'arquivo_xml',
+            'aceita': '.xml,text/xml',
+            'formatos': 'XML da NF-e emitida pela empresa',
+        },
+    }
+
+    def get_context_data(self, **kwargs):
+        from django.http import Http404
+        from djangosige.apps.gerencial.models import ImportacaoPlanilha
+
+        context = super(ImportacaoView, self).get_context_data(**kwargs)
+        tipo = kwargs.get('tipo')
+        if tipo not in self.TIPOS:
+            raise Http404
+        context['tipo'] = tipo
+        context['importacao'] = self.TIPOS[tipo]
+        if tipo == 'planilha':
+            context['historico'] = ImportacaoPlanilha.objects.select_related('usuario')[:10]
         return context
 
 

@@ -1,0 +1,39 @@
+{%extends 'base/base.html'%}
+
+{%block title%}Alertas{%endblock%}
+
+{%block content%}
+{% with r=agente_resumo %}
+<div class="dash-header">
+    <div>
+        <h1 class="page-title">Alertas</h1>
+        <p class="page-subtitle">Prazos e riscos encontrados pelo assistente administrativo em {{ data_atual }}</p>
+    </div>
+</div>
+
+<form method="get" class="agent-filters">
+    <div class="agent-chips" role="group" aria-label="Gravidade">
+        <a href="?modulo={{ filtro_modulo }}" class="chip{% if not filtro_gravidade %} is-on{% endif %}">Todos</a>
+        <a href="?gravidade=critico&modulo={{ filtro_modulo }}" class="chip chip-critico{% if filtro_gravidade == 'critico' %} is-on{% endif %}">Críticos <b>{{ r.critico }}</b></a>
+        <a href="?gravidade=atencao&modulo={{ filtro_modulo }}" class="chip chip-atencao{% if filtro_gravidade == 'atencao' %} is-on{% endif %}">Atenção <b>{{ r.atencao }}</b></a>
+        <a href="?gravidade=info&modulo={{ filtro_modulo }}" class="chip chip-info{% if filtro_gravidade == 'info' %} is-on{% endif %}">Avisos <b>{{ r.info }}</b></a>
+    </div>
+    <input type="hidden" name="gravidade" value="{{ filtro_gravidade }}">
+    <label class="sr-only" for="filtro-modulo">Módulo</label>
+    <select name="modulo" id="filtro-modulo" class="form-control agent-select" onchange="this.form.submit()">
+        <option value="">Todos os módulos</option>
+        {% for m in modulos %}<option value="{{ m }}"{% if m == filtro_modulo %} selected{% endif %}>{{ m }}</option>{% endfor %}
+    </select>
+</form>
+
+<section class="section">
+    {% if alertas %}
+    <ul class="ag-list">
+        {% for alerta in alertas %}{% include 'base/alerta_item.html' %}{% endfor %}
+    </ul>
+    {% else %}
+    <p class="agent-empty">Nenhum alerta {% if filtro_gravidade or filtro_modulo %}com esse filtro{% else %}no momento. Tudo em dia{% endif %}.</p>
+    {% endif %}
+</section>
+{% endwith %}
+{%endblock%}

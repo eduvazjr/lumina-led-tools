@@ -1,0 +1,44 @@
+{%extends 'base/base.html'%}
+
+{%block title%}{{title_complete}}{%endblock%}
+{%block content%}
+<section class="content">
+  <div class="container-fluid">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="row">
+        <div class="card">
+          <div class="header">
+            <h2>
+              <a href="{{return_url}}" title="Voltar"><i class="material-icons">&#xE5C4;</i></a><span class="card-title">{{title_complete}}</span>
+            </h2>
+            <div><small>Campos marcados com <strong style="color:red;">*</strong> são obrigatórios.</small></div>
+          </div>
+
+          <form role="form" action="" method="post">
+            {% csrf_token %}
+            <div class="body">
+              {% for titulo, campos in form.secoes %}
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h4 class="section-title" style="margin: 8px 15px 12px;">{{titulo}}</h4>
+                {% for campo in campos %}
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <label for="{{campo.id_for_label}}">{{campo.label}}</label>{% if campo.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+                      {% if campo.errors %}<label class="error">{% for error in campo.errors %}{{error}}{% endfor %}</label>{% endif %}
+                      {{campo}}
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              {% endfor %}
+              <button class="btn btn-success foot-btn" type="submit">Salvar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{%endblock%}
