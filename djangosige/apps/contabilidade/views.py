@@ -575,15 +575,35 @@ def relatorios(request):
 def relatorio_processos(request):
     """Relatório de processos"""
     
-    # Agregações por status
-    status_stats = ProcessoContabil.objects.values('status').annotate(
-        total=Count('id')
-    ).order_by('status')
-    
+    # Agregações por status, na ordem das etapas
+    contagem = dict(ProcessoContabil.objects.order_by().values_list('status').annotate(total=Count('id')))
+    total = sum(contagem.values())
+    status_stats = [
+        {
+            'status': codigo,
+            'nome': nome,
+            'total': contagem.get(codigo, 0),
+            'percentual': round(100 * contagem.get(codigo, 0) / total) if total else 0,
+        }
+        for codigo, nome in ProcessoContabil.STATUS_CHOICES
+    ]
+
+    processos = ProcessoContabil.objects.select_related('cliente', 'responsavel').order_by('-data_abertura')
+    status = request.GET.get('status', '')
+    if status in dict(ProcessoContabil.STATUS_CHOICES):
+        processos = processos.filter(status=status)
+    else:
+        status = ''
+
     context = {
         'status_stats': status_stats,
+        'total_processos': total,
+        'total_concluidos': contagem.get('concluido', 0),
+        'total_andamento': total - contagem.get('concluido', 0),
+        'processos': processos,
+        'status_atual': status,
     }
-    
+
     return render(request, 'contabilidade/relatorio_processos.html', context)
 
 
@@ -591,11 +611,37 @@ def relatorio_processos(request):
 def relatorio_fiscal(request):
     """Relatório fiscal consolidado"""
     
-    # Totais mensais de tributos
-    apuracoes = ApuracaoTributos.objects.all().order_by('-ano_referencia', '-mes_referencia')[:12]
-    
+    anos = list(ApuracaoTributos.objects.order_by('-ano_referencia')
+                .values_list('ano_referencia', flat=True).distinct())
+    try:
+        ano = int(request.GET.get('ano', ''))
+    except ValueError:
+        ano = None
+    if ano not in anos:
+        ano = anos[0] if anos else None
+
+    apuracoes = (ApuracaoTributos.objects.filter(ano_referencia=ano)
+                 .select_related('fiscal__processo__cliente')
+                 .order_by('-mes_referencia', 'fiscal__processo__numero_processo'))
+
+    # Totais mensais de tributos, somando todos os processos
+    totais_mensais = (apuracoes.order_by('-mes_referencia').values('mes_referencia').annotate(
+        receita=Sum('receita_bruta'), total_irpj=Sum('irpj'), total_csll=Sum('csll'), total_pis=Sum('pis'), total_cofins=Sum('cofins'),
+        total_simples=Sum('simples_nacional'), total_icms=Sum('icms'), total_iss=Sum('iss'), total=Sum('total_tributos'),
+        pendente=Sum('total_tributos', filter=Q(pago=False)),
+    ))
+    resumo = apuracoes.aggregate(
+        receita=Sum('receita_bruta'), total=Sum('total_tributos'),
+        total_pago=Sum('total_tributos', filter=Q(pago=True)),
+        pendente=Sum('total_tributos', filter=Q(pago=False)),
+    )
+
     context = {
         'apuracoes': apuracoes,
+        'totais_mensais': totais_mensais,
+        'resumo': resumo,
+        'anos': anos,
+        'ano': ano,
     }
-    
+
     return render(request, 'contabilidade/relatorio_fiscal.html', context)

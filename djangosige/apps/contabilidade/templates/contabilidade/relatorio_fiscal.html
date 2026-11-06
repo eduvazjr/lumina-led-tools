@@ -1,0 +1,84 @@
+{%extends "base/base.html"%}
+
+{%block title%}Relatório fiscal{%endblock%}
+
+{% block content %}
+<div class="list-header">
+    <div class="list-heading">
+        <h1 class="page-title"><a href="{% url 'contabilidade:relatorios' %}" title="Voltar"><i class="material-icons">&#xE5C4;</i></a> Relatório fiscal</h1>
+        <p class="page-subtitle">Receita e tributos apurados{% if ano %} em {{ ano }}{% endif %}, somando todos os processos.</p>
+    </div>
+</div>
+
+{% if ano %}
+<div class="list-toolbar agent-filters">
+    <div class="agent-chips" role="group" aria-label="Ano">
+        {% for opcao in anos %}<a href="?ano={{ opcao|stringformat:'d' }}" class="chip{% if opcao == ano %} is-on{% endif %}">{{ opcao|stringformat:'d' }}</a>{% endfor %}
+    </div>
+</div>
+
+<div class="kpi-grid">
+    <div class="kpi"><span class="kpi-label">Receita bruta</span><span class="kpi-value"><small>R$</small>{{ resumo.receita|default:0|floatformat:"2g" }}</span></div>
+    <div class="kpi"><span class="kpi-label">Total de tributos</span><span class="kpi-value"><small>R$</small>{{ resumo.total|default:0|floatformat:"2g" }}</span></div>
+    <div class="kpi"><span class="kpi-label">Pago</span><span class="kpi-value"><small>R$</small>{{ resumo.total_pago|default:0|floatformat:"2g" }}</span></div>
+    <div class="kpi"><span class="kpi-label">A pagar</span><span class="kpi-value"><small>R$</small>{{ resumo.pendente|default:0|floatformat:"2g" }}</span></div>
+</div>
+
+<section class="section">
+    <div class="section-header"><h2 class="section-title">Totais por mês</h2></div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Mês</th><th class="text-right">Receita</th><th class="text-right">IRPJ</th><th class="text-right">CSLL</th>
+                    <th class="text-right">PIS</th><th class="text-right">COFINS</th><th class="text-right">Simples</th>
+                    <th class="text-right">ICMS</th><th class="text-right">ISS</th><th class="text-right">Total</th><th class="text-right">A pagar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mes in totais_mensais %}
+                <tr>
+                    <td><strong>{{ mes.mes_referencia|stringformat:"02d" }}/{{ ano|stringformat:"d" }}</strong></td>
+                    <td class="text-right">{{ mes.receita|floatformat:"2g" }}</td>
+                    <td class="text-right">{{ mes.total_irpj|floatformat:"2g" }}</td>
+                    <td class="text-right">{{ mes.total_csll|floatformat:"2g" }}</td>
+                    <td class="text-right">{{ mes.total_pis|floatformat:"2g" }}</td>
+                    <td class="text-right">{{ mes.total_cofins|floatformat:"2g" }}</td>
+                    <td class="text-right">{{ mes.total_simples|floatformat:"2g" }}</td>
+                    <td class="text-right">{{ mes.total_icms|floatformat:"2g" }}</td>
+                    <td class="text-right">{{ mes.total_iss|floatformat:"2g" }}</td>
+                    <td class="text-right"><strong>{{ mes.total|floatformat:"2g" }}</strong></td>
+                    <td class="text-right">{{ mes.pendente|default:0|floatformat:"2g" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="section" style="margin-top:20px;">
+    <div class="section-header"><h2 class="section-title">Apurações por processo</h2></div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead><tr><th>Competência</th><th>Processo</th><th>Cliente</th><th class="text-right">Receita</th><th class="text-right">Tributos</th><th>Situação</th></tr></thead>
+            <tbody>
+                {% for apuracao in apuracoes %}
+                <tr>
+                    <td><strong>{{ apuracao.mes_referencia|stringformat:"02d" }}/{{ apuracao.ano_referencia|stringformat:"d" }}</strong></td>
+                    <td><a href="{% url 'contabilidade:detalhe_processo' apuracao.fiscal.processo.pk %}" class="stat-link">{{ apuracao.fiscal.processo.numero_processo }}</a></td>
+                    <td>{{ apuracao.fiscal.processo.cliente }}</td>
+                    <td class="text-right">R$ {{ apuracao.receita_bruta|floatformat:"2g" }}</td>
+                    <td class="text-right"><strong>R$ {{ apuracao.total_tributos|floatformat:"2g" }}</strong></td>
+                    <td>{% if apuracao.pago %}<span class="badge badge-success">Pago{% if apuracao.data_pagamento %} em {{ apuracao.data_pagamento|date:"d/m/Y" }}{% endif %}</span>{% else %}<span class="badge badge-warning">A pagar</span>{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% else %}
+<div class="list-card">
+    {% include 'base/list_empty.html' with message='Nenhuma apuração de tributos encontrada' hint='As apurações aparecem aqui depois de lançadas no módulo fiscal de cada processo.' %}
+</div>
+{% endif %}
+{% endblock %}

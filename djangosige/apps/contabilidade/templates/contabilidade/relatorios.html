@@ -1,7 +1,25 @@
-{%extends "base/base.html"%}{% load static %}
+{%extends "base/base.html"%}
+
+{%block title%}Relatórios contábeis{%endblock%}
+
 {% block content %}
-<div class="hg-contabilidade">
-    <h1>Relatorios</h1>
-    <p>Template em desenvolvimento</p>
+<div class="list-header">
+    <div class="list-heading">
+        <h1 class="page-title">Relatórios</h1>
+        <p class="page-subtitle">Acompanhe os processos contábeis e os tributos apurados.</p>
+    </div>
+</div>
+
+<div class="kpi-grid">
+    <a href="{% url 'contabilidade:relatorio_processos' %}" class="kpi kpi-link">
+        <span class="kpi-label">Processos</span>
+        <span class="kpi-cta">Relatório de processos</span>
+        <span class="kpi-foot">Quantos processos há em cada etapa, com a lista completa.</span>
+    </a>
+    <a href="{% url 'contabilidade:relatorio_fiscal' %}" class="kpi kpi-link">
+        <span class="kpi-label">Fiscal</span>
+        <span class="kpi-cta">Relatório fiscal</span>
+        <span class="kpi-foot">Receita e tributos por mês, com o que falta pagar.</span>
+    </a>
 </div>
 {% endblock %}

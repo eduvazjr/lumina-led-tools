@@ -1,0 +1,68 @@
+{%extends "base/base.html"%}
+
+{%block title%}Relatório de processos{%endblock%}
+
+{% block content %}
+<div class="list-header">
+    <div class="list-heading">
+        <h1 class="page-title"><a href="{% url 'contabilidade:relatorios' %}" title="Voltar"><i class="material-icons">&#xE5C4;</i></a> Relatório de processos</h1>
+        <p class="page-subtitle">Processos contábeis por etapa.</p>
+    </div>
+</div>
+
+<div class="kpi-grid">
+    <div class="kpi"><span class="kpi-label">Total</span><span class="kpi-value">{{ total_processos }}</span></div>
+    <div class="kpi"><span class="kpi-label">Em andamento</span><span class="kpi-value">{{ total_andamento }}</span></div>
+    <div class="kpi"><span class="kpi-label">Concluídos</span><span class="kpi-value">{{ total_concluidos }}</span></div>
+</div>
+
+<section class="section">
+    <div class="section-header"><h2 class="section-title">Por etapa</h2></div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead><tr><th>Etapa</th><th class="text-right">Processos</th><th class="text-right">Participação</th></tr></thead>
+            <tbody>
+                {% for item in status_stats %}
+                <tr>
+                    <td><a href="?status={{ item.status }}" class="stat-link">{{ item.nome }}</a></td>
+                    <td class="text-right"><strong>{{ item.total }}</strong></td>
+                    <td class="text-right">{{ item.percentual }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<div class="list-card" style="margin-top:20px;">
+    <div class="list-toolbar agent-filters">
+        <div class="agent-chips" role="group" aria-label="Etapa">
+            <a href="?" class="chip{% if not status_atual %} is-on{% endif %}">Todos</a>
+            {% for item in status_stats %}
+            <a href="?status={{ item.status }}" class="chip{% if status_atual == item.status %} is-on{% endif %}">{{ item.nome }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    {% if processos %}
+    <div class="table-wrap">
+        <table class="table">
+            <thead><tr><th>Processo</th><th>Cliente</th><th>Etapa</th><th>Responsável</th><th>Abertura</th><th>Progresso</th></tr></thead>
+            <tbody>
+                {% for processo in processos %}
+                <tr>
+                    <td><a href="{% url 'contabilidade:detalhe_processo' processo.pk %}" class="stat-link"><strong>{{ processo.numero_processo }}</strong></a>{% if not processo.ativo %} <span class="badge">Inativo</span>{% endif %}</td>
+                    <td>{{ processo.cliente }}</td>
+                    <td><span class="badge {% if processo.status == 'concluido' %}badge-success{% else %}badge-info{% endif %}">{{ processo.get_status_display }}</span></td>
+                    <td>{{ processo.responsavel|default:"—" }}</td>
+                    <td>{{ processo.data_abertura|date:"d/m/Y" }}</td>
+                    <td>{{ processo.get_progresso|floatformat:0 }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    {% include 'base/list_empty.html' with message='Nenhum processo encontrado' hint='Os processos aparecem aqui depois de cadastrados na Contabilidade.' %}
+    {% endif %}
+</div>
+{% endblock %}
