@@ -1,0 +1,131 @@
+{%extends 'base/base.html'%}
+
+{%block title%}Calendário financeiro{%endblock%}
+{%block content%}
+<style>
+  .cal-grade { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--surface); }
+  .cal-cab { padding: 10px 8px; font-size: 12px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--border); text-align: center; }
+  .cal-dia { min-height: 110px; padding: 8px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); min-width: 0; scroll-margin-top: 80px; }
+  .cal-dia:nth-child(7n) { border-right: 0; }
+  .cal-fora { background: var(--bg); opacity: .65; }
+  .cal-hoje { box-shadow: inset 0 0 0 2px var(--brand-500); }
+  .cal-atrasado .cal-num { color: var(--danger); }
+  .cal-topo { display: flex; align-items: center; justify-content: space-between; gap: 4px; margin-bottom: 6px; }
+  .cal-num { font-weight: 600; font-size: 14px; color: var(--text); }
+  .cal-semana { display: none; font-weight: 500; color: var(--text-muted); }
+  .cal-add { color: var(--brand-600); font-size: 18px; line-height: 1; padding: 0 4px; text-decoration: none; }
+  .cal-item { display: flex; gap: 5px; align-items: flex-start; padding: 3px 0; font-size: 12px; line-height: 1.3; overflow-wrap: anywhere; }
+  .cal-check { flex: none; width: 15px; height: 15px; margin-top: 1px; padding: 0; border: 1.5px solid var(--border-strong); border-radius: 4px; background: var(--surface); color: #fff; font-size: 11px; line-height: 12px; cursor: pointer; }
+  .cal-feito .cal-check { background: var(--success); border-color: var(--success); }
+  .cal-feito .cal-texto { color: var(--text-muted); text-decoration: line-through; }
+  .cal-texto { color: var(--text); text-decoration: none; }
+  .cal-destaque .cal-texto { color: var(--danger); font-weight: 600; }
+  .cal-valor { display: block; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .cal-sem-valor { display: block; color: var(--warning); font-size: 11px; }
+  .cal-conta { display: block; margin-top: 4px; padding: 3px 5px; border-radius: 4px; background: var(--info-bg); color: var(--info); font-size: 11px; overflow-wrap: anywhere; }
+  .cal-total { margin-top: 6px; padding-top: 4px; border-top: 1px dashed var(--border); font-size: 11.5px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+  .cal-barra { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+  .cal-nav { display: flex; align-items: center; gap: 8px; }
+  .cal-nav strong { min-width: 150px; text-align: center; font-size: 16px; }
+  .cal-filtros { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .cal-filtros input[type=search] { max-width: 240px; }
+  @media (max-width: 900px) {
+    .cal-grade { grid-template-columns: 1fr; }
+    .cal-cab, .cal-vazio-celular { display: none; }
+    .cal-dia { min-height: 0; border-right: 0; }
+    .cal-semana { display: inline; }
+    .cal-item { font-size: 13px; padding: 5px 0; }
+    .cal-nav { flex-wrap: wrap; }
+    .cal-nav strong { min-width: 0; }
+    .cal-filtros, .cal-filtros input[type=search] { width: 100%; max-width: none; }
+  }
+</style>
+
+<div class="list-header">
+    <div class="list-heading">
+        <h1 class="page-title">Calendário financeiro</h1>
+        <p class="page-subtitle">Contas a pagar e tarefas do financeiro, dia a dia.</p>
+    </div>
+    <div class="page-actions">
+        <a href="{% url 'financeiro:importarcalendarioview' %}" class="btn btn-default">Importar planilha</a>
+        <a href="{% url 'financeiro:addcalendarioitemview' %}" class="btn btn-primary">Adicionar item</a>
+    </div>
+</div>
+
+{% include 'base/msg_sucesso.html' %}
+
+<div class="kpi-grid">
+    <div class="kpi"><span class="kpi-label">Total do mês</span><span class="kpi-value"><small>R$</small>{{resumo.total|default:0|floatformat:"2g"}}</span><span class="kpi-foot">Soma dos itens com valor</span></div>
+    <div class="kpi"><span class="kpi-label">Concluído</span><span class="kpi-value"><small>R$</small>{{resumo.total_concluido|default:0|floatformat:"2g"}}</span></div>
+    <div class="kpi"><span class="kpi-label">Pendente</span><span class="kpi-value"><small>R$</small>{{resumo.total_pendente|default:0|floatformat:"2g"}}</span><span class="kpi-foot">{{resumo.itens_pendentes}} ite{{resumo.itens_pendentes|pluralize:"m,ns"}} em aberto{% if resumo.sem_valor %}, {{resumo.sem_valor}} sem valor informado{% endif %}</span></div>
+</div>
+
+<div class="cal-barra">
+    <div class="cal-nav">
+        <a class="btn btn-default" href="?ano={{anterior.year}}&mes={{anterior.month}}" aria-label="Mês anterior">‹</a>
+        <strong>{{nome_mes}} {{ano}}</strong>
+        <a class="btn btn-default" href="?ano={{proximo.year}}&mes={{proximo.month}}" aria-label="Próximo mês">›</a>
+        <a class="btn btn-default" href="?ano={{hoje.year}}&mes={{hoje.month}}">Hoje</a>
+    </div>
+    <div class="cal-filtros">
+        <input type="search" id="cal-busca" class="form-control" placeholder="Buscar (ex.: L&amp;T, Terra, NF 123)" aria-label="Buscar nos itens do mês">
+        <span><input type="checkbox" id="cal-pendentes"><label for="cal-pendentes">Só pendentes</label></span>
+    </div>
+</div>
+
+<form method="post" action="{% url 'financeiro:alternarcalendarioitemview' %}">
+    {% csrf_token %}
+    <div class="cal-grade">
+        {% for nome in dias_semana %}<div class="cal-cab">{{nome}}</div>{% endfor %}
+        {% for semana in semanas %}{% for dia in semana %}
+        <div class="cal-dia{% if not dia.no_mes %} cal-fora{% if not dia.itens %} cal-vazio-celular{% endif %}{% endif %}{% if dia.hoje %} cal-hoje{% endif %}{% if dia.atrasado %} cal-atrasado{% endif %}" id="dia-{{dia.data|date:'Y-m-d'}}">
+            <div class="cal-topo">
+                <span class="cal-num">{{dia.data|date:"j"}}<span class="cal-semana"> · {{dia.data|date:"l"}}</span></span>
+                <a class="cal-add" href="{% url 'financeiro:addcalendarioitemview' %}?data={{dia.data|date:'Y-m-d'}}" title="Adicionar item neste dia" aria-label="Adicionar item em {{dia.data|date:'d/m'}}">+</a>
+            </div>
+            {% for item in dia.itens %}
+            <div class="cal-item{% if item.concluido %} cal-feito{% endif %}{% if item.destaque %} cal-destaque{% endif %}" data-busca="{{item.descricao|lower}}">
+                <button class="cal-check" type="submit" name="item" value="{{item.id}}" title="{% if item.concluido %}Marcar como pendente{% else %}Marcar como concluído{% endif %}" aria-label="{% if item.concluido %}Marcar como pendente{% else %}Marcar como concluído{% endif %}: {{item.descricao}}">{% if item.concluido %}✓{% endif %}</button>
+                <a class="cal-texto" href="{% url 'financeiro:editarcalendarioitemview' item.id %}">{{item.descricao}}{% if item.valor is not None %}<span class="cal-valor">R$ {{item.valor|floatformat:"2g"}}</span>{% elif not item.concluido %}<span class="cal-sem-valor">sem valor</span>{% endif %}</a>
+            </div>
+            {% endfor %}
+            {% for conta in dia.contas %}
+            <a class="cal-conta" href="{% url 'financeiro:editarcontapagarview' conta.id %}" title="Lançada em Contas a Pagar">Conta a pagar: {{conta.descricao}} — R$ {{conta.valor_liquido|floatformat:"2g"}}</a>
+            {% endfor %}
+            {% if dia.total %}<div class="cal-total">R$ {{dia.total|floatformat:"2g"}}</div>{% endif %}
+        </div>
+        {% endfor %}{% endfor %}
+    </div>
+</form>
+
+<section class="section" id="programacao" style="margin-top:20px;">
+    <div class="section-header"><h2 class="section-title">Programação de {{nome_mes}}</h2><small>Férias, admissões e outros lembretes do mês</small></div>
+    <div class="section-body">
+        <form method="post" action="{% url 'financeiro:programacaomesview' %}?ano={{ano}}&mes={{mes}}">
+            {% csrf_token %}
+            <label for="id_programacao" class="sr-only">Programação do mês</label>
+            <textarea id="id_programacao" name="texto" rows="5" class="form-control">{{programacao}}</textarea>
+            <button class="btn btn-primary" type="submit" style="margin-top:12px;">Salvar programação</button>
+        </form>
+    </div>
+</section>
+{%endblock%}
+
+{% block js %}
+<script>
+  (function () {
+    var busca = document.getElementById('cal-busca');
+    var pendentes = document.getElementById('cal-pendentes');
+    function filtrar() {
+      var termo = busca.value.trim().toLowerCase();
+      document.querySelectorAll('.cal-item').forEach(function (item) {
+        var combina = !termo || item.dataset.busca.indexOf(termo) !== -1;
+        var aberto = !pendentes.checked || !item.classList.contains('cal-feito');
+        item.style.display = combina && aberto ? '' : 'none';
+      });
+    }
+    busca.addEventListener('input', filtrar);
+    pendentes.addEventListener('change', filtrar);
+  })();
+</script>
+{% endblock %}

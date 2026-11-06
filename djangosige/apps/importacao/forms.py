@@ -1,31 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from decimal import Decimal
-
 from django import forms
 from django.core.validators import FileExtensionValidator
 from django.forms import inlineformset_factory
 
+from djangosige.apps.financeiro.forms.calendario import ValorField
 from djangosige.apps.financeiro.forms.lancamento import (
     EXTENSOES_DOCUMENTO, VariosArquivosField, VariosArquivosInput, validar_tamanho_documento)
 
 from .models import (
     ContainerImportacao, CustoImportacao, EtapaImportacao, ProcessoImportacao, TIPOS_DOCUMENTO)
-
-
-class ValorField(forms.DecimalField):
-    """Aceita valores no formato brasileiro (1.234,56) e exibe com virgula."""
-    widget = forms.TextInput
-
-    def to_python(self, value):
-        if isinstance(value, str) and ',' in value:
-            value = value.replace('.', '').replace(',', '.')
-        return super(ValorField, self).to_python(value)
-
-    def prepare_value(self, value):
-        if isinstance(value, Decimal):
-            return str(value).replace('.', ',')
-        return value
 
 
 def data_input():

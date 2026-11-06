@@ -79,6 +79,16 @@ urlpatterns = [
     url(r'faturarpedidocompra/(?P<pk>[0-9]+)/$',
         views.FaturarPedidoCompraView.as_view(), name='faturarpedidocompra'),
 
+    # Calendario financeiro
+    # financeiro/calendario/
+    url(r'calendario/$', views.CalendarioView.as_view(), name='calendarioview'),
+    url(r'calendario/importar/$', views.ImportarCalendarioView.as_view(), name='importarcalendarioview'),
+    url(r'calendario/programacao/$', views.ProgramacaoMesView.as_view(), name='programacaomesview'),
+    url(r'calendario/item/adicionar/$', views.AdicionarItemCalendarioView.as_view(), name='addcalendarioitemview'),
+    url(r'calendario/item/alternar/$', views.AlternarItemCalendarioView.as_view(), name='alternarcalendarioitemview'),
+    url(r'calendario/item/(?P<pk>[0-9]+)/$', views.EditarItemCalendarioView.as_view(), name='editarcalendarioitemview'),
+    url(r'calendario/item/(?P<pk>[0-9]+)/remover/$', views.RemoverItemCalendarioView.as_view(), name='removercalendarioitemview'),
+
     # Plano de contas
     # financeiro/planodecontas
     url(r'planodecontas/$', views.PlanoContasView.as_view(), name='planocontasview'),

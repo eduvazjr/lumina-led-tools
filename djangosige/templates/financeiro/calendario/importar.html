@@ -1,0 +1,30 @@
+{%extends 'base/base.html'%}
+
+{%block title%}Importar calendário{%endblock%}
+{%block content%}
+<div class="list-header">
+    <div class="list-heading">
+        <h1 class="page-title"><a href="{% url 'financeiro:calendarioview' %}" title="Voltar"><i class="material-icons">&#xE5C4;</i></a> Importar planilha do calendário</h1>
+        <p class="page-subtitle">Traz os meses da planilha "Contas a pagar" para o sistema.</p>
+    </div>
+</div>
+
+<section class="section">
+    <div class="section-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{form.arquivo.id_for_label}}">{{form.arquivo.label}}</label>
+                {% if form.arquivo.errors %}<label class="error">{% for error in form.arquivo.errors %}{{error}} {% endfor %}</label>{% endif %}
+                {{form.arquivo}}
+            </div>
+            <ul class="page-subtitle">
+                <li>Cada aba vira um mês, com um item por linha de cada dia. Os valores em R$ vão para o campo de valor.</li>
+                <li>Linhas com "OK" e dias úteis pintados de cinza entram como concluídos. Texto em vermelho entra destacado.</li>
+                <li>Pode importar de novo: itens que já existem não são duplicados, e só ganham o status de concluído.</li>
+            </ul>
+            <button class="btn btn-primary" type="submit">Importar</button>
+        </form>
+    </div>
+</section>
+{%endblock%}

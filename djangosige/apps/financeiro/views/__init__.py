@@ -3,3 +3,4 @@
 from .lancamento import *
 from .plano import *
 from .fluxo_de_caixa import *
+from .calendario import *

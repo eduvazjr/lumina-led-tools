@@ -250,6 +250,37 @@ def regras_juridico(hoje):
     return alertas
 
 
+# ---------------------------------------------------- Calendario financeiro
+
+def regras_calendario(hoje):
+    from djangosige.apps.financeiro.models import ItemCalendario
+
+    url = reverse('financeiro:calendarioview')
+    limite = hoje + timedelta(days=DIAS_PROXIMOS)
+    # A planilha importada traz anos de historico: atraso so olha os ultimos 30 dias
+    inicio = hoje - timedelta(days=30)
+    pendentes = ItemCalendario.objects.filter(concluido=False)
+
+    def resumo(filtro):
+        r = pendentes.filter(filtro).aggregate(n=Count('id'), total=Sum('valor'))
+        return r['n'], r['total'] or Decimal(0)
+
+    alertas = []
+    n, total = resumo(Q(data__gte=inicio, data__lt=hoje))
+    if n:
+        alertas.append(Alerta(CRITICO, 'Financeiro', f'{plural(n, "item atrasado", "itens atrasados")} no calendário',
+                              f'{moeda(total)} em itens com data vencida nos últimos 30 dias.', url, total))
+    n, total = resumo(Q(data=hoje))
+    if n:
+        alertas.append(Alerta(ATENCAO, 'Financeiro', f'{plural(n, "item para hoje", "itens para hoje")} no calendário',
+                              f'Total de {moeda(total)}.', url, total, hoje))
+    n, total = resumo(Q(data__gt=hoje, data__lte=limite))
+    if n:
+        alertas.append(Alerta(INFO, 'Financeiro', f'{plural(n, "item", "itens")} nos próximos {DIAS_PROXIMOS} dias no calendário',
+                              f'Total de {moeda(total)}.', url, total))
+    return alertas
+
+
 # ---------------------------------------------------------------- Importacao
 
 def regras_importacao(hoje):
@@ -368,6 +399,7 @@ def regras_contabilidade(hoje):
 
 REGRAS = [
     regras_financeiro,
+    regras_calendario,
     regras_importacao,
     regras_vendas_compras,
     regras_estoque,

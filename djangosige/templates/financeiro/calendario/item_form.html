@@ -1,0 +1,55 @@
+{%extends 'base/base.html'%}
+
+{%block title%}{{title_complete}}{%endblock%}
+{%block content%}
+<section class="content">
+  <div class="container-fluid">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="row">
+        <div class="card">
+          <div class="header">
+            <h2><a href="{{return_url}}" title="Voltar"><i class="material-icons">&#xE5C4;</i></a><span class="card-title">{{title_complete}}</span></h2>
+          </div>
+          <form role="form" action="" method="post">
+            {% csrf_token %}
+            <div class="body">
+              <div class="col-xs-12">
+                {% for campo in form %}
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <div class="form-line">
+                      {% if campo.field.widget.input_type == 'checkbox' %}
+                      {{campo}}<label for="{{campo.id_for_label}}">{{campo.label}}</label>
+                      {% else %}
+                      <label for="{{campo.id_for_label}}">{{campo.label}}</label>{% if campo.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+                      {% if campo.errors %}<label class="error">{% for error in campo.errors %}{{error}}{% endfor %}</label>{% endif %}
+                      {{campo}}
+                      {% if campo.help_text %}<small>{{campo.help_text}}</small>{% endif %}
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              <button class="btn btn-success foot-btn" type="submit">Salvar</button>
+            </div>
+          </form>
+          {% if object %}
+          <div class="body">
+            <form method="post" action="{% url 'financeiro:removercalendarioitemview' object.id %}" onsubmit="return confirm('Remover este item do calendário?');">
+              {% csrf_token %}
+              <button class="btn btn-danger" type="submit">Remover item</button>
+            </form>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{%endblock%}
+
+{% block js %}
+  {% include 'base/load_jqueryui.html' %}
+  {% include 'base/datepicker_js.html' %}
+{% endblock %}
