@@ -237,7 +237,6 @@
     <div class="filter-card">
         <h3 class="filter-title">Filtrar Período</h3>
         <form role="form" action="{% url 'financeiro:fluxodecaixaview' %}" method="get">
-            {% csrf_token %}
             <div class="filter-grid">
                 <div class="filter-group">
                     <label>De</label>
@@ -265,27 +264,21 @@
     <div class="stats-grid">
         <div class="stat-card">
             <div class="stat-label">Saldo Inicial</div>
-            <div class="stat-value neutral">{{ movimentos.0.saldo_inicial }}</div>
+            <div class="stat-value neutral">{{ resumo.saldo_inicial }}</div>
         </div>
         <div class="stat-card">
             <div class="stat-label">Total Entradas</div>
-            <div class="stat-value positive">
-                {% with ultimo=movimentos|last %}{{ ultimo.entradas }}{% endwith %}
-            </div>
+            <div class="stat-value positive">{{ resumo.entradas }}</div>
         </div>
         <div class="stat-card">
             <div class="stat-label">Total Saídas</div>
-            <div class="stat-value negative">
-                {% with ultimo=movimentos|last %}{{ ultimo.saidas }}{% endwith %}
-            </div>
+            <div class="stat-value negative">{{ resumo.saidas }}</div>
         </div>
         <div class="stat-card">
-            {% with ultimo=movimentos|last %}
             <div class="stat-label">Saldo Final</div>
-            <div class="stat-value {% if ultimo.saldo_final < 0 %}negative{% else %}positive{% endif %}">
-                {{ ultimo.saldo_final }}
+            <div class="stat-value {% if resumo.saldo_final < 0 %}negative{% else %}positive{% endif %}">
+                {{ resumo.saldo_final }}
             </div>
-            {% endwith %}
         </div>
     </div>
     {% endif %}
@@ -331,15 +324,6 @@
 {%endblock%}
 
 {% block js %}
-<script>
-// Datepicker initialization (mantém compatibilidade com código existente)
-$(document).ready(function() {
-    $('.datepicker').datepicker({
-        format: 'dd/mm/yyyy',
-        language: 'pt-BR',
-        autoclose: true,
-        todayHighlight: true
-    });
-});
-</script>
+  {% include 'base/load_jqueryui.html' %}
+  {% include 'base/datepicker_js.html' %}
 {% endblock %}

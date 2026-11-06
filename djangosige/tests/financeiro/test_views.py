@@ -38,6 +38,19 @@ class FinanceiroFluxoCaixaViewTestCase(BaseTestCase):
         self.check_user_get_permission(
             self.url, permission_codename=permission_codename)
 
+    def test_fluxo_caixa_com_movimentos_mostra_totais_do_periodo(self):
+        # A tela quebrava com erro 500 sempre que havia movimento no periodo
+        MovimentoCaixa.objects.all().delete()
+        MovimentoCaixa.objects.create(data_movimento=datetime(2026, 11, 3), saldo_inicial=Decimal('100.00'),
+                                      saldo_final=Decimal('150.00'), entradas=Decimal('70.00'), saidas=Decimal('20.00'))
+        MovimentoCaixa.objects.create(data_movimento=datetime(2026, 11, 2), saldo_inicial=Decimal('90.00'),
+                                      saldo_final=Decimal('100.00'), entradas=Decimal('30.00'), saidas=Decimal('20.00'))
+        response = self.client.get(self.url, {'from': '01/11/2026', 'to': '30/11/2026'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['resumo'], {
+            'saldo_inicial': Decimal('90.00'), 'entradas': Decimal('100.00'),
+            'saidas': Decimal('40.00'), 'saldo_final': Decimal('150.00')})
+
     def test_fluxo_caixa_get_request_data_inicial(self):
         data_inicial = datetime.today()
         data = {

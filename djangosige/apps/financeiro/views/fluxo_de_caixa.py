@@ -38,4 +38,16 @@ class FluxoCaixaView(CustomListView):
             messages.error(
                 self.request, 'Formato de data incorreto, deve ser no formato DD/MM/AAAA')
 
-        return MovimentoCaixa.objects.filter(data_movimento__range=(data_inicial, data_final))
+        return MovimentoCaixa.objects.filter(data_movimento__range=(data_inicial, data_final)).order_by('data_movimento')
+
+    def get_context_data(self, **kwargs):
+        context = super(FluxoCaixaView, self).get_context_data(**kwargs)
+        movimentos = list(context['movimentos'])
+        if movimentos:
+            context['resumo'] = {
+                'saldo_inicial': movimentos[0].saldo_inicial,
+                'entradas': sum(m.entradas for m in movimentos),
+                'saidas': sum(m.saidas for m in movimentos),
+                'saldo_final': movimentos[-1].saldo_final,
+            }
+        return context
