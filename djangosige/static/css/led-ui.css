@@ -136,23 +136,26 @@ img, svg { vertical-align: middle; }
   position: fixed; top: var(--header-h); left: 0; bottom: 0; z-index: 800;
   width: var(--sidebar-w);
   overflow-y: auto;
-  padding: 16px 12px 24px;
+  padding: 12px 10px 18px;
   background: var(--surface);
   border-right: 1px solid var(--border);
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-200) transparent;
 }
-.nav-group + .nav-group { margin-top: 20px; }
+.nav-group + .nav-group { margin-top: 14px; }
+.nav-group-admin { padding-top: 12px; border-top: 1px solid var(--gray-100); }
 .nav-label {
-  padding: 0 10px; margin-bottom: 6px;
-  font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  padding: 0 10px; margin-bottom: 4px;
+  font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
   color: var(--gray-400);
 }
-.nav-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.nav-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
 .nav-link {
   position: relative;
-  display: flex; align-items: center; gap: 10px;
-  height: 36px; padding: 0 10px;
+  display: flex; align-items: center; gap: 9px;
+  min-height: 34px; padding: 7px 9px;
   border-radius: var(--radius);
-  font-size: 13.5px; font-weight: 500; color: var(--gray-700);
+  font-size: 13px; line-height: 1.25; font-weight: 500; color: var(--gray-700);
   text-decoration: none;
   transition: background .12s, color .12s;
 }
@@ -174,20 +177,27 @@ img, svg { vertical-align: middle; }
 .nav-sub[open] > summary .nav-caret { transform: rotate(90deg); }
 .nav-sub[open] > summary.active { background: none; }
 .nav-sub[open] > summary.active::before { display: none; }
-.nav-sublist { list-style: none; margin: 2px 0 6px; padding: 0 0 0 28px; display: grid; gap: 1px; }
+.nav-sublist {
+  list-style: none;
+  margin: 2px 0 5px 17px;
+  padding: 2px 0 2px 13px;
+  display: grid;
+  gap: 1px;
+  border-left: 1px solid var(--gray-200);
+}
 .nav-sublink {
   position: relative;
-  display: block; padding: 6px 10px;
-  border-radius: var(--radius);
-  font-size: 13px; color: var(--gray-500);
+  display: block; padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 12.5px; line-height: 1.35; color: var(--gray-500);
   text-decoration: none;
   transition: background .12s, color .12s;
 }
 .nav-sublink:hover { background: var(--gray-50); color: var(--text); }
 .nav-sublink.active { background: var(--brand-50); color: var(--brand-700); font-weight: 600; }
 .nav-sublink.active::before {
-  content: ""; position: absolute; left: -40px; top: 7px; bottom: 7px;
-  width: 3px; border-radius: 0 3px 3px 0; background: var(--brand-600);
+  content: ""; position: absolute; left: -14px; top: 6px; bottom: 6px;
+  width: 2px; border-radius: 2px; background: var(--brand-600);
 }
 
 .app-content {

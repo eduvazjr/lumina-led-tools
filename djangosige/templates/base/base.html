@@ -1,4 +1,4 @@
-{% load static %}{# Aumente ao publicar mudanças em led-ui.css ou admin.js, para o navegador não usar a versão em cache #}{% with ui_v='9' %}<!DOCTYPE html>
+{% load static %}{# Aumente ao publicar mudanças em led-ui.css ou admin.js, para o navegador não usar a versão em cache #}{% with ui_v='10' %}<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -47,200 +47,147 @@
         {% with ns=request.resolver_match.namespace un=request.resolver_match.url_name %}
         <nav class="app-sidebar" id="app-sidebar" aria-label="Menu principal">
             <div class="nav-group">
-                <div class="nav-label">Principal</div>
+                <div class="nav-label">Visão geral</div>
                 <ul class="nav-list">
-                <li><a href="{% url 'base:index' %}" class="nav-link{% if un == 'index' %} active{% endif %}"{% if un == 'index' %} aria-current="page"{% endif %}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>
-                    <span>Dashboard</span>
-                </a></li>
-                <li><a href="{% url 'base:alertasview' %}" class="nav-link{% if un == 'alertasview' %} active{% endif %}"{% if un == 'alertasview' %} aria-current="page"{% endif %}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
-                    <span>Alertas</span>
-                    {% if agente_pendentes %}<span class="nav-count{% if agente_criticos %} is-critical{% endif %}">{{ agente_pendentes }}</span>{% endif %}
-                </a></li>
-                <li><details class="nav-sub"{% if ns == 'vendas' %} open{% endif %}>
-                    <summary class="nav-link{% if ns == 'vendas' %} active{% endif %}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg>
-                        <span>Vendas</span>
-                        <svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
-                    </summary>
-                    <ul class="nav-sublist">
-                        <li><a href="{% url 'vendas:listaorcamentovendaview' %}" class="nav-sublink{% if ns == 'vendas' and 'orcamento' in un %} active{% endif %}"{% if ns == 'vendas' and 'orcamento' in un %} aria-current="page"{% endif %}>Orçamentos</a></li>
-                        <li><a href="{% url 'vendas:listapedidovendaview' %}" class="nav-sublink{% if ns == 'vendas' and 'pedido' in un %} active{% endif %}"{% if ns == 'vendas' and 'pedido' in un %} aria-current="page"{% endif %}>Pedidos</a></li>
-                        <li><a href="{% url 'vendas:listacondicaopagamentoview' %}" class="nav-sublink{% if ns == 'vendas' and 'condicao' in un %} active{% endif %}"{% if ns == 'vendas' and 'condicao' in un %} aria-current="page"{% endif %}>Condições de pagamento</a></li>
-                    </ul>
-                </details></li>
-                <li><details class="nav-sub"{% if ns == 'compras' %} open{% endif %}>
-                    <summary class="nav-link{% if ns == 'compras' %} active{% endif %}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L22 7H6"/></svg>
-                        <span>Compras</span>
-                        <svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
-                    </summary>
-                    <ul class="nav-sublist">
-                        <li><a href="{% url 'compras:listaorcamentocompraview' %}" class="nav-sublink{% if ns == 'compras' and 'orcamento' in un %} active{% endif %}"{% if ns == 'compras' and 'orcamento' in un %} aria-current="page"{% endif %}>Orçamentos</a></li>
-                        <li><a href="{% url 'compras:listapedidocompraview' %}" class="nav-sublink{% if ns == 'compras' and 'pedido' in un %} active{% endif %}"{% if ns == 'compras' and 'pedido' in un %} aria-current="page"{% endif %}>Pedidos</a></li>
-                    </ul>
-                </details></li>
-                <li><details class="nav-sub"{% if ns == 'estoque' %} open{% endif %}>
-                    <summary class="nav-link{% if ns == 'estoque' %} active{% endif %}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h18v12H3zM3 9l2-5h14l2 5M10 13h4"/></svg>
-                        <span>Estoque</span>
-                        <svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
-                    </summary>
-                    <ul class="nav-sublist">
-                        <li><a href="{% url 'estoque:consultaestoqueview' %}" class="nav-sublink{% if un == 'consultaestoqueview' %} active{% endif %}"{% if un == 'consultaestoqueview' %} aria-current="page"{% endif %}>Consultar estoque</a></li>
-                        <li><a href="{% url 'estoque:listamovimentoestoqueview' %}" class="nav-sublink{% if ns == 'estoque' and 'movimento' in un or ns == 'estoque' and 'entrada' in un or ns == 'estoque' and 'saida' in un or ns == 'estoque' and 'transferencia' in un %} active{% endif %}"{% if ns == 'estoque' and 'movimento' in un or ns == 'estoque' and 'entrada' in un or ns == 'estoque' and 'saida' in un or ns == 'estoque' and 'transferencia' in un %} aria-current="page"{% endif %}>Movimentações</a></li>
-                        <li><a href="{% url 'estoque:listalocalview' %}" class="nav-sublink{% if ns == 'estoque' and 'local' in un %} active{% endif %}"{% if ns == 'estoque' and 'local' in un %} aria-current="page"{% endif %}>Locais de estoque</a></li>
-                    </ul>
-                </details></li>
-                <li><details class="nav-sub"{% if ns == 'financeiro' %} open{% endif %}>
-                    <summary class="nav-link{% if ns == 'financeiro' %} active{% endif %}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>
-                        <span>Finanças</span>
-                        <svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
-                    </summary>
-                    <ul class="nav-sublist">
-                        <li><a href="{% url 'financeiro:calendarioview' %}" class="nav-sublink{% if ns == 'financeiro' and 'calendario' in un or ns == 'financeiro' and un == 'programacaomesview' %} active{% endif %}"{% if ns == 'financeiro' and 'calendario' in un %} aria-current="page"{% endif %}>Calendário</a></li>
-                        <li><a href="{% url 'financeiro:listacontapagarview' %}" class="nav-sublink{% if ns == 'financeiro' and 'contapagar' in un or ns == 'financeiro' and 'pagamento' in un %} active{% endif %}"{% if ns == 'financeiro' and 'contapagar' in un or ns == 'financeiro' and 'pagamento' in un %} aria-current="page"{% endif %}>Contas a pagar</a></li>
-                        <li><a href="{% url 'financeiro:listacontareceberview' %}" class="nav-sublink{% if ns == 'financeiro' and 'contareceber' in un or ns == 'financeiro' and 'recebimento' in un %} active{% endif %}"{% if ns == 'financeiro' and 'contareceber' in un or ns == 'financeiro' and 'recebimento' in un %} aria-current="page"{% endif %}>Contas a receber</a></li>
-                        <li><a href="{% url 'financeiro:fluxodecaixaview' %}" class="nav-sublink{% if ns == 'financeiro' and 'fluxo' in un %} active{% endif %}"{% if ns == 'financeiro' and 'fluxo' in un %} aria-current="page"{% endif %}>Fluxo de caixa</a></li>
-                        <li><a href="{% url 'financeiro:listalancamentoview' %}" class="nav-sublink{% if un == 'listalancamentoview' %} active{% endif %}"{% if un == 'listalancamentoview' %} aria-current="page"{% endif %}>Todos os lançamentos</a></li>
-                        <li><a href="{% url 'financeiro:planocontasview' %}" class="nav-sublink{% if ns == 'financeiro' and 'plano' in un or ns == 'financeiro' and 'grupo' in un %} active{% endif %}"{% if ns == 'financeiro' and 'plano' in un or ns == 'financeiro' and 'grupo' in un %} aria-current="page"{% endif %}>Plano de contas</a></li>
-                    </ul>
-                </details></li>
-                <li><details class="nav-sub"{% if ns == 'cadastro' and 'produto' in un or ns == 'cadastro' and 'categoria' in un or ns == 'cadastro' and 'marca' in un or ns == 'cadastro' and 'unidade' in un %} open{% endif %}>
-                    <summary class="nav-link{% if ns == 'cadastro' and 'produto' in un or ns == 'cadastro' and 'categoria' in un or ns == 'cadastro' and 'marca' in un or ns == 'cadastro' and 'unidade' in un %} active{% endif %}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg>
-                        <span>Produtos e serviços</span>
-                        <svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
-                    </summary>
-                    <ul class="nav-sublist">
-                        <li><a href="{% url 'cadastro:listaprodutosview' %}" class="nav-sublink{% if ns == 'cadastro' and 'produto' in un %} active{% endif %}"{% if ns == 'cadastro' and 'produto' in un %} aria-current="page"{% endif %}>Produtos</a></li>
-                        <li><a href="{% url 'cadastro:listacategoriasview' %}" class="nav-sublink{% if ns == 'cadastro' and 'categoria' in un %} active{% endif %}"{% if ns == 'cadastro' and 'categoria' in un %} aria-current="page"{% endif %}>Categorias</a></li>
-                        <li><a href="{% url 'cadastro:listaunidadesview' %}" class="nav-sublink{% if ns == 'cadastro' and 'unidade' in un %} active{% endif %}"{% if ns == 'cadastro' and 'unidade' in un %} aria-current="page"{% endif %}>Unidades</a></li>
-                        <li><a href="{% url 'cadastro:listamarcasview' %}" class="nav-sublink{% if ns == 'cadastro' and 'marca' in un %} active{% endif %}"{% if ns == 'cadastro' and 'marca' in un %} aria-current="page"{% endif %}>Marcas</a></li>
-                    </ul>
-                </details></li>
+                    <li><a href="{% url 'base:index' %}" class="nav-link{% if un == 'index' %} active{% endif %}"{% if un == 'index' %} aria-current="page"{% endif %}>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>
+                        <span>Dashboard</span>
+                    </a></li>
+                    <li><a href="{% url 'base:alertasview' %}" class="nav-link{% if un == 'alertasview' %} active{% endif %}"{% if un == 'alertasview' %} aria-current="page"{% endif %}>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                        <span>Alertas</span>
+                        {% if agente_pendentes %}<span class="nav-count{% if agente_criticos %} is-critical{% endif %}">{{ agente_pendentes }}</span>{% endif %}
+                    </a></li>
                 </ul>
             </div>
+
             <div class="nav-group">
-                <div class="nav-label">Cadastros</div>
+                <div class="nav-label">Módulos</div>
                 <ul class="nav-list">
-                <li><a href="{% url 'cadastro:listaclientesview' %}" class="nav-link{% if ns == 'cadastro' and 'cliente' in un %} active{% endif %}"{% if ns == 'cadastro' and 'cliente' in un %} aria-current="page"{% endif %}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    <span>Clientes</span>
-                </a></li>
-                <li><a href="{% url 'cadastro:listafornecedoresview' %}" class="nav-link{% if ns == 'cadastro' and 'fornecedor' in un %} active{% endif %}"{% if ns == 'cadastro' and 'fornecedor' in un %} aria-current="page"{% endif %}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17h4V5H2v12h3"/><path d="M20 17h2v-3.34a4 4 0 0 0-1.17-2.83L19 9h-5v8h1"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
-                    <span>Fornecedores</span>
-                </a></li>
-                <li><a href="{% url 'cadastro:listaempresasview' %}" class="nav-link{% if ns == 'cadastro' and 'empresa' in un %} active{% endif %}"{% if ns == 'cadastro' and 'empresa' in un %} aria-current="page"{% endif %}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V7l7-4 7 4v14"/><path d="M9 9h1M14 9h1M9 13h1M14 13h1M9 17h1M14 17h1"/></svg>
-                    <span>Empresas</span>
-                </a></li>
-                <li><a href="{% url 'cadastro:listatransportadorasview' %}" class="nav-link{% if ns == 'cadastro' and 'transportadora' in un %} active{% endif %}"{% if ns == 'cadastro' and 'transportadora' in un %} aria-current="page"{% endif %}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="6" width="14" height="10" rx="1"/><path d="M15 9h4l3 3v4h-7"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
-                    <span>Transportadoras</span>
-                </a></li>
+                    <li><details class="nav-sub"{% if ns == 'vendas' %} open{% endif %}>
+                        <summary class="nav-link{% if ns == 'vendas' %} active{% endif %}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg>
+                            <span>Vendas</span><svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+                        </summary>
+                        <ul class="nav-sublist">
+                            <li><a href="{% url 'vendas:listaorcamentovendaview' %}" class="nav-sublink{% if ns == 'vendas' and 'orcamento' in un %} active{% endif %}">Orçamentos</a></li>
+                            <li><a href="{% url 'vendas:listapedidovendaview' %}" class="nav-sublink{% if ns == 'vendas' and 'pedido' in un %} active{% endif %}">Pedidos</a></li>
+                            <li><a href="{% url 'vendas:listacondicaopagamentoview' %}" class="nav-sublink{% if ns == 'vendas' and 'condicao' in un %} active{% endif %}">Condições de pagamento</a></li>
+                        </ul>
+                    </details></li>
+
+                    <li><details class="nav-sub"{% if ns == 'compras' %} open{% endif %}>
+                        <summary class="nav-link{% if ns == 'compras' %} active{% endif %}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L22 7H6"/></svg>
+                            <span>Compras</span><svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+                        </summary>
+                        <ul class="nav-sublist">
+                            <li><a href="{% url 'compras:listaorcamentocompraview' %}" class="nav-sublink{% if ns == 'compras' and 'orcamento' in un %} active{% endif %}">Orçamentos</a></li>
+                            <li><a href="{% url 'compras:listapedidocompraview' %}" class="nav-sublink{% if ns == 'compras' and 'pedido' in un %} active{% endif %}">Pedidos</a></li>
+                        </ul>
+                    </details></li>
+
+                    <li><details class="nav-sub"{% if ns == 'estoque' %} open{% endif %}>
+                        <summary class="nav-link{% if ns == 'estoque' %} active{% endif %}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h18v12H3zM3 9l2-5h14l2 5M10 13h4"/></svg>
+                            <span>Estoque</span><svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+                        </summary>
+                        <ul class="nav-sublist">
+                            <li><a href="{% url 'estoque:consultaestoqueview' %}" class="nav-sublink{% if un == 'consultaestoqueview' %} active{% endif %}">Consultar estoque</a></li>
+                            <li><a href="{% url 'estoque:listamovimentoestoqueview' %}" class="nav-sublink{% if ns == 'estoque' and 'movimento' in un or ns == 'estoque' and 'entrada' in un or ns == 'estoque' and 'saida' in un or ns == 'estoque' and 'transferencia' in un %} active{% endif %}">Movimentações</a></li>
+                            <li><a href="{% url 'estoque:listalocalview' %}" class="nav-sublink{% if ns == 'estoque' and 'local' in un %} active{% endif %}">Locais de estoque</a></li>
+                        </ul>
+                    </details></li>
+
+                    <li><details class="nav-sub"{% if ns == 'financeiro' %} open{% endif %}>
+                        <summary class="nav-link{% if ns == 'financeiro' %} active{% endif %}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>
+                            <span>Finanças</span><svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+                        </summary>
+                        <ul class="nav-sublist">
+                            <li><a href="{% url 'financeiro:calendarioview' %}" class="nav-sublink{% if ns == 'financeiro' and 'calendario' in un or ns == 'financeiro' and un == 'programacaomesview' %} active{% endif %}">Calendário</a></li>
+                            <li><a href="{% url 'financeiro:listacontapagarview' %}" class="nav-sublink{% if ns == 'financeiro' and 'contapagar' in un or ns == 'financeiro' and 'pagamento' in un %} active{% endif %}">Contas a pagar</a></li>
+                            <li><a href="{% url 'financeiro:listacontareceberview' %}" class="nav-sublink{% if ns == 'financeiro' and 'contareceber' in un or ns == 'financeiro' and 'recebimento' in un %} active{% endif %}">Contas a receber</a></li>
+                            <li><a href="{% url 'financeiro:fluxodecaixaview' %}" class="nav-sublink{% if ns == 'financeiro' and 'fluxo' in un %} active{% endif %}">Fluxo de caixa</a></li>
+                            <li><a href="{% url 'financeiro:listalancamentoview' %}" class="nav-sublink{% if un == 'listalancamentoview' %} active{% endif %}">Lançamentos</a></li>
+                            <li><a href="{% url 'financeiro:planocontasview' %}" class="nav-sublink{% if ns == 'financeiro' and 'plano' in un or ns == 'financeiro' and 'grupo' in un %} active{% endif %}">Plano de contas</a></li>
+                        </ul>
+                    </details></li>
+
+                    <li><details class="nav-sub"{% if ns == 'fiscal' %} open{% endif %}>
+                        <summary class="nav-link{% if ns == 'fiscal' %} active{% endif %}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+                            <span>Fiscal</span><svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+                        </summary>
+                        <ul class="nav-sublist">
+                            <li><a href="{% url 'fiscal:listanotafiscalsaidaview' %}" class="nav-sublink{% if ns == 'fiscal' and 'saida' in un %} active{% endif %}">Notas de saída</a></li>
+                            <li><a href="{% url 'fiscal:listanotafiscalentradaview' %}" class="nav-sublink{% if ns == 'fiscal' and 'entrada' in un %} active{% endif %}">Notas de entrada</a></li>
+                            <li><a href="{% url 'fiscal:listanaturezaoperacaoview' %}" class="nav-sublink{% if ns == 'fiscal' and 'natureza' in un %} active{% endif %}">Naturezas</a></li>
+                            <li><a href="{% url 'fiscal:listagrupofiscalview' %}" class="nav-sublink{% if ns == 'fiscal' and 'grupofiscal' in un %} active{% endif %}">Grupos fiscais</a></li>
+                            <li><a href="{% url 'fiscal:configuracaonotafiscal' %}" class="nav-sublink{% if un == 'configuracaonotafiscal' %} active{% endif %}">Configurações</a></li>
+                        </ul>
+                    </details></li>
+
+                    <li><details class="nav-sub"{% if ns == 'cadastro' %} open{% endif %}>
+                        <summary class="nav-link{% if ns == 'cadastro' %} active{% endif %}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
+                            <span>Cadastros</span><svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+                        </summary>
+                        <ul class="nav-sublist">
+                            <li><a href="{% url 'cadastro:listaclientesview' %}" class="nav-sublink{% if ns == 'cadastro' and 'cliente' in un %} active{% endif %}">Clientes</a></li>
+                            <li><a href="{% url 'cadastro:listafornecedoresview' %}" class="nav-sublink{% if ns == 'cadastro' and 'fornecedor' in un %} active{% endif %}">Fornecedores</a></li>
+                            <li><a href="{% url 'cadastro:listaprodutosview' %}" class="nav-sublink{% if ns == 'cadastro' and 'produto' in un %} active{% endif %}">Produtos e serviços</a></li>
+                            <li><a href="{% url 'cadastro:listacategoriasview' %}" class="nav-sublink{% if ns == 'cadastro' and 'categoria' in un %} active{% endif %}">Categorias</a></li>
+                            <li><a href="{% url 'cadastro:listaunidadesview' %}" class="nav-sublink{% if ns == 'cadastro' and 'unidade' in un %} active{% endif %}">Unidades</a></li>
+                            <li><a href="{% url 'cadastro:listamarcasview' %}" class="nav-sublink{% if ns == 'cadastro' and 'marca' in un %} active{% endif %}">Marcas</a></li>
+                            <li><a href="{% url 'cadastro:listaempresasview' %}" class="nav-sublink{% if ns == 'cadastro' and 'empresa' in un %} active{% endif %}">Empresas</a></li>
+                            <li><a href="{% url 'cadastro:listatransportadorasview' %}" class="nav-sublink{% if ns == 'cadastro' and 'transportadora' in un %} active{% endif %}">Transportadoras</a></li>
+                        </ul>
+                    </details></li>
+
+                    <li><details class="nav-sub"{% if ns == 'gerencial' or ns == 'financeiro_grupo' or ns == 'juridico' or ns == 'contabilidade' %} open{% endif %}>
+                        <summary class="nav-link{% if ns == 'gerencial' or ns == 'financeiro_grupo' or ns == 'juridico' or ns == 'contabilidade' %} active{% endif %}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+                            <span>Gestão</span><svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+                        </summary>
+                        <ul class="nav-sublist">
+                            <li><a href="{% url 'gerencial:dashboard' %}" class="nav-sublink{% if ns == 'gerencial' %} active{% endif %}">Controle gerencial</a></li>
+                            <li><a href="{% url 'financeiro_grupo:dashboard' %}" class="nav-sublink{% if ns == 'financeiro_grupo' %} active{% endif %}">Financeiro do grupo</a></li>
+                            <li><a href="{% url 'juridico:dashboard' %}" class="nav-sublink{% if ns == 'juridico' %} active{% endif %}">Jurídico</a></li>
+                            <li><a href="{% url 'contabilidade:dashboard' %}" class="nav-sublink{% if ns == 'contabilidade' and un == 'dashboard' %} active{% endif %}">Contabilidade</a></li>
+                            <li><a href="{% url 'contabilidade:lista_processos' %}" class="nav-sublink{% if ns == 'contabilidade' and un == 'lista_processos' or ns == 'contabilidade' and un == 'novo_processo' %} active{% endif %}">Processos contábeis</a></li>
+                            <li><a href="{% url 'contabilidade:relatorios' %}" class="nav-sublink{% if ns == 'contabilidade' and 'relatorio' in un %} active{% endif %}">Relatórios</a></li>
+                            <li><a href="{% url 'contabilidade:rh_funcionarios' %}" class="nav-sublink{% if ns == 'contabilidade' and 'funcionarios' in un %} active{% endif %}">Funcionários</a></li>
+                            <li><a href="{% url 'contabilidade:rh_folhas' %}" class="nav-sublink{% if ns == 'contabilidade' and 'folhas' in un %} active{% endif %}">Folhas de pagamento</a></li>
+                            <li><a href="{% url 'contabilidade:rh_departamentos' %}" class="nav-sublink{% if un == 'rh_departamentos' %} active{% endif %}">Departamentos</a></li>
+                        </ul>
+                    </details></li>
+
+                    <li><details class="nav-sub"{% if ns == 'importacao' or un == 'importacaoview' %} open{% endif %}>
+                        <summary class="nav-link{% if ns == 'importacao' or un == 'importacaoview' %} active{% endif %}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                            <span>Importações</span><svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+                        </summary>
+                        <ul class="nav-sublist">
+                            <li><a href="{% url 'importacao:listaprocessosview' %}" class="nav-sublink{% if ns == 'importacao' and un != 'addprocessoview' %} active{% endif %}">Processos de importação</a></li>
+                            <li><a href="{% url 'importacao:addprocessoview' %}" class="nav-sublink{% if un == 'addprocessoview' %} active{% endif %}">Novo processo</a></li>
+                            {% with tipo=request.resolver_match.kwargs.tipo %}
+                            <li><a href="{% url 'base:importacaoview' 'planilha' %}" class="nav-sublink{% if un == 'importacaoview' and tipo == 'planilha' %} active{% endif %}">Planilha de pagamentos</a></li>
+                            <li><a href="{% url 'base:importacaoview' 'nfe-entrada' %}" class="nav-sublink{% if un == 'importacaoview' and tipo == 'nfe-entrada' %} active{% endif %}">NF-e de entrada</a></li>
+                            <li><a href="{% url 'base:importacaoview' 'nfe-saida' %}" class="nav-sublink{% if un == 'importacaoview' and tipo == 'nfe-saida' %} active{% endif %}">NF-e de saída</a></li>
+                            {% endwith %}
+                        </ul>
+                    </details></li>
                 </ul>
             </div>
-            <div class="nav-group">
-                <div class="nav-label">Gestão avançada</div>
+
+            <div class="nav-group nav-group-admin">
+                <div class="nav-label">Administração</div>
                 <ul class="nav-list">
-                <li><a href="{% url 'gerencial:dashboard' %}" class="nav-link{% if ns == 'gerencial' %} active{% endif %}"{% if ns == 'gerencial' %} aria-current="page"{% endif %}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
-                    <span>Controle gerencial</span>
-                </a></li>
-                <li><a href="{% url 'financeiro_grupo:dashboard' %}" class="nav-link{% if ns == 'financeiro_grupo' %} active{% endif %}"{% if ns == 'financeiro_grupo' %} aria-current="page"{% endif %}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg>
-                    <span>Financeiro do grupo</span>
-                </a></li>
-                <li><a href="{% url 'juridico:dashboard' %}" class="nav-link{% if ns == 'juridico' %} active{% endif %}"{% if ns == 'juridico' %} aria-current="page"{% endif %}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 8 4-8 4-8-4z"/><path d="M12 11v10M8 21h8M4 7v4c0 1.5 1.8 3 4 3M20 7v4c0 1.5-1.8 3-4 3"/></svg>
-                    <span>Controle jurídico</span>
-                </a></li>
-                <li><details class="nav-sub"{% if ns == 'contabilidade' and 'rh_' not in un %} open{% endif %}>
-                    <summary class="nav-link{% if ns == 'contabilidade' and 'rh_' not in un %} active{% endif %}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h2M12 10h2M8 14h2M12 14h2M8 18h2M12 18h4v-4"/></svg>
-                        <span>Contabilidade</span>
-                        <svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
-                    </summary>
-                    <ul class="nav-sublist">
-                        <li><a href="{% url 'contabilidade:dashboard' %}" class="nav-sublink{% if ns == 'contabilidade' and un == 'dashboard' %} active{% endif %}"{% if ns == 'contabilidade' and un == 'dashboard' %} aria-current="page"{% endif %}>Painel</a></li>
-                        <li><a href="{% url 'contabilidade:lista_processos' %}" class="nav-sublink{% if ns == 'contabilidade' and un == 'lista_processos' %} active{% endif %}"{% if ns == 'contabilidade' and un == 'lista_processos' %} aria-current="page"{% endif %}>Processos</a></li>
-                        <li><a href="{% url 'contabilidade:novo_processo' %}" class="nav-sublink{% if ns == 'contabilidade' and un == 'novo_processo' %} active{% endif %}"{% if ns == 'contabilidade' and un == 'novo_processo' %} aria-current="page"{% endif %}>Novo processo</a></li>
-                        <li><a href="{% url 'contabilidade:relatorios' %}" class="nav-sublink{% if ns == 'contabilidade' and 'relatorio' in un %} active{% endif %}"{% if ns == 'contabilidade' and 'relatorio' in un %} aria-current="page"{% endif %}>Relatórios</a></li>
-                    </ul>
-                </details></li>
-                <li><details class="nav-sub"{% if ns == 'contabilidade' and 'rh_' in un %} open{% endif %}>
-                    <summary class="nav-link{% if ns == 'contabilidade' and 'rh_' in un %} active{% endif %}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg>
-                        <span>RH</span>
-                        <svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
-                    </summary>
-                    <ul class="nav-sublist">
-                        <li><a href="{% url 'contabilidade:rh_funcionarios' %}" class="nav-sublink{% if ns == 'contabilidade' and 'funcionarios' in un %} active{% endif %}"{% if ns == 'contabilidade' and 'funcionarios' in un %} aria-current="page"{% endif %}>Funcionários</a></li>
-                        <li><a href="{% url 'contabilidade:rh_folhas' %}" class="nav-sublink{% if ns == 'contabilidade' and 'folhas' in un %} active{% endif %}"{% if ns == 'contabilidade' and 'folhas' in un %} aria-current="page"{% endif %}>Folhas de pagamento</a></li>
-                        <li><a href="{% url 'contabilidade:rh_departamentos' %}" class="nav-sublink{% if un == 'rh_departamentos' %} active{% endif %}"{% if un == 'rh_departamentos' %} aria-current="page"{% endif %}>Departamentos pessoais</a></li>
-                    </ul>
-                </details></li>
-                <li><details class="nav-sub"{% if ns == 'importacao' %} open{% endif %}>
-                    <summary class="nav-link{% if ns == 'importacao' %} active{% endif %}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l1.5 3.5h15L21 17M3 17h18M6 17v-5h12v5M9 12V8h6v4M12 8V4"/></svg>
-                        <span>Importação</span>
-                        <svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
-                    </summary>
-                    <ul class="nav-sublist">
-                        <li><a href="{% url 'importacao:listaprocessosview' %}" class="nav-sublink{% if ns == 'importacao' and un != 'addprocessoview' %} active{% endif %}"{% if ns == 'importacao' and un != 'addprocessoview' %} aria-current="page"{% endif %}>Processos</a></li>
-                        <li><a href="{% url 'importacao:addprocessoview' %}" class="nav-sublink{% if un == 'addprocessoview' %} active{% endif %}"{% if un == 'addprocessoview' %} aria-current="page"{% endif %}>Novo processo</a></li>
-                    </ul>
-                </details></li>
-                <li><details class="nav-sub"{% if un == 'importacaoview' %} open{% endif %}>
-                    <summary class="nav-link{% if un == 'importacaoview' %} active{% endif %}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                        <span>Importar dados</span>
-                        <svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
-                    </summary>
-                    <ul class="nav-sublist">
-                        {% with tipo=request.resolver_match.kwargs.tipo %}
-                        <li><a href="{% url 'base:importacaoview' 'planilha' %}" class="nav-sublink{% if un == 'importacaoview' and tipo == 'planilha' %} active{% endif %}"{% if un == 'importacaoview' and tipo == 'planilha' %} aria-current="page"{% endif %}>Planilha de pagamentos</a></li>
-                        <li><a href="{% url 'base:importacaoview' 'nfe-entrada' %}" class="nav-sublink{% if un == 'importacaoview' and tipo == 'nfe-entrada' %} active{% endif %}"{% if un == 'importacaoview' and tipo == 'nfe-entrada' %} aria-current="page"{% endif %}>NF-e de entrada (XML)</a></li>
-                        <li><a href="{% url 'base:importacaoview' 'nfe-saida' %}" class="nav-sublink{% if un == 'importacaoview' and tipo == 'nfe-saida' %} active{% endif %}"{% if un == 'importacaoview' and tipo == 'nfe-saida' %} aria-current="page"{% endif %}>NF-e de saída (XML)</a></li>
-                        {% endwith %}
-                    </ul>
-                </details></li>
-                </ul>
-            </div>
-            <div class="nav-group">
-                <div class="nav-label">Fiscal</div>
-                <ul class="nav-list">
-                <li><details class="nav-sub"{% if ns == 'fiscal' %} open{% endif %}>
-                    <summary class="nav-link{% if ns == 'fiscal' %} active{% endif %}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-                        <span>Notas fiscais</span>
-                        <svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
-                    </summary>
-                    <ul class="nav-sublist">
-                        <li><a href="{% url 'fiscal:listanotafiscalsaidaview' %}" class="nav-sublink{% if ns == 'fiscal' and 'saida' in un %} active{% endif %}"{% if ns == 'fiscal' and 'saida' in un %} aria-current="page"{% endif %}>Notas de saída</a></li>
-                        <li><a href="{% url 'fiscal:listanotafiscalentradaview' %}" class="nav-sublink{% if ns == 'fiscal' and 'entrada' in un %} active{% endif %}"{% if ns == 'fiscal' and 'entrada' in un %} aria-current="page"{% endif %}>Notas de entrada</a></li>
-                        <li><a href="{% url 'fiscal:listanaturezaoperacaoview' %}" class="nav-sublink{% if ns == 'fiscal' and 'natureza' in un %} active{% endif %}"{% if ns == 'fiscal' and 'natureza' in un %} aria-current="page"{% endif %}>Natureza da operação</a></li>
-                        <li><a href="{% url 'fiscal:listagrupofiscalview' %}" class="nav-sublink{% if ns == 'fiscal' and 'grupofiscal' in un %} active{% endif %}"{% if ns == 'fiscal' and 'grupofiscal' in un %} aria-current="page"{% endif %}>Grupos fiscais</a></li>
-                        <li><a href="{% url 'fiscal:configuracaonotafiscal' %}" class="nav-sublink{% if un == 'configuracaonotafiscal' %} active{% endif %}"{% if un == 'configuracaonotafiscal' %} aria-current="page"{% endif %}>Configurações</a></li>
-                    </ul>
-                </details></li>
-                </ul>
-            </div>
-            <div class="nav-group">
-                <div class="nav-label">Sistema</div>
-                <ul class="nav-list">
-                <li><a href="{% url 'login:perfilview' %}" class="nav-link{% if request.resolver_match.url_name == 'perfilview' %} active{% endif %}"{% if request.resolver_match.url_name == 'perfilview' %} aria-current="page"{% endif %}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
-                    <span>Meu perfil</span>
-                </a></li>
-                <li><a href="{% url 'login:usuariosview' %}" class="nav-link{% if request.resolver_match.namespace == 'login' and request.resolver_match.url_name != 'perfilview' %} active{% endif %}"{% if request.resolver_match.namespace == 'login' and request.resolver_match.url_name != 'perfilview' %} aria-current="page"{% endif %}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/></svg>
-                    <span>Usuários</span>
-                </a></li>
+                    <li><a href="{% url 'login:usuariosview' %}" class="nav-link{% if ns == 'login' and un != 'perfilview' %} active{% endif %}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/></svg>
+                        <span>Usuários e acessos</span>
+                    </a></li>
                 </ul>
             </div>
         </nav>
