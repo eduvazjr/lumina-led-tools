@@ -1,4 +1,4 @@
-{% load static led_ui %}{# Aumente ao publicar mudanças em led-ui.css ou admin.js, para o navegador não usar a versão em cache #}{% with ui_v='18' %}<!DOCTYPE html>
+{% load static led_ui %}{# Aumente ao publicar mudanças em led-ui.css ou admin.js, para o navegador não usar a versão em cache #}{% with ui_v='19' %}<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -237,6 +237,7 @@
     <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'js/admin.js' %}?v={{ ui_v }}"></script>
+    <script src="{% static 'js/exportar.js' %}?v={{ ui_v }}" defer></script>
     <script>
         (function () {
             var body = document.body;

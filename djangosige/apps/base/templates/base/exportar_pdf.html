@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>{{ titulo }}</title>
+<style>
+  @page {
+    size: A4 {% if paisagem %}landscape{% else %}portrait{% endif %};
+    margin: 16mm 12mm 16mm 12mm;
+    @bottom-left { content: "Led Gerencial"; font: 8pt "IBM Plex Sans", "DejaVu Sans", Arial, sans-serif; color: #59626B; }
+    @bottom-right { content: "Página " counter(page) " de " counter(pages); font: 8pt "IBM Plex Sans", "DejaVu Sans", Arial, sans-serif; color: #59626B; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 9pt/1.4 "IBM Plex Sans", "DejaVu Sans", Arial, sans-serif; color: #14171A; font-variant-numeric: tabular-nums; }
+  .topo { display: flex; width: 100%; justify-content: space-between; align-items: flex-start; gap: 12mm; padding-bottom: 5mm; margin-bottom: 5mm; border-bottom: 1px solid #DCE0E4; }
+  .marca { display: flex; align-items: center; gap: 3mm; }
+  .marca-icone { flex: none; width: 8mm; height: 8mm; border-radius: 2mm; background: #C4520B; }
+  .marca strong { display: block; font-size: 10pt; white-space: nowrap; }
+  .marca small { white-space: nowrap; }
+  .marca small { color: #59626B; font-size: 8pt; }
+  .gerado { text-align: right; color: #59626B; font-size: 8pt; }
+  h1 { margin: 0 0 1mm; font-size: 15pt; font-weight: 600; letter-spacing: -0.01em; }
+  .subtitulo { margin: 0 0 5mm; color: #59626B; }
+  table { width: 100%; border-collapse: collapse; }
+  thead { display: table-header-group; }
+  th { padding: 2mm 2.5mm; background: #FAFBFB; border-bottom: 1px solid #E6E9EC; color: #59626B; font-weight: 500; font-size: 8pt; text-align: left; }
+  td { padding: 2mm 2.5mm; border-bottom: 1px solid #EEF0F2; vertical-align: top; }
+  tr { page-break-inside: avoid; }
+  .direita { text-align: right; white-space: nowrap; }
+  tfoot td { font-weight: 600; background: #FAFBFB; border-top: 1px solid #E6E9EC; }
+  .total { margin-top: 3mm; color: #59626B; font-size: 8pt; }
+  .vazio { padding: 8mm 0; color: #59626B; }
+</style>
+</head>
+<body>
+  <div class="topo">
+    <div class="marca"><div class="marca-icone"></div><div><strong>Led Gerencial</strong><small>Led Tools</small></div></div>
+    <div class="gerado">Gerado em {{ gerado_em|date:"d/m/Y \à\s H:i" }}<br>por {{ usuario.get_full_name|default:usuario.username }}</div>
+  </div>
+  <h1>{{ titulo }}</h1>
+  {% if subtitulo %}<p class="subtitulo">{{ subtitulo }}</p>{% endif %}
+  {% if linhas %}
+  <table>
+    <thead><tr>{% for coluna, classe in cabecalho %}<th class="{{ classe }}">{{ coluna }}</th>{% endfor %}</tr></thead>
+    <tbody>
+      {% for linha in linhas_pdf %}<tr>{% for celula, classe in linha %}<td class="{{ classe }}">{{ celula }}</td>{% endfor %}</tr>
+      {% endfor %}
+    </tbody>
+    {% if rodape_pdf %}<tfoot><tr>{% for celula, classe in rodape_pdf %}<td class="{{ classe }}">{{ celula }}</td>{% endfor %}</tr></tfoot>{% endif %}
+  </table>
+  <p class="total">{{ total_linhas }} linha{{ total_linhas|pluralize }}</p>
+  {% else %}
+  <p class="vazio">Nenhum registro para exportar.</p>
+  {% endif %}
+</body>
+</html>
