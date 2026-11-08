@@ -42,6 +42,9 @@ djangosige/configs/configs.py
 djangosige/media/imagens/usuarios/
 djangosige/documentos_privados/
 .env
+*-service-account.json
+*credentials*.json
+secrets/*.json
 .venv/
 *.sqlite3
 env/

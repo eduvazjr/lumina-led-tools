@@ -5,114 +5,29 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, Count, Avg, Q
 from django.utils import timezone
 from datetime import date, timedelta
-import json
-
 from .models import PagamentoFornecedor, ImportacaoPlanilha
+from .drive_negotiations import build_dashboard_data, load_negotiations
 from djangosige.apps.cadastro.models import Fornecedor
 
 
 @login_required
 def dashboard(request):
-    """Dashboard do Controle Gerencial"""
-    
-    # Filtros
-    fornecedor_id = request.GET.get('fornecedor')
-    status = request.GET.get('status')
-    periodo = request.GET.get('periodo')
-    
-    # Query base
-    pagamentos = PagamentoFornecedor.objects.select_related('fornecedor')
-    
-    # Aplicar filtros
-    if fornecedor_id:
-        pagamentos = pagamentos.filter(fornecedor_id=fornecedor_id)
-    if status:
-        pagamentos = pagamentos.filter(status=status)
-    if periodo:
-        data_limite = date.today() - timedelta(days=int(periodo))
-        pagamentos = pagamentos.filter(data_emissao__gte=data_limite)
-    
-    # Cálculos dashboard
-    pagamentos_pendentes = PagamentoFornecedor.objects.filter(status='pendente')
-    
-    # Total a pagar
-    total_pagar = pagamentos_pendentes.aggregate(Sum('valor'))['valor__sum'] or 0
-    qtd_fornecedores = pagamentos_pendentes.values('fornecedor').distinct().count()
-    
-    # Vencidos
-    vencidos = pagamentos_pendentes.filter(data_vencimento__lt=date.today())
-    qtd_vencidos = vencidos.count()
-    valor_vencidos = vencidos.aggregate(Sum('valor'))['valor__sum'] or 0
-    
-    # Médias
-    media_semanal = calcular_media_periodo(7)
-    media_mensal = calcular_media_periodo(30)
-    
-    # Maior e menor dívida por fornecedor
-    dividas_por_fornecedor = pagamentos_pendentes.values(
-        'fornecedor__nome_razao_social'
-    ).annotate(
-        total=Sum('valor')
-    ).order_by('-total')
-    
-    if dividas_por_fornecedor:
-        maior_divida = dividas_por_fornecedor.first()
-        menor_divida = dividas_por_fornecedor.last()
-        
-        maior_divida_fornecedor = maior_divida['fornecedor__nome_razao_social']
-        maior_divida_valor = maior_divida['total']
-        maior_divida_percentual = (float(maior_divida_valor) / float(total_pagar) * 100) if total_pagar > 0 else 0
-        
-        menor_divida_fornecedor = menor_divida['fornecedor__nome_razao_social']
-        menor_divida_valor = menor_divida['total']
-        menor_divida_percentual = (float(menor_divida_valor) / float(total_pagar) * 100) if total_pagar > 0 else 0
-    else:
-        maior_divida_fornecedor = menor_divida_fornecedor = 'N/A'
-        maior_divida_valor = menor_divida_valor = 0
-        maior_divida_percentual = menor_divida_percentual = 0
-    
-    # Dados para gráficos
-    grafico_labels = [item['fornecedor__nome_razao_social'][:20] for item in dividas_por_fornecedor[:10]]
-    grafico_valores = [float(item['total']) for item in dividas_por_fornecedor[:10]]
-    
-    # Vencimentos próximos (30 dias)
-    vencimentos_30d = pagamentos_pendentes.filter(
-        data_vencimento__gte=date.today(),
-        data_vencimento__lte=date.today() + timedelta(days=30)
-    ).values('data_vencimento').annotate(
-        total=Sum('valor')
-    ).order_by('data_vencimento')[:7]
-    
-    vencimentos_labels = [item['data_vencimento'].strftime('%d/%m') for item in vencimentos_30d]
-    vencimentos_valores = [float(item['total']) for item in vencimentos_30d]
-    
-    context = {
-        'pagamentos': pagamentos[:50],
-        'fornecedores': Fornecedor.objects.all(),
-        
-        # Stats
-        'media_semanal': f'{media_semanal:,.2f}',
-        'media_mensal': f'{media_mensal:,.2f}',
-        'maior_divida_fornecedor': maior_divida_fornecedor,
-        'maior_divida_valor': f'{maior_divida_valor:,.2f}',
-        'maior_divida_percentual': f'{maior_divida_percentual:.1f}',
-        'menor_divida_fornecedor': menor_divida_fornecedor,
-        'menor_divida_valor': f'{menor_divida_valor:,.2f}',
-        'menor_divida_percentual': f'{menor_divida_percentual:.1f}',
-        'total_pagar': f'{total_pagar:,.2f}',
-        'qtd_fornecedores': qtd_fornecedores,
-        'qtd_vencidos': qtd_vencidos,
-        'valor_vencidos': f'{valor_vencidos:,.2f}',
-        
-        # Gráficos
-        'grafico_labels': json.dumps(grafico_labels),
-        'grafico_valores': json.dumps(grafico_valores),
-        'vencimentos_labels': json.dumps(vencimentos_labels),
-        'vencimentos_valores': json.dumps(vencimentos_valores),
-    }
-    
+    source = load_negotiations()
+    supplier = request.GET.get('fornecedor', '').strip()
+    all_records = source['records']
+    records = [record for record in all_records if record.get('supplier') == supplier] if supplier else all_records
+    dashboard_data = build_dashboard_data(records)
+    consolidated = build_dashboard_data(all_records)
+    context = dict(source)
+    context.update(dashboard_data)
+    context.update({
+        'selected_supplier': supplier,
+        'all_suppliers': consolidated['suppliers'],
+        'consolidated_kpis': consolidated['kpis'],
+        'chart_distribution_data': dashboard_data['chart_distribution'],
+        'chart_due_data': dashboard_data['chart_due'],
+    })
     return render(request, 'gerencial/dashboard.html', context)
-
 
 def calcular_media_periodo(dias):
     """Calcula média de pagamentos em um período"""

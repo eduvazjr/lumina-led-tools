@@ -16,6 +16,13 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
+GOOGLE_DRIVE_FILE_ID = config('GOOGLE_DRIVE_FILE_ID', default='1fVEXE8Uv5BoUGO32uY4iFpOasSiIxrXS')
+_LOCAL_GOOGLE_CREDENTIALS = 'H:/Lumina/secrets/google-sheets-service-account.json'
+GOOGLE_DRIVE_CREDENTIALS_FILE = config(
+    'GOOGLE_DRIVE_CREDENTIALS_FILE',
+    default=_LOCAL_GOOGLE_CREDENTIALS if os.path.exists(_LOCAL_GOOGLE_CREDENTIALS) else '',
+)
+
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())
 
 # Django 4.0+ valida o header Origin em requests POST mesmo same-origin.
