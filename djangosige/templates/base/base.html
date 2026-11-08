@@ -157,9 +157,18 @@
                             <li><a href="{% url 'contabilidade:dashboard' %}" class="nav-sublink{% if ns == 'contabilidade' and un == 'dashboard' %} active{% endif %}">Contabilidade</a></li>
                             <li><a href="{% url 'contabilidade:lista_processos' %}" class="nav-sublink{% if ns == 'contabilidade' and un == 'lista_processos' or ns == 'contabilidade' and un == 'novo_processo' %} active{% endif %}">Processos contábeis</a></li>
                             <li><a href="{% url 'contabilidade:relatorios' %}" class="nav-sublink{% if ns == 'contabilidade' and 'relatorio' in un %} active{% endif %}">Relatórios</a></li>
-                            <li><a href="{% url 'contabilidade:rh_funcionarios' %}" class="nav-sublink{% if ns == 'contabilidade' and 'funcionarios' in un %} active{% endif %}">Funcionários</a></li>
-                            <li><a href="{% url 'contabilidade:rh_folhas' %}" class="nav-sublink{% if ns == 'contabilidade' and 'folhas' in un %} active{% endif %}">Folhas de pagamento</a></li>
-                            <li><a href="{% url 'contabilidade:rh_departamentos' %}" class="nav-sublink{% if un == 'rh_departamentos' %} active{% endif %}">Departamentos</a></li>
+                        </ul>
+                    </details></li>
+
+                    <li><details class="nav-sub"{% if ns == 'contabilidade' and 'funcionario' in un or ns == 'contabilidade' and 'folha' in un or un == 'rh_departamentos' %} open{% endif %}>
+                        <summary class="nav-link{% if ns == 'contabilidade' and 'funcionario' in un or ns == 'contabilidade' and 'folha' in un or un == 'rh_departamentos' %} active{% endif %}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <span>RH / Dep. Pessoal</span><svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+                        </summary>
+                        <ul class="nav-sublist">
+                        <li><a href="{% url 'contabilidade:rh_funcionarios' %}" class="nav-sublink{% if ns == 'contabilidade' and 'funcionarios' in un %} active{% endif %}">Funcionários</a></li>
+                        <li><a href="{% url 'contabilidade:rh_folhas' %}" class="nav-sublink{% if ns == 'contabilidade' and 'folhas' in un %} active{% endif %}">Folhas de pagamento</a></li>
+                        <li><a href="{% url 'contabilidade:rh_departamentos' %}" class="nav-sublink{% if un == 'rh_departamentos' %} active{% endif %}">Departamentos</a></li>
                         </ul>
                     </details></li>
 
