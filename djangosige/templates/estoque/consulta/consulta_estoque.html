@@ -4,10 +4,6 @@
 {%block content%}
 <section class="content">
   <div class="container-fluid lista">
-  
-    <div class="title-header">
-      <h2>Estoque</h2>
-    </div>
     
     {% include 'base/msg_sucesso.html' %}
     {% include 'base/msg_error.html' %}
@@ -17,7 +13,7 @@
         
         <div class="header">
           <h2>
-            {{title_complete}}
+            {{title_complete|lower|capfirst}}
           </h2>
         </div>
 
@@ -25,7 +21,7 @@
         <div class="body">
 
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="row" style="border-bottom: 1px solid #afabab;margin-bottom: 17px;">
+            <div class="row linha-filtros">
               <h4 class="form-secao">Filtrar</h4>
               <form role="form" action="{% url 'estoque:consultaestoqueview' %}" method="get">
               {% csrf_token %}
@@ -80,7 +76,7 @@
 
                 <tbody>
                   {% for produto in produtos_filtrados %}
-                  <tr colspan="6" style="font-weight: bolder;background-color: #d2dee0;" class="prevent-click-row" data-toggle="collapse" data-target=".accordion-{{produto.id}}">
+                  <tr class="prevent-click-row linha-grupo" data-toggle="collapse" data-target=".accordion-{{produto.id}}">
                     <td>{{produto.codigo}}</td>
                     <td>{{produto}}</td>
                     <td>{% if produto.categoria %}{{produto.categoria}}{% endif %}</td>

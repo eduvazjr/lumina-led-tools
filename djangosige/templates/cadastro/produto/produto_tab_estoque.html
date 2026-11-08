@@ -20,13 +20,13 @@
   <div class="col-sm-6">
     <div class="form-group">
       <label>Qtd. em estoque atual</label>
-      <span  style="display:block;font-size:x-large;padding-left:10px;color:#03a9f4;">{% if object.estoque_atual %}{{object.estoque_atual}}{% else %}0,00{% endif %}</span>
+      <span class="numero-grande" style="display:block">{% if object.estoque_atual %}{{object.estoque_atual}}{% else %}0,00{% endif %}</span>
     </div>
   </div>
 
   {% if not object %}
   <div class="col-sm-12">
-    <h4 style="border-bottom: 1px solid #afabab;margin-bottom: 25px;">Ajuste de estoque inicial<i class="material-icons" style="font-size:medium;padding-left:10px;" title="Realizar uma movimentação de estoque inicial para este produto, a movimentação poderá ser visualizada no módulo de Estoque > Movimentações de estoque > Entradas">&#xE887;</i></h4>
+    <h4 class="form-secao">Ajuste de estoque inicial<i class="material-icons" style="font-size:medium;padding-left:10px;" title="Realizar uma movimentação de estoque inicial para este produto, a movimentação poderá ser visualizada no módulo de Estoque > Movimentações de estoque > Entradas">&#xE887;</i></h4>
   </div>
   <div class="col-sm-6">
     <div class="form-group">

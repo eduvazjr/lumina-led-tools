@@ -1,4 +1,4 @@
-<h4 class="form-secao">Pedidos/Orçamentos de compra de <b>{{object.nome_razao_social}}</b></h4>
+{% load led_ui gerencial_format %}<h4 class="form-secao">Pedidos/Orçamentos de compra de <b>{{object.nome_razao_social}}</b></h4>
 {% include 'base/search.html' %}
 
  <div class="table-responsive lista-content">
@@ -20,7 +20,7 @@
         <td><b>{{compra.get_child.tipo_compra}}</b></td>
         <td><b>{{compra.get_child.get_status_display}}</b></td>
         <td>{% if  compra.data_vencimento %}{{compra.format_data_vencimento}}{% endif %}</td>
-        <td>{{compra.format_valor_total}}</td>        
+        <td class="text-right">{{compra.valor_total|brl}}</td>        
       </tr>
       {% endfor %}
     </tbody>

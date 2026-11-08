@@ -229,7 +229,7 @@
 
         <div class="col-sm-12">
 
-          <h4 style="border-bottom: 1px solid #afabab;margin-bottom: 25px;">Emitente</h4>
+          <h4 class="form-secao">Emitente</h4>
 
           <div class="col-sm-4">
             <div class="form-group">
@@ -372,7 +372,7 @@
 
         <div class="col-sm-12">
 
-          <h4 style="border-bottom: 1px solid #afabab;margin-bottom: 25px;">Destinatário</h4>
+          <h4 class="form-secao">Destinatário</h4>
           <div class="col-sm-12">
             <div class="col-sm-4">
               <div class="form-group">
@@ -566,7 +566,7 @@
 
         </div>
 
-        <h4 style="border-bottom: 1px solid #afabab;margin-bottom: 25px;">Totais</h4>
+        <h4 class="form-secao">Totais</h4>
           <div class="col-sm-3">
             <div class="form-group">
               <div class="form-line">
@@ -624,7 +624,7 @@
 
         <div class="col-sm-12 lista">
 
-          <h4 style="border-bottom: 1px solid #afabab;margin-bottom: 25px;">Itens</h4>
+          <h4 class="form-secao">Itens</h4>
           <table id="itens_table" class="table table-bordered lista-table">
             <thead>
               <tr>
@@ -674,7 +674,7 @@
           </div>
         </div>
 
-        <h4 style="border-bottom: 1px solid #afabab;margin-bottom: 25px;">Fatura (NF-e)</h4>
+        <h4 class="form-secao">Fatura (NF-e)</h4>
 
         <div class="col-sm-12" style="margin-bottom: 17px;margin-top: 5px;">
           {{form.grupo_cobr}}
@@ -723,7 +723,7 @@
           </div>
         </div>
 
-        <h4 style="border-bottom: 1px solid #afabab;margin-bottom: 25px;">Duplicatas (NF-e)</h4>
+        <h4 class="form-secao">Duplicatas (NF-e)</h4>
 
         <div class="col-sm-12 lista">
           <table id="pagamentos_tabela" class="table table-bordered lista-table">
@@ -744,7 +744,7 @@
 
         </div>
 
-        <h4 style="border-bottom: 1px solid #afabab;margin-bottom: 25px;">Pagamento (NFC-e)</h4>
+        <h4 class="form-secao">Pagamento (NFC-e)</h4>
 
         <div class="col-sm-6">
           <div class="form-group">
@@ -797,7 +797,7 @@
 
         </div>
 
-        <h4 style="border-bottom: 1px solid #afabab;margin-bottom: 25px;">Totais</h4>
+        <h4 class="form-secao">Totais</h4>
           <div class="col-sm-3">
             <div class="form-group">
               <div class="form-line">
@@ -864,7 +864,7 @@
 
         <div class="col-sm-12 lista">
 
-          <h4 style="border-bottom: 1px solid #afabab;margin-bottom: 25px;">Itens</h4>
+          <h4 class="form-secao">Itens</h4>
           <table id="itens_table" class="table table-bordered lista-table">
             <thead>
               <tr>
@@ -933,7 +933,7 @@
 
         <div class="col-sm-12 lista">
 
-          <h4 style="border-bottom: 1px solid #afabab;margin-bottom: 25px;">Validação do XML Erros/Alertas {% if errors_validacao %}({{errors_validacao|length}} encontrados){% endif %}</h4>
+          <h4 class="form-secao">Validação do XML Erros/Alertas {% if errors_validacao %}({{errors_validacao|length}} encontrados){% endif %}</h4>
           <table id="erros_validacao_tabela" class="table table-bordered lista-table">
             <thead>
               <tr>
@@ -944,9 +944,9 @@
 
             <tbody>
               {% for erro in errors_validacao %}
-              <tr {% if erro.tipo == '0' %}style="background-color:#ffaaaa;"{% else %}style="background-color:#d5cd83;"{% endif %}>
-                <td style="font-weight: bolder;">{% if erro.tipo %}{{erro.get_tipo_display}}{% endif %}</td>
-                <td style="font-weight: bolder;">{% if erro.descricao %}{{erro.descricao}}{% endif %}</td>
+              <tr class="{% if erro.tipo == '0' %}linha-erro{% else %}linha-alerta{% endif %}">
+                <td class="forte">{% if erro.tipo %}{{erro.get_tipo_display}}{% endif %}</td>
+                <td class="forte">{% if erro.descricao %}{{erro.descricao}}{% endif %}</td>
               </tr>
               {% endfor %}
               <tr>
@@ -965,7 +965,7 @@
 
         <div class="col-sm-12 lista">
 
-          <h4 style="border-bottom: 1px solid #afabab;margin-bottom: 25px;">Resposta do SEFAZ {% if resposta_sefaz %}({{resposta_sefaz|length}} encontrados){% endif %}</h4>
+          <h4 class="form-secao">Resposta do SEFAZ {% if resposta_sefaz %}({{resposta_sefaz|length}} encontrados){% endif %}</h4>
           <table id="resposta_sefaz_tabela" class="table table-bordered lista-table">
             <thead>
               <tr>
@@ -977,10 +977,10 @@
 
             <tbody>
               {% for resposta in resposta_sefaz %}
-              <tr {% if resposta.tipo == '0' or resposta.tipo == '2' %}style="background-color:#ffaaaa;"{% elif resposta.tipo == '4' or resposta.tipo == '3' %}style="background-color:#d5cd83;"{% else %}style="background-color:#d5efd6;"{% endif %}>
-                <td style="font-weight: bolder;">{% if resposta.tipo %}{{resposta.get_tipo_display}}{% endif %}</td>
-                <td style="font-weight: bolder;">{% if resposta.codigo %}{{resposta.codigo}}{% endif %}</td>
-                <td style="font-weight: bolder;">{% if resposta.descricao %}{{resposta.descricao}}{% endif %}</td>
+              <tr class="{% if resposta.tipo == '0' or resposta.tipo == '2' %}linha-erro{% elif resposta.tipo == '4' or resposta.tipo == '3' %}linha-alerta{% else %}linha-ok{% endif %}">
+                <td class="forte">{% if resposta.tipo %}{{resposta.get_tipo_display}}{% endif %}</td>
+                <td class="forte">{% if resposta.codigo %}{{resposta.codigo}}{% endif %}</td>
+                <td class="forte">{% if resposta.descricao %}{{resposta.descricao}}{% endif %}</td>
               </tr>
               {% endfor %}
               <tr>

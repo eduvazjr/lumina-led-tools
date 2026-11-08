@@ -1,4 +1,5 @@
 {%extends 'base/base.html'%}
+{% load led_ui gerencial_format %}
 
 {%block title%}{{title_complete|lower|capfirst}}{%endblock%}
 {%block content%}
@@ -64,7 +65,7 @@
                   <div class="form-group">
                     <div class="form-line">
                       <label>Total:</label>
-                      <span>R$ {{object.venda.format_valor_total}}</span>
+                      <span>{{object.venda.valor_total|brl}}</span>
                     </div>
                   </div>
                 </div>

@@ -1,4 +1,4 @@
-{% if all_movimentos %}
+{% load led_ui gerencial_format %}{% if all_movimentos %}
 <div class="list-toolbar">{% include 'base/search.html' %}</div>
 <div class="table-wrap">
     <table id="lista-database" class="table">
@@ -18,8 +18,8 @@
                 <td class="col-id">{{movimento.id}}</td>
                 <td>{{movimento.format_data_movimento}}</td>
                 <td><strong>{{movimento.get_tipo}}</strong></td>
-                <td class="col-num">{{movimento.format_quantidade_itens}}</td>
-                <td class="col-num"><strong>{{movimento.format_valor_total}}</strong></td>
+                <td class="col-num">{{movimento.quantidade_itens|ptbr_number:0}}</td>
+                <td class="col-num"><strong>{{movimento.valor_total|brl}}</strong></td>
                 {% include 'base/list_check.html' with obj_id=movimento.id %}
             </tr>
             {% endfor %}

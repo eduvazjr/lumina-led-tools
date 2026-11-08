@@ -1,6 +1,6 @@
 {%extends 'base/base.html'%}
 
-{%block title%}{{title_complete}}{%endblock%}
+{%block title%}{{title_complete|lower|capfirst}}{%endblock%}
 {%block content%}
 <section class="content">
   <div class="container-fluid">
@@ -9,7 +9,7 @@
         <div class="card">
           <div class="header">
             <h2>
-              <a href="{{return_url}}" title="Voltar"><i class="material-icons">&#xE5C4;</i></a><span class="card-title">{{title_complete}}</span>
+              <a href="{{return_url}}" title="Voltar"><i class="material-icons">&#xE5C4;</i></a><span class="card-title">{{title_complete|lower|capfirst}}</span>
             </h2>
             <div><small>Campos marcados com  <span class="required" aria-hidden="true">*</span> são obrigatórios.</small></div>
           </div>

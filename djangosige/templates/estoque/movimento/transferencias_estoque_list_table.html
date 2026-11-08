@@ -1,4 +1,4 @@
-{% if all_transferencias %}
+{% load led_ui gerencial_format %}{% if all_transferencias %}
 <div class="list-toolbar">{% include 'base/search.html' %}</div>
 <div class="table-wrap">
     <table id="lista-database" class="table">
@@ -20,8 +20,8 @@
                 <td>{{transferencia.format_data_movimento}}</td>
                 <td>{{transferencia.local_estoque_orig|default_if_none:"—"}}</td>
                 <td>{{transferencia.local_estoque_dest|default_if_none:"—"}}</td>
-                <td class="col-num">{{transferencia.format_quantidade_itens}}</td>
-                <td class="col-num"><strong>{{transferencia.format_valor_total}}</strong></td>
+                <td class="col-num">{{transferencia.quantidade_itens|ptbr_number:0}}</td>
+                <td class="col-num"><strong>{{transferencia.valor_total|brl}}</strong></td>
                 {% include 'base/list_check.html' with obj_id=transferencia.id %}
             </tr>
             {% endfor %}
