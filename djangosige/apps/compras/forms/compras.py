@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from decimal import Decimal
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.forms import inlineformset_factory
@@ -17,7 +18,8 @@ class CompraForm(forms.ModelForm):
         self.fields['valor_total'].initial = '0.00'
 
         self.fields['desconto'].localize = True
-        self.fields['desconto'].initial = '0.00'
+        # Decimal com 4 casas: o campo usa a máscara de até 4 decimais; o texto '0.00' virava '000'
+        self.fields['desconto'].initial = Decimal('0.0000')
 
         self.fields['despesas'].localize = True
         self.fields['despesas'].initial = '0.00'
