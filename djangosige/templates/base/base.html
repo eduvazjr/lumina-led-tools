@@ -14,7 +14,7 @@
 </head>
 <body class="{% block body_class %}{% endblock %}">
 {% block side_top_bars %}
-        {% with ns=request.resolver_match.namespace un=request.resolver_match.url_name %}
+        {% with ns=request.resolver_match.namespace un=request.resolver_match.url_name tipo=request.resolver_match.kwargs.tipo %}
         <nav class="app-sidebar" id="app-sidebar" aria-label="Menu principal">
             <a href="{% url 'base:index' %}" class="app-brand">
                 <span class="app-brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span>
@@ -89,8 +89,8 @@
                         </ul>
                     </details></li>
 
-                    <li><details class="nav-sub"{% if ns == 'fiscal' %} open{% endif %}>
-                        <summary class="nav-link{% if ns == 'fiscal' %} active{% endif %}">
+                    <li><details class="nav-sub"{% if ns == 'fiscal' or un == 'importacaoview' and tipo != 'planilha' %} open{% endif %}>
+                        <summary class="nav-link{% if ns == 'fiscal' or un == 'importacaoview' and tipo != 'planilha' %} active{% endif %}">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg>
                             <span>Fiscal</span><svg class="nav-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
                         </summary>
@@ -99,6 +99,8 @@
                             <li><a href="{% url 'fiscal:listanotafiscalentradaview' %}" class="nav-sublink{% if ns == 'fiscal' and 'entrada' in un %} active{% endif %}">Notas de entrada</a></li>
                             <li><a href="{% url 'fiscal:listanaturezaoperacaoview' %}" class="nav-sublink{% if ns == 'fiscal' and 'natureza' in un %} active{% endif %}">Naturezas</a></li>
                             <li><a href="{% url 'fiscal:listagrupofiscalview' %}" class="nav-sublink{% if ns == 'fiscal' and 'grupofiscal' in un %} active{% endif %}">Grupos fiscais</a></li>
+                            <li><a href="{% url 'base:importacaoview' 'nfe-entrada' %}" class="nav-sublink{% if un == 'importacaoview' and tipo == 'nfe-entrada' %} active{% endif %}">Enviar XML de entrada</a></li>
+                            <li><a href="{% url 'base:importacaoview' 'nfe-saida' %}" class="nav-sublink{% if un == 'importacaoview' and tipo == 'nfe-saida' %} active{% endif %}">Enviar XML de saída</a></li>
                             <li><a href="{% url 'fiscal:configuracaonotafiscal' %}" class="nav-sublink{% if un == 'configuracaonotafiscal' %} active{% endif %}">Configurações</a></li>
                         </ul>
                     </details></li>
@@ -120,19 +122,14 @@
                         </ul>
                     </details></li>
 
-                    <li><details class="nav-sub"{% if ns == 'importacao' or un == 'importacaoview' %} open{% endif %}>
-                        <summary class="nav-link{% if ns == 'importacao' or un == 'importacaoview' %} active{% endif %}">
+                    <li><details class="nav-sub"{% if ns == 'importacao' %} open{% endif %}>
+                        <summary class="nav-link{% if ns == 'importacao' %} active{% endif %}">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
                             <span>Importações</span><svg class="nav-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
                         </summary>
                         <ul class="nav-sublist">
                             <li><a href="{% url 'importacao:listaprocessosview' %}" class="nav-sublink{% if ns == 'importacao' and un != 'addprocessoview' %} active{% endif %}">Processos de importação</a></li>
                             <li><a href="{% url 'importacao:addprocessoview' %}" class="nav-sublink{% if un == 'addprocessoview' %} active{% endif %}">Novo processo</a></li>
-                            {% with tipo=request.resolver_match.kwargs.tipo %}
-                            <li><a href="{% url 'base:importacaoview' 'planilha' %}" class="nav-sublink{% if un == 'importacaoview' and tipo == 'planilha' %} active{% endif %}">Planilha de pagamentos</a></li>
-                            <li><a href="{% url 'base:importacaoview' 'nfe-entrada' %}" class="nav-sublink{% if un == 'importacaoview' and tipo == 'nfe-entrada' %} active{% endif %}">NF-e de entrada</a></li>
-                            <li><a href="{% url 'base:importacaoview' 'nfe-saida' %}" class="nav-sublink{% if un == 'importacaoview' and tipo == 'nfe-saida' %} active{% endif %}">NF-e de saída</a></li>
-                            {% endwith %}
                         </ul>
                     </details></li>
                 </ul>
@@ -144,6 +141,10 @@
                     <li><a href="{% url 'gerencial:dashboard' %}" class="nav-link{% if ns == 'gerencial' %} active{% endif %}"{% if ns == 'gerencial' %} aria-current="page"{% endif %}>
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
                         <span>Controle gerencial</span>
+                    </a></li>
+                    <li><a href="{% url 'base:importacaoview' 'planilha' %}" class="nav-link{% if un == 'importacaoview' and tipo == 'planilha' %} active{% endif %}"{% if un == 'importacaoview' and tipo == 'planilha' %} aria-current="page"{% endif %}>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7z"/><path d="M14 3v4h4M12 17v-6M9.5 13.5 12 11l2.5 2.5"/></svg>
+                        <span>Planilha de pagamentos</span>
                     </a></li>
                     <li><a href="{% url 'financeiro_grupo:dashboard' %}" class="nav-link{% if ns == 'financeiro_grupo' %} active{% endif %}"{% if ns == 'financeiro_grupo' %} aria-current="page"{% endif %}>
                         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="7" height="13" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/></svg>

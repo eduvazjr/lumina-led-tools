@@ -111,7 +111,7 @@ def secao_menu(context):
     if match.namespace == 'contabilidade' and any(p in (match.url_name or '') for p in RH_URLS):
         return 'RH / Dep. Pessoal'
     if match.url_name == 'importacaoview':
-        return 'Importações'
+        return 'Gestão' if match.kwargs.get('tipo') == 'planilha' else 'Fiscal'
     if match.url_name == 'perfilview':
         return 'Minha conta'
     return SECOES.get(match.namespace, 'Visão geral')
