@@ -1,4 +1,4 @@
-<div class="list-toolbar">{% include 'base/search.html' %}</div>
+{% load led_ui %}<div class="list-toolbar">{% include 'base/search.html' %}</div>
 <div class="table-wrap">
     <table id="lista-database" class="table">
         <thead>
@@ -20,7 +20,7 @@
                 <td>{{entrada.format_data_pagamento|default_if_none:"—"}}</td>
                 <td>{{entrada.classificacao|default_if_none:"—"}}</td>
                 <td>{{entrada.cliente|default_if_none:"—"}}</td>
-                <td class="col-num"><strong>{{entrada.format_valor_liquido}}</strong></td>
+                <td class="col-num"><strong>{{ entrada.valor_liquido|brl }}</strong></td>
                 {% include 'base/list_check.html' with obj_id=entrada.id %}
             </tr>
             {% endfor %}

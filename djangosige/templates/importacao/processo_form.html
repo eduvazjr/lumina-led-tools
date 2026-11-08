@@ -11,7 +11,7 @@
             <h2>
               <a href="{{return_url}}" title="Voltar"><i class="material-icons">&#xE5C4;</i></a><span class="card-title">{{title_complete}}</span>
             </h2>
-            <div><small>Campos marcados com <strong style="color:red;">*</strong> são obrigatórios.</small></div>
+            <div><small>Campos marcados com  <span class="required" aria-hidden="true">*</span> são obrigatórios.</small></div>
           </div>
 
           <form role="form" action="" method="post">
@@ -24,7 +24,7 @@
                 <div class="col-sm-6">
                   <div class="form-group">
                     <div class="form-line">
-                      <label for="{{campo.id_for_label}}">{{campo.label}}</label>{% if campo.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+                      <label for="{{campo.id_for_label}}">{{campo.label}}</label>{% if campo.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
                       {% if campo.errors %}<label class="error">{% for error in campo.errors %}{{error}}{% endfor %}</label>{% endif %}
                       {{campo}}
                     </div>

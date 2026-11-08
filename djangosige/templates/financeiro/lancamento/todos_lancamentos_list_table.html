@@ -1,4 +1,4 @@
-<div class="list-toolbar">{% include 'base/search.html' %}</div>
+{% load led_ui %}<div class="list-toolbar">{% include 'base/search.html' %}</div>
 <div class="table-wrap">
     <table id="lista-database" class="table">
         <thead>
@@ -24,7 +24,7 @@
                 <td>{% if lancamento.data_pagamento %}{{lancamento.format_data_pagamento}}{% elif lancamento.data_vencimento %}{{lancamento.format_data_vencimento}}{% else %}<span class="cell-muted">—</span>{% endif %}</td>
                 <td>{% if lancamento.status %}<span class="badge">{{lancamento.get_status_display}}</span>{% endif %}</td>
                 <td>{% firstof lancamento.cliente lancamento.fornecedor %}</td>
-                <td class="col-num"><strong>{{lancamento.format_valor_liquido}}</strong></td>
+                <td class="col-num"><strong>{{ lancamento.valor_liquido|brl }}</strong></td>
                 {% include 'base/list_check.html' with obj_id=lancamento.id %}
             </tr>
             {% endfor %}

@@ -1,7 +1,7 @@
 <div class="col-sm-6">
   <div class="form-group">
     <div class="form-line">
-      <label>{{form.nome_razao_social.label}}</label><strong style="color:red;"> *</strong>
+      <label>{{form.nome_razao_social.label}}</label> <span class="required" aria-hidden="true">*</span>
       {% if form.nome_razao_social.errors %}<label class="error">{% for error in form.nome_razao_social.errors %}{{error}}{% endfor %}</label>{% endif %}
       {{form.nome_razao_social}}
     </div>

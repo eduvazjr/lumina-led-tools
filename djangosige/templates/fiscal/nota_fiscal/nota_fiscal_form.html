@@ -28,7 +28,7 @@
         <div class="col-sm-3">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.versao.label}}</label>{% if form.versao.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.versao.label}}</label>{% if form.versao.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.versao.errors %}<label class="error">{% for error in form.versao.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.versao}}
             </div>
@@ -38,7 +38,7 @@
         <div class="col-sm-3">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.status_nfe.label}}</label>{% if form.status_nfe.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.status_nfe.label}}</label>{% if form.status_nfe.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.status_nfe.errors %}<label class="error">{% for error in form.status_nfe.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.status_nfe}}
               <input type="hidden" id="id_status_nfe" name="status_nfe" value="{{form.status_nfe.initial}}" />
@@ -49,7 +49,7 @@
         <div class="col-sm-3">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.tp_amb.label}}</label>{% if form.tp_amb.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.tp_amb.label}}</label>{% if form.tp_amb.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.tp_amb.errors %}<label class="error">{% for error in form.tp_amb.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.tp_amb}}
             </div>
@@ -59,7 +59,7 @@
         <div class="col-sm-3">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.mod.label}}</label>{% if form.mod.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.mod.label}}</label>{% if form.mod.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.mod.errors %}<label class="error">{% for error in form.mod.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.mod}}
             </div>
@@ -69,7 +69,7 @@
         <div class="col-sm-{% if saida %}3{% else %}4{% endif %}">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.serie.label}}</label>{% if form.serie.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.serie.label}}</label>{% if form.serie.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.serie.errors %}<label class="error">{% for error in form.serie.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.serie}}
             </div>
@@ -80,7 +80,7 @@
         <div class="col-sm-3">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.n_nf_saida.label}}</label>{% if form.n_nf_saida.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.n_nf_saida.label}}</label>{% if form.n_nf_saida.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.n_nf_saida.errors %}<label class="error">{% for error in form.n_nf_saida.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.n_nf_saida}}
             </div>
@@ -90,7 +90,7 @@
         <div class="col-sm-3">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.tpnf.label}}</label>{% if form.tpnf.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.tpnf.label}}</label>{% if form.tpnf.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.tpnf.errors %}<label class="error">{% for error in form.tpnf.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.tpnf}}
             </div>
@@ -100,7 +100,7 @@
         <div class="col-sm-4">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.n_nf_entrada.label}}</label>{% if form.n_nf_entrada.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.n_nf_entrada.label}}</label>{% if form.n_nf_entrada.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.n_nf_entrada.errors %}<label class="error">{% for error in form.n_nf_entrada.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.n_nf_entrada}}
             </div>
@@ -110,7 +110,7 @@
         <div class="col-sm-4">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.indpag.label}}</label>{% if form.indpag.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.indpag.label}}</label>{% if form.indpag.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.indpag.errors %}<label class="error">{% for error in form.indpag.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.indpag}}
             </div>
@@ -120,7 +120,7 @@
         <div class="col-sm-6">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.ind_pres.label}}</label>{% if form.ind_pres.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.ind_pres.label}}</label>{% if form.ind_pres.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.ind_pres.errors %}<label class="error">{% for error in form.ind_pres.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.ind_pres}}
             </div>
@@ -131,7 +131,7 @@
         <div class="col-sm-{% if saida %}3{% else %}6{% endif %}">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.ind_final.label}}</label>{% if form.ind_final.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.ind_final.label}}</label>{% if form.ind_final.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.ind_final.errors %}<label class="error">{% for error in form.ind_final.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.ind_final}}
             </div>
@@ -141,7 +141,7 @@
         <div class="col-sm-6">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.dhemi.label}}</label>{% if form.dhemi.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.dhemi.label}}</label>{% if form.dhemi.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.dhemi.errors %}<label class="error">{% for error in form.dhemi.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.dhemi}}
             </div>
@@ -151,7 +151,7 @@
         <div class="col-sm-6">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.dhsaient.label}}</label>{% if form.dhsaient.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.dhsaient.label}}</label>{% if form.dhsaient.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.dhsaient.errors %}<label class="error">{% for error in form.dhsaient.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.dhsaient}}
             </div>
@@ -161,7 +161,7 @@
         <div class="col-sm-4">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.tp_emis.label}}</label>{% if form.tp_emis.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.tp_emis.label}}</label>{% if form.tp_emis.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.tp_emis.errors %}<label class="error">{% for error in form.tp_emis.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.tp_emis}}
             </div>
@@ -171,7 +171,7 @@
         <div class="col-sm-4">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.fin_nfe.label}}</label>{% if form.fin_nfe.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.fin_nfe.label}}</label>{% if form.fin_nfe.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.fin_nfe.errors %}<label class="error">{% for error in form.fin_nfe.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.fin_nfe}}
             </div>
@@ -181,7 +181,7 @@
         <div class="col-sm-4">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.tp_imp.label}}</label>{% if form.tp_imp.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.tp_imp.label}}</label>{% if form.tp_imp.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.tp_imp.errors %}<label class="error">{% for error in form.tp_imp.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.tp_imp}}
             </div>
@@ -191,7 +191,7 @@
         <div class="col-sm-6">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.iddest.label}}</label>{% if form.iddest.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.iddest.label}}</label>{% if form.iddest.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.iddest.errors %}<label class="error">{% for error in form.iddest.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.iddest}}
             </div>
@@ -201,7 +201,7 @@
         <div class="col-sm-6">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.natop.label}}</label>{% if form.natop.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.natop.label}}</label>{% if form.natop.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.natop.errors %}<label class="error">{% for error in form.natop.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.natop}}
             </div>
@@ -212,7 +212,7 @@
         <div class="col-sm-12">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.arquivo_proc.label}}</label>{% if form.arquivo_proc.field.required %}<strong style="color:red;"> *</strong>{% endif %}{% if object.arquivo_proc %}<i class="material-icons" style="font-size: 18px;margin-left: 10px;color: green;" title="Arquivo de processamento encontrado.">&#xE876;</i>{% else %}<i class="material-icons" style="font-size: 18px;margin-left: 10px;color: red;" title="Arquivo de processamento não encontrado.">&#xE14C;</i>{% endif %}
+              <label>{{form.arquivo_proc.label}}</label>{% if form.arquivo_proc.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}{% if object.arquivo_proc %}<i class="material-icons" style="font-size: 18px;margin-left: 10px;color: green;" title="Arquivo de processamento encontrado.">&#xE876;</i>{% else %}<i class="material-icons" style="font-size: 18px;margin-left: 10px;color: red;" title="Arquivo de processamento não encontrado.">&#xE14C;</i>{% endif %}
               {% if form.arquivo_proc.errors %}<label class="error">{% for error in form.arquivo_proc.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.arquivo_proc}}
             </div>
@@ -236,24 +236,24 @@
 
               {% if saida %}
 
-              <label>{{form.emit_saida.label}}</label>{% if form.emit_saida.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.emit_saida.label}}</label>{% if form.emit_saida.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.emit_saida.errors %}<label class="error">{% for error in form.emit_saida.errors %}{{error}}{% endfor %}</label>{% endif %}
               <div class="input-group">
                 <div class="form-line">
                   {{form.emit_saida}}
                 </div>
-                <a class="input-group-addon newwindow" style="color: green;" title="Adicionar Empresa" href="{% url 'cadastro:addempresaview' %}"><i class="material-icons add-new-icon" title="Adicionar Empresa">&#xE147;</i></a>
+                <a class="input-group-addon newwindow" title="Adicionar Empresa" href="{% url 'cadastro:addempresaview' %}"><i class="material-icons add-new-icon" title="Adicionar Empresa">&#xE147;</i></a>
               </div>
 
               {% elif entrada %}
 
-              <label>{{form.emit_entrada.label}}</label>{% if form.emit_entrada.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.emit_entrada.label}}</label>{% if form.emit_entrada.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.emit_entrada.errors %}<label class="error">{% for error in form.emit_entrada.errors %}{{error}}{% endfor %}</label>{% endif %}
               <div class="input-group">
                 <div class="form-line">
                   {{form.emit_entrada}}
                 </div>
-                <a class="input-group-addon newwindow" style="color: green;" title="Adicionar Fornecedor" href="{% url 'cadastro:addfornecedorview' %}"><i class="material-icons add-new-icon" title="Adicionar Fornecedor">&#xE147;</i></a>
+                <a class="input-group-addon newwindow" title="Adicionar Fornecedor" href="{% url 'cadastro:addfornecedorview' %}"><i class="material-icons add-new-icon" title="Adicionar Fornecedor">&#xE147;</i></a>
               </div>
 
               {% endif %}
@@ -283,7 +283,7 @@
           <div class="col-sm-4">
             <div class="form-group">
               <div class="form-line">
-                <label>Endereço</label><strong style="color:red;"> *</strong>
+                <label>Endereço</label> <span class="required" aria-hidden="true">*</span>
                 <span class="form-control display-emit-field" id="endereco_emit"></span>
               </div>
             </div>
@@ -292,7 +292,7 @@
           <div class="col-sm-4">
             <div class="form-group">
               <div class="form-line">
-                <label>CEP</label><strong style="color:red;"> *</strong>
+                <label>CEP</label> <span class="required" aria-hidden="true">*</span>
                 <span class="form-control display-emit-field" id="cep_emit"></span>
               </div>
             </div>
@@ -301,7 +301,7 @@
           <div class="col-sm-4">
             <div class="form-group">
               <div class="form-line">
-                <label>Número</label><strong style="color:red;"> *</strong>
+                <label>Número</label> <span class="required" aria-hidden="true">*</span>
                 <span class="form-control display-emit-field" id="nro_emit"></span>
               </div>
             </div>
@@ -319,7 +319,7 @@
           <div class="col-sm-4">
             <div class="form-group">
               <div class="form-line">
-                <label>Bairro</label><strong style="color:red;"> *</strong>
+                <label>Bairro</label> <span class="required" aria-hidden="true">*</span>
                 <span class="form-control display-emit-field" id="bairro_emit"></span>
               </div>
             </div>
@@ -328,7 +328,7 @@
           <div class="col-sm-4">
             <div class="form-group">
               <div class="form-line">
-                <label>Cidade</label><strong style="color:red;"> *</strong>
+                <label>Cidade</label> <span class="required" aria-hidden="true">*</span>
                 <span class="form-control display-emit-field" id="cidade_emit"></span>
               </div>
             </div>
@@ -337,7 +337,7 @@
           <div class="col-sm-4">
             <div class="form-group">
               <div class="form-line">
-                <label>Código município</label><strong style="color:red;"> *</strong>
+                <label>Código município</label> <span class="required" aria-hidden="true">*</span>
                 <span class="form-control display-emit-field" id="cmun_emit"></span>
               </div>
             </div>
@@ -346,7 +346,7 @@
           <div class="col-sm-4">
             <div class="form-group">
               <div class="form-line">
-                <label>Estado</label><strong style="color:red;"> *</strong>
+                <label>Estado</label> <span class="required" aria-hidden="true">*</span>
                 <span class="form-control display-emit-field" id="estado_emit"></span>
               </div>
             </div>
@@ -379,24 +379,24 @@
 
                 {% if saida %}
 
-                <label>{{form.dest_saida.label}}</label>{% if form.dest_saida.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+                <label>{{form.dest_saida.label}}</label>{% if form.dest_saida.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
                 {% if form.dest_saida.errors %}<label class="error">{% for error in form.dest_saida.errors %}{{error}}{% endfor %}</label>{% endif %}
                 <div class="input-group">
                   <div class="form-line">
                     {{form.dest_saida}}
                   </div>
-                  <a class="input-group-addon newwindow" style="color: green;" title="Adicionar Cliente" href="{% url 'cadastro:addclienteview' %}"><i class="material-icons add-new-icon" title="Adicionar Cliente">&#xE147;</i></a>
+                  <a class="input-group-addon newwindow" title="Adicionar Cliente" href="{% url 'cadastro:addclienteview' %}"><i class="material-icons add-new-icon" title="Adicionar Cliente">&#xE147;</i></a>
                 </div>
 
                 {% elif entrada %}
 
-                <label>{{form.ddest_entradaest.label}}</label>{% if form.dest_entrada.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+                <label>{{form.ddest_entradaest.label}}</label>{% if form.dest_entrada.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
                 {% if form.dest_entrada.errors %}<label class="error">{% for error in form.dest_entrada.errors %}{{error}}{% endfor %}</label>{% endif %}
                 <div class="input-group">
                   <div class="form-line">
                     {{form.dest_entrada}}
                   </div>
-                  <a class="input-group-addon newwindow" style="color: green;" title="Adicionar Empresa" href="{% url 'cadastro:addempresaview' %}"><i class="material-icons add-new-icon" title="Adicionar Empresa">&#xE147;</i></a>
+                  <a class="input-group-addon newwindow" title="Adicionar Empresa" href="{% url 'cadastro:addempresaview' %}"><i class="material-icons add-new-icon" title="Adicionar Empresa">&#xE147;</i></a>
                 </div>
 
                 {% endif %}
@@ -426,7 +426,7 @@
           <div class="col-sm-4">
             <div class="form-group">
               <div class="form-line">
-                <label>Indicador da IE do Destinatário</label><strong style="color:red;"> *</strong>
+                <label>Indicador da IE do Destinatário</label> <span class="required" aria-hidden="true">*</span>
                 <span class="form-control display-dest-field" id="ind_ie_dest"></span>
               </div>
             </div>
@@ -435,7 +435,7 @@
           <div class="col-sm-5">
             <div class="form-group">
               <div class="form-line">
-                <label>Endereço</label><strong style="color:red;"> *</strong>
+                <label>Endereço</label> <span class="required" aria-hidden="true">*</span>
                 <span class="form-control display-dest-field" id="endereco_dest"></span>
               </div>
             </div>
@@ -444,7 +444,7 @@
           <div class="col-sm-3">
             <div class="form-group">
               <div class="form-line">
-                <label>CEP</label><strong style="color:red;"> *</strong>
+                <label>CEP</label> <span class="required" aria-hidden="true">*</span>
                 <span class="form-control display-dest-field" id="cep_dest"></span>
               </div>
             </div>
@@ -453,7 +453,7 @@
           <div class="col-sm-3">
             <div class="form-group">
               <div class="form-line">
-                <label>Número</label><strong style="color:red;"> *</strong>
+                <label>Número</label> <span class="required" aria-hidden="true">*</span>
                 <span class="form-control display-dest-field" id="nro_dest"></span>
               </div>
             </div>
@@ -471,7 +471,7 @@
           <div class="col-sm-4">
             <div class="form-group">
               <div class="form-line">
-                <label>Bairro</label><strong style="color:red;"> *</strong>
+                <label>Bairro</label> <span class="required" aria-hidden="true">*</span>
                 <span class="form-control display-dest-field" id="bairro_dest"></span>
               </div>
             </div>
@@ -480,7 +480,7 @@
           <div class="col-sm-4">
             <div class="form-group">
               <div class="form-line">
-                <label>Cidade</label><strong style="color:red;"> *</strong>
+                <label>Cidade</label> <span class="required" aria-hidden="true">*</span>
                 <span class="form-control display-dest-field" id="cidade_dest"></span>
               </div>
             </div>
@@ -489,7 +489,7 @@
           <div class="col-sm-4">
             <div class="form-group">
               <div class="form-line">
-                <label>Código município</label><strong style="color:red;"> *</strong>
+                <label>Código município</label> <span class="required" aria-hidden="true">*</span>
                 <span class="form-control display-dest-field" id="cmun_dest"></span>
               </div>
             </div>
@@ -498,7 +498,7 @@
           <div class="col-sm-4">
             <div class="form-group">
               <div class="form-line">
-                <label>Estado</label><strong style="color:red;"> *</strong>
+                <label>Estado</label> <span class="required" aria-hidden="true">*</span>
                 <span class="form-control display-dest-field" id="estado_dest"></span>
               </div>
             </div>
@@ -544,13 +544,13 @@
 
           <div class="col-sm-6">
             <div class="form-group">
-              <label>{{form.venda.label}}</label>{% if form.venda.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.venda.label}}</label>{% if form.venda.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.venda.errors %}<label class="error">{% for error in form.venda.errors %}{{error}}{% endfor %}</label>{% endif %}
               <div class="input-group">
                 <div class="form-line">
                   {{form.venda}}
                 </div>
-                <a class="input-group-addon newwindow" style="color: green;" title="Adicionar Venda" href="{% url 'vendas:addpedidovendaview' %}"><i class="material-icons add-new-icon" title="Adicionar Venda">&#xE147;</i></a>
+                <a class="input-group-addon newwindow" title="Adicionar Venda" href="{% url 'vendas:addpedidovendaview' %}"><i class="material-icons add-new-icon" title="Adicionar Venda">&#xE147;</i></a>
               </div>
             </div>
           </div>
@@ -657,7 +657,7 @@
         <div class="col-sm-6">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.indpag.label}}</label>{% if form.indpag.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.indpag.label}}</label>{% if form.indpag.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.indpag.errors %}<label class="error">{% for error in form.indpag.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.indpag}}
             </div>
@@ -667,7 +667,7 @@
         <div class="col-sm-6">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.ind_pres.label}}</label>{% if form.ind_pres.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.ind_pres.label}}</label>{% if form.ind_pres.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.ind_pres.errors %}<label class="error">{% for error in form.ind_pres.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.ind_pres}}
             </div>
@@ -678,14 +678,14 @@
 
         <div class="col-sm-12" style="margin-bottom: 17px;margin-top: 5px;">
           {{form.grupo_cobr}}
-          <label for="id_grupo_cobr" style="font-weight: bold;" title="Selecionar para manter os dados da fatura e duplicatas na nota fiscal.">{{ form.grupo_cobr.label }}</label>
+          <label for="id_grupo_cobr" title="Selecionar para manter os dados da fatura e duplicatas na nota fiscal.">{{ form.grupo_cobr.label }}</label>
         </div>
 
         <div class="fatura_input_div">
           <div class="col-sm-3">
             <div class="form-group">
               <div class="form-line">
-                <label>{{form.n_fat.label}}</label>{% if form.n_fat.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+                <label>{{form.n_fat.label}}</label>{% if form.n_fat.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
                 {% if form.n_fat.errors %}<label class="error">{% for error in form.n_fat.errors %}{{error}}{% endfor %}</label>{% endif %}
                 {{form.n_fat}}
               </div>
@@ -695,7 +695,7 @@
           <div class="col-sm-3">
             <div class="form-group">
               <div class="form-line">
-                <label>{{form.v_orig.label}}</label>{% if form.v_orig.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+                <label>{{form.v_orig.label}}</label>{% if form.v_orig.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
                 {% if form.v_orig.errors %}<label class="error">{% for error in form.v_orig.errors %}{{error}}{% endfor %}</label>{% endif %}
                 {{form.v_orig}}
               </div>
@@ -705,7 +705,7 @@
           <div class="col-sm-3">
             <div class="form-group">
               <div class="form-line">
-                <label>{{form.v_desc.label}}</label>{% if form.v_desc.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+                <label>{{form.v_desc.label}}</label>{% if form.v_desc.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
                 {% if form.v_desc.errors %}<label class="error">{% for error in form.v_desc.errors %}{{error}}{% endfor %}</label>{% endif %}
                 {{form.v_desc}}
               </div>
@@ -715,7 +715,7 @@
           <div class="col-sm-3">
             <div class="form-group">
               <div class="form-line">
-                <label>{{form.v_liq.label}}</label>{% if form.v_liq.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+                <label>{{form.v_liq.label}}</label>{% if form.v_liq.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
                 {% if form.v_liq.errors %}<label class="error">{% for error in form.v_liq.errors %}{{error}}{% endfor %}</label>{% endif %}
                 {{form.v_liq}}
               </div>
@@ -775,13 +775,13 @@
 
           <div class="col-sm-6">
             <div class="form-group">
-              <label>{{form.compra.label}}</label>{% if form.compra.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.compra.label}}</label>{% if form.compra.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.compra.errors %}<label class="error">{% for error in form.compra.errors %}{{error}}{% endfor %}</label>{% endif %}
               <div class="input-group">
                 <div class="form-line">
                   {{form.compra}}
                 </div>
-                <a class="input-group-addon newwindow" style="color: green;" title="Adicionar Compra" href="{% url 'compras:addpedidocompraview' %}"><i class="material-icons add-new-icon" title="Adicionar Compra">&#xE147;</i></a>
+                <a class="input-group-addon newwindow" title="Adicionar Compra" href="{% url 'compras:addpedidocompraview' %}"><i class="material-icons add-new-icon" title="Adicionar Compra">&#xE147;</i></a>
               </div>
             </div>
           </div>
@@ -897,7 +897,7 @@
         <div class="col-sm-6">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.inf_ad_fisco.label}}</label>{% if form.inf_ad_fisco.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.inf_ad_fisco.label}}</label>{% if form.inf_ad_fisco.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.inf_ad_fisco.errors %}<label class="error">{% for error in form.inf_ad_fisco.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.inf_ad_fisco}}
             </div>
@@ -907,7 +907,7 @@
         <div class="col-sm-6">
           <div class="form-group">
             <div class="form-line">
-              <label>{{form.inf_cpl.label}}</label>{% if form.inf_cpl.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{form.inf_cpl.label}}</label>{% if form.inf_cpl.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if form.inf_cpl.errors %}<label class="error">{% for error in form.inf_cpl.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{form.inf_cpl}}
             </div>

@@ -41,8 +41,10 @@
 {% include 'base/msg_sucesso.html' %}
 
 {% for alerta in alertas_vencimento %}
-<div class="alert alert-{{alerta.tom}}" role="alert">
-    <strong>{{alerta.texto}}</strong>{% if alerta.url %} — <a href="{{alerta.url}}">ver contas</a>{% endif %}
+<div class="aviso{% if alerta.tom == 'danger' %} aviso-erro{% elif alerta.tom == 'warning' %} aviso-atencao{% endif %}" role="status">
+    {% if alerta.tom == 'danger' %}{% include 'base/componentes/icone_aviso.html' with tipo='erro' %}{% elif alerta.tom == 'warning' %}{% include 'base/componentes/icone_aviso.html' with tipo='atencao' %}{% else %}{% include 'base/componentes/icone_aviso.html' %}{% endif %}
+    <span class="aviso-texto">{{alerta.texto}}.</span>
+    {% if alerta.url %}<a href="{{alerta.url}}">Ver contas</a>{% endif %}
 </div>
 {% endfor %}
 

@@ -1,7 +1,7 @@
 <div class="col-sm-6">
   <div class="form-group">
     <div class="form-line">
-      <label>{{form.codigo.label}}</label><strong style="color:red;"> *</strong>
+      <label>{{form.codigo.label}}</label> <span class="required" aria-hidden="true">*</span>
       {% if form.codigo.errors %}<label class="error">{% for error in form.codigo.errors %}{{error}}{% endfor %}</label>{% endif %}
       {{form.codigo}}
     </div>
@@ -11,7 +11,7 @@
 <div class="col-sm-6">
   <div class="form-group">
     <div class="form-line">
-      <label>{{form.descricao.label}}</label><strong style="color:red;"> *</strong>
+      <label>{{form.descricao.label}}</label> <span class="required" aria-hidden="true">*</span>
       {% if form.descricao.errors %}<label class="error">{% for error in form.descricao.errors %}{{error}}{% endfor %}</label>{% endif %}
       {{form.descricao}}
     </div>
@@ -36,7 +36,7 @@
       <div class="form-line">
         {{form.categoria}}
       </div>
-      <a class="input-group-addon popup" style="color: green;" title="Adicionar categoria" href="{% url 'cadastro:addcategoriaview' %}"><i class="material-icons add-new-icon" title="Adicionar">&#xE147;</i></a>
+      <a class="input-group-addon popup" title="Adicionar categoria" href="{% url 'cadastro:addcategoriaview' %}"><i class="material-icons add-new-icon" title="Adicionar">&#xE147;</i></a>
     </div>
   </div>
 </div>
@@ -49,7 +49,7 @@
       <div class="form-line">
         {{form.marca}}
       </div>
-      <a class="input-group-addon popup" style="color: green;" title="Adicionar marca" href="{% url 'cadastro:addmarcaview' %}"><i class="material-icons add-new-icon" title="Adicionar">&#xE147;</i></a>
+      <a class="input-group-addon popup" title="Adicionar marca" href="{% url 'cadastro:addmarcaview' %}"><i class="material-icons add-new-icon" title="Adicionar">&#xE147;</i></a>
     </div>
   </div>
 </div>
@@ -62,7 +62,7 @@
       <div class="form-line">
         {{form.unidade}}
       </div>
-      <a class="input-group-addon popup" style="color: green;" title="Adicionar unidade" href="{% url 'cadastro:addunidadeview' %}"><i class="material-icons add-new-icon" title="Adicionar">&#xE147;</i></a>
+      <a class="input-group-addon popup" title="Adicionar unidade" href="{% url 'cadastro:addunidadeview' %}"><i class="material-icons add-new-icon" title="Adicionar">&#xE147;</i></a>
     </div>
   </div>
 </div>

@@ -13,7 +13,7 @@
         <div class="col-sm-6">
           <div class="form-group">
             <div class="form-line">
-              <label>{{field.label}}</label>{% if field.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+              <label>{{field.label}}</label>{% if field.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
               {% if field.errors %}<label class="error">{% for error in field.errors %}{{error}}{% endfor %}</label>{% endif %}
               {{field}}
             </div>
@@ -26,7 +26,7 @@
       <!-- Tab grupo -->
         <div role="tabpanel" class="tab-pane formset-tab" id="tab_subgrupos">
           <div class="row">
-            <h4 style="border-bottom: 1px solid #afabab;">Subgrupos<i class="material-icons" style="font-size: 17px;padding-left:7px;" title="Subgrupos são especificações dos grupos criados, a adição de subgrupos é opcional.">&#xE887;</i></h4>
+            <h4 class="form-secao">Subgrupos<i class="material-icons" style="font-size: 17px;padding-left:7px;" title="Subgrupos são especificações dos grupos criados, a adição de subgrupos é opcional.">&#xE887;</i></h4>
           </div>
           <div class="row">
           {% include 'formset/formset_fields_sem_padrao.html' %}

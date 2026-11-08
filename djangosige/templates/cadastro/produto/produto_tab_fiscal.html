@@ -11,7 +11,7 @@
 <div class="col-sm-6">
   <div class="form-group">
     <div class="form-line">
-      <label>{{form.origem.label}}</label><strong style="color:red;"> *</strong>
+      <label>{{form.origem.label}}</label> <span class="required" aria-hidden="true">*</span>
       {% if form.origem.errors %}<label class="error">{% for error in form.origem.errors %}{{error}}{% endfor %}</label>{% endif %}
       <div class="select-container">
       {{form.origem}}
@@ -38,7 +38,7 @@
 	    <div class="form-line">
 	      {{form.cfop_padrao}}
 	    </div>
-	    <a class="input-group-addon newwindow" style="color: green;" title="Adicionar CFOP" href="{% url 'fiscal:addnaturezaoperacaoview' %}"><i class="material-icons add-new-icon" title="Adicionar">&#xE147;</i></a>
+	    <a class="input-group-addon newwindow" title="Adicionar CFOP" href="{% url 'fiscal:addnaturezaoperacaoview' %}"><i class="material-icons add-new-icon" title="Adicionar">&#xE147;</i></a>
     </div>
   </div>
 </div>
@@ -51,7 +51,7 @@
 	    <div class="form-line">
 	      {{form.grupo_fiscal}}
 	    </div>
-	    <a class="input-group-addon newwindow" style="color: green;" title="Adicionar Grupo Fiscal" href="{% url 'fiscal:addgrupofiscalview' %}"><i class="material-icons add-new-icon" title="Adicionar">&#xE147;</i></a>
+	    <a class="input-group-addon newwindow" title="Adicionar Grupo Fiscal" href="{% url 'fiscal:addgrupofiscalview' %}"><i class="material-icons add-new-icon" title="Adicionar">&#xE147;</i></a>
     </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-<div class="list-toolbar">{% include 'base/search.html' %}</div>
+{% load led_ui %}<div class="list-toolbar">{% include 'base/search.html' %}</div>
 <div class="table-wrap">
     <table id="lista-database" class="table">
         <thead>
@@ -22,7 +22,7 @@
                 <td>{{saida.numero_documento|default:"—"}}</td>
                 <td>{{saida.classificacao|default_if_none:"—"}}</td>
                 <td>{{saida.fornecedor|default_if_none:"—"}}</td>
-                <td class="col-num"><strong>{{saida.format_valor_liquido}}</strong></td>
+                <td class="col-num"><strong>{{ saida.valor_liquido|brl }}</strong></td>
                 {% include 'base/list_check.html' with obj_id=saida.id %}
             </tr>
             {% endfor %}

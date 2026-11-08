@@ -1,4 +1,5 @@
 {%extends 'base/base.html'%}
+{% load led_ui gerencial_format %}
 
 {%block title%}Calendário financeiro{%endblock%}
 {%block content%}
@@ -8,14 +9,17 @@
   .cal-dia { min-height: 110px; padding: 8px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); min-width: 0; scroll-margin-top: 80px; }
   .cal-dia:nth-child(7n) { border-right: 0; }
   .cal-fora { background: var(--bg); opacity: .65; }
-  .cal-hoje { box-shadow: inset 0 0 0 2px var(--brand-500); }
+  .cal-hoje { box-shadow: inset 0 0 0 2px var(--tinta); }
   .cal-atrasado .cal-num { color: var(--danger); }
   .cal-topo { display: flex; align-items: center; justify-content: space-between; gap: 4px; margin-bottom: 6px; }
   .cal-num { font-weight: 600; font-size: 14px; color: var(--text); }
   .cal-semana { display: none; font-weight: 500; color: var(--text-muted); }
-  .cal-add { color: var(--brand-600); font-size: 18px; line-height: 1; padding: 0 4px; text-decoration: none; }
+  .cal-add { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 6px; color: var(--texto-2); text-decoration: none; }
+  .cal-add:hover { background: #F3F4F5; color: var(--tinta); }
+  .cal-add svg, .cal-check svg { width: 14px; height: 14px; }
   .cal-item { display: flex; gap: 5px; align-items: flex-start; padding: 3px 0; font-size: 12px; line-height: 1.3; overflow-wrap: anywhere; }
-  .cal-check { flex: none; width: 15px; height: 15px; margin-top: 1px; padding: 0; border: 1.5px solid var(--border-strong); border-radius: 4px; background: var(--surface); color: #fff; font-size: 11px; line-height: 12px; cursor: pointer; }
+  .cal-check { flex: none; display: inline-grid; place-items: center; width: 16px; height: 16px; margin-top: 1px; padding: 0; border: 1.5px solid var(--border-strong); border-radius: 4px; background: var(--surface); color: #fff; cursor: pointer; }
+  .cal-check svg { width: 11px; height: 11px; }
   .cal-feito .cal-check { background: var(--success); border-color: var(--success); }
   .cal-feito .cal-texto { color: var(--text-muted); text-decoration: line-through; }
   .cal-texto { color: var(--text); text-decoration: none; }
@@ -47,24 +51,26 @@
         <p class="page-subtitle">Contas a pagar e tarefas do financeiro, dia a dia.</p>
     </div>
     <div class="page-actions">
-        <a href="{% url 'financeiro:importarcalendarioview' %}" class="btn btn-default">Importar planilha</a>
+        <a href="{% url 'financeiro:importarcalendarioview' %}" class="btn btn-secundario">Importar planilha</a>
         <a href="{% url 'financeiro:addcalendarioitemview' %}" class="btn btn-primary">Adicionar item</a>
     </div>
 </div>
 
 {% include 'base/msg_sucesso.html' %}
 
-<div class="kpi-grid">
-    <div class="kpi"><span class="kpi-label">Total do mês</span><span class="kpi-value"><small>R$</small>{{resumo.total|default:0|floatformat:"2g"}}</span><span class="kpi-foot">Soma dos itens com valor</span></div>
-    <div class="kpi"><span class="kpi-label">Concluído</span><span class="kpi-value"><small>R$</small>{{resumo.total_concluido|default:0|floatformat:"2g"}}</span></div>
-    <div class="kpi"><span class="kpi-label">Pendente</span><span class="kpi-value"><small>R$</small>{{resumo.total_pendente|default:0|floatformat:"2g"}}</span><span class="kpi-foot">{{resumo.itens_pendentes}} ite{{resumo.itens_pendentes|pluralize:"m,ns"}} em aberto{% if resumo.sem_valor %}, {{resumo.sem_valor}} sem valor informado{% endif %}</span></div>
-</div>
+<section class="painel" aria-label="Resumo do mês">
+    <div class="numeros">
+        <div class="numero"><span class="numero-rotulo">Total do mês</span>{% valor_brl resumo.total %}<span class="numero-nota">Soma dos itens com valor</span></div>
+        <div class="numero"><span class="numero-rotulo">Concluído</span>{% valor_brl resumo.total_concluido %}{% if resumo.total %}<span class="numero-nota">{% include 'base/componentes/progresso.html' with pct=resumo.total_concluido|percentual:resumo.total %}</span>{% endif %}</div>
+        <div class="numero"><span class="numero-rotulo">Pendente</span>{% valor_brl resumo.total_pendente %}<span class="numero-nota">{{resumo.itens_pendentes}} ite{{resumo.itens_pendentes|pluralize:"m,ns"}} em aberto{% if resumo.sem_valor %}, {{resumo.sem_valor}} sem valor informado{% endif %}</span></div>
+    </div>
+</section>
 
 <div class="cal-barra">
     <div class="cal-nav">
-        <a class="btn btn-default" href="?ano={{anterior.year}}&mes={{anterior.month}}" aria-label="Mês anterior">‹</a>
+        <a class="btn btn-default" href="?ano={{anterior.year}}&mes={{anterior.month}}" aria-label="Mês anterior"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg></a>
         <strong>{{nome_mes}} {{ano}}</strong>
-        <a class="btn btn-default" href="?ano={{proximo.year}}&mes={{proximo.month}}" aria-label="Próximo mês">›</a>
+        <a class="btn btn-default" href="?ano={{proximo.year}}&mes={{proximo.month}}" aria-label="Próximo mês"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a>
         <a class="btn btn-default" href="?ano={{hoje.year}}&mes={{hoje.month}}">Hoje</a>
     </div>
     <div class="cal-filtros">
@@ -81,31 +87,31 @@
         <div class="cal-dia{% if not dia.no_mes %} cal-fora{% if not dia.itens %} cal-vazio-celular{% endif %}{% endif %}{% if dia.hoje %} cal-hoje{% endif %}{% if dia.atrasado %} cal-atrasado{% endif %}" id="dia-{{dia.data|date:'Y-m-d'}}">
             <div class="cal-topo">
                 <span class="cal-num">{{dia.data|date:"j"}}<span class="cal-semana"> · {{dia.data|date:"l"}}</span></span>
-                <a class="cal-add" href="{% url 'financeiro:addcalendarioitemview' %}?data={{dia.data|date:'Y-m-d'}}" title="Adicionar item neste dia" aria-label="Adicionar item em {{dia.data|date:'d/m'}}">+</a>
+                <a class="cal-add" href="{% url 'financeiro:addcalendarioitemview' %}?data={{dia.data|date:'Y-m-d'}}" title="Adicionar item neste dia" aria-label="Adicionar item em {{dia.data|date:'d/m'}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></a>
             </div>
             {% for item in dia.itens %}
             <div class="cal-item{% if item.concluido %} cal-feito{% endif %}{% if item.destaque %} cal-destaque{% endif %}" data-busca="{{item.descricao|lower}}">
-                <button class="cal-check" type="submit" name="item" value="{{item.id}}" title="{% if item.concluido %}Marcar como pendente{% else %}Marcar como concluído{% endif %}" aria-label="{% if item.concluido %}Marcar como pendente{% else %}Marcar como concluído{% endif %}: {{item.descricao}}">{% if item.concluido %}✓{% endif %}</button>
-                <a class="cal-texto" href="{% url 'financeiro:editarcalendarioitemview' item.id %}">{{item.descricao}}{% if item.valor is not None %}<span class="cal-valor">R$ {{item.valor|floatformat:"2g"}}</span>{% elif not item.concluido %}<span class="cal-sem-valor">sem valor</span>{% endif %}</a>
+                <button class="cal-check" type="submit" name="item" value="{{item.id}}" title="{% if item.concluido %}Marcar como pendente{% else %}Marcar como concluído{% endif %}" aria-label="{% if item.concluido %}Marcar como pendente{% else %}Marcar como concluído{% endif %}: {{item.descricao}}">{% if item.concluido %}<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" style="stroke-width:3"><path d="m5 12 5 5 9-10"/></svg>{% endif %}</button>
+                <a class="cal-texto" href="{% url 'financeiro:editarcalendarioitemview' item.id %}">{{item.descricao}}{% if item.valor is not None %}<span class="cal-valor">{{item.valor|brl}}</span>{% elif not item.concluido %}<span class="cal-sem-valor">sem valor</span>{% endif %}</a>
             </div>
             {% endfor %}
             {% for conta in dia.contas %}
-            <a class="cal-conta" href="{% url 'financeiro:editarcontapagarview' conta.id %}" title="Lançada em Contas a Pagar">Conta a pagar: {{conta.descricao}} — R$ {{conta.valor_liquido|floatformat:"2g"}}</a>
+            <a class="cal-conta" href="{% url 'financeiro:editarcontapagarview' conta.id %}" title="Lançada em Contas a Pagar">Conta a pagar: {{conta.descricao}}, {{conta.valor_liquido|brl}}</a>
             {% endfor %}
-            {% if dia.total %}<div class="cal-total">R$ {{dia.total|floatformat:"2g"}}</div>{% endif %}
+            {% if dia.total %}<div class="cal-total">{{dia.total|brl}}</div>{% endif %}
         </div>
         {% endfor %}{% endfor %}
     </div>
 </form>
 
-<section class="section" id="programacao" style="margin-top:20px;">
+<section class="section" id="programacao" style="margin-top:24px;">
     <div class="section-header"><h2 class="section-title">Programação de {{nome_mes}}</h2><small>Férias, admissões e outros lembretes do mês</small></div>
     <div class="section-body">
         <form method="post" action="{% url 'financeiro:programacaomesview' %}?ano={{ano}}&mes={{mes}}">
             {% csrf_token %}
             <label for="id_programacao" class="sr-only">Programação do mês</label>
             <textarea id="id_programacao" name="texto" rows="5" class="form-control">{{programacao}}</textarea>
-            <button class="btn btn-primary" type="submit" style="margin-top:12px;">Salvar programação</button>
+            <div class="form-acoes"><button class="btn btn-primary" type="submit">Salvar programação</button></div>
         </form>
     </div>
 </section>

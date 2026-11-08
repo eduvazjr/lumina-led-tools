@@ -1,4 +1,4 @@
-{# A ordem das 3 primeiras colunas (id, descrição, vencimento) é usada pelo botão Pagar no admin.js #}
+{% load led_ui %}{# A ordem das 3 primeiras colunas (id, descrição, vencimento) é usada pelo botão Pagar no admin.js #}
 <div class="list-toolbar">{% include 'base/search.html' %}</div>
 <div class="table-wrap">
     <table id="lista-database" class="table">
@@ -24,7 +24,7 @@
                 <td>{{conta.numero_documento|default:"—"}}</td>
                 <td>{{conta.classificacao|default_if_none:"—"}}</td>
                 <td>{{conta.fornecedor|default_if_none:"—"}}</td>
-                <td class="col-num"><strong>{{conta.format_valor_liquido}}</strong></td>
+                <td class="col-num"><strong>{{ conta.valor_liquido|brl }}</strong></td>
                 <td class="col-actions"><button type="button" class="btn btn-sm btn-soft-success js-pagar-conta" data-id="{{conta.id}}" data-vencimento="{{conta.format_data_vencimento|default_if_none:''}}">Pagar</button></td>
                 {% include 'base/list_check.html' with obj_id=conta.id %}
             </tr>

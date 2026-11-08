@@ -30,7 +30,7 @@
               {% if object %}
               <div class="col-md-12">
                 <div class="row">
-                  <h4 style="border-bottom: 1px solid #afabab;">Dados da nota</h4>
+                  <h4 class="form-secao">Dados da nota</h4>
                 </div>
 
                 <div class="col-sm-3">
@@ -73,7 +73,7 @@
               {% endif %}
 
               <div class="row">
-                <h4 style="border-bottom: 1px solid #afabab;">Defina os parâmetros</h4>
+                <h4 class="form-secao">Defina os parâmetros</h4>
               </div>
               {% load custom_tags %}
               {% for field in form %}
@@ -83,12 +83,12 @@
                       {% if field|is_checkbox %}
 
                       {{field}}
-                      <label for="{{field.auto_id}}" style="font-weight: bold;">{{field.label}}</label>{% if field.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+                      <label for="{{field.auto_id}}">{{field.label}}</label>{% if field.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
                       {% if field.errors %}<label class="error">{% for error in field.errors %}{{error}}{% endfor %}</label>{% endif %}
 
                       {% else %}
 
-                      <label>{{field.label}}</label>{% if field.field.required %}<strong style="color:red;"> *</strong>{% endif %}
+                      <label>{{field.label}}</label>{% if field.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
                       {% if field.errors %}<label class="error">{% for error in field.errors %}{{error}}{% endfor %}</label>{% endif %}
                       {{field}}
 
@@ -106,7 +106,7 @@
             {% for ret in processo.resposta.retNFe %}
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
               <div class="row">
-                <h4 style="border-bottom: 1px solid #afabab;">Resposta ao pedido de download:</h4>
+                <h4 class="form-secao">Resposta ao pedido de download:</h4>
               </div>
               <div class="col-sm-6">
                 <label>Código do Status:</label>
@@ -124,7 +124,7 @@
             {% for ret in processo.resposta.retEvento %}
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
               <div class="row">
-                <h4 style="border-bottom: 1px solid #afabab;">Resposta do Evento: {{ret.infEvento.xEvento}}</h4>
+                <h4 class="form-secao">Resposta do Evento: {{ret.infEvento.xEvento}}</h4>
               </div>
               <div class="col-sm-6">
                 <label>Código do Status:</label>
@@ -142,7 +142,7 @@
             {% if processo.resposta %}
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
               <div class="row">
-                <h4 style="border-bottom: 1px solid #afabab;">Resposta do SEFAZ (XML)</h4>
+                <h4 class="form-secao">Resposta do SEFAZ (XML)</h4>
               </div>
               <pre lang="xml" >{{processo.resposta.xml}}</pre>
             </div>
