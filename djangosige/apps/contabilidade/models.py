@@ -19,8 +19,10 @@ class ProcessoContabil(models.Model):
         ('concluido', 'Concluído'),
     ]
     
-    cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT, related_name='processos_contabeis')
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT, null=True, blank=True)
+    # Contabilidade interna: cada empresa do grupo tem uma ficha (este registro).
+    # 'cliente' ficou do desenho antigo (escritório atendendo clientes) e é opcional.
+    cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT, related_name='processos_contabeis', null=True, blank=True)
+    empresa = models.OneToOneField(Empresa, on_delete=models.PROTECT, null=True, blank=True, related_name='ficha_contabil')
     numero_processo = models.CharField(max_length=20, unique=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='entrada')
     responsavel = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='processos_responsavel')
@@ -41,7 +43,15 @@ class ProcessoContabil(models.Model):
         ordering = ['-data_abertura']
     
     def __str__(self):
-        return f"{self.numero_processo} - {self.cliente}"
+        return self.nome_empresa
+
+    @property
+    def nome_empresa(self):
+        alvo = self.empresa or self.cliente
+        if alvo is None:
+            return self.numero_processo
+        juridica = getattr(alvo, 'pessoa_jur_info', None)
+        return getattr(juridica, 'nome_fantasia', None) or alvo.nome_razao_social
     
     def get_etapa_atual(self):
         """Retorna o número da etapa atual (1-5)"""

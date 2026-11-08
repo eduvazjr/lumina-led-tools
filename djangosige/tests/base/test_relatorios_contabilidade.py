@@ -25,7 +25,7 @@ class RelatoriosContabilidadeTestCase(BaseTestCase):
 
     def test_pagina_inicial_leva_aos_relatorios(self):
         response = self.client.get(reverse('contabilidade:relatorios'))
-        self.assertContains(response, self.url_processos)
+        self.assertNotContains(response, self.url_processos)
         self.assertContains(response, self.url_fiscal)
 
     def test_relatorios_vazios_abrem(self):

@@ -1,4 +1,4 @@
-{% load static led_ui %}{# Aumente ao publicar mudanças em led-ui.css ou admin.js, para o navegador não usar a versão em cache #}{% with ui_v='19' %}<!DOCTYPE html>
+{% load static led_ui %}{# Aumente ao publicar mudanças em led-ui.css ou admin.js, para o navegador não usar a versão em cache #}{% with ui_v='20' %}<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -160,8 +160,7 @@
                             <span>Contabilidade</span><svg class="nav-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
                         </summary>
                         <ul class="nav-sublist">
-                            <li><a href="{% url 'contabilidade:dashboard' %}" class="nav-sublink{% if ns == 'contabilidade' and un == 'dashboard' %} active{% endif %}">Painel da contabilidade</a></li>
-                            <li><a href="{% url 'contabilidade:lista_processos' %}" class="nav-sublink{% if ns == 'contabilidade' and un == 'lista_processos' or ns == 'contabilidade' and un == 'novo_processo' %} active{% endif %}">Processos contábeis</a></li>
+                            <li><a href="{% url 'contabilidade:dashboard' %}" class="nav-sublink{% if ns == 'contabilidade' and un == 'dashboard' or ns == 'contabilidade' and 'empresa' in un or ns == 'contabilidade' and 'registro' in un %} active{% endif %}">Empresas do grupo</a></li>
                             <li><a href="{% url 'contabilidade:relatorios' %}" class="nav-sublink{% if ns == 'contabilidade' and 'relatorio' in un %} active{% endif %}">Relatórios</a></li>
                         </ul>
                     </details></li>

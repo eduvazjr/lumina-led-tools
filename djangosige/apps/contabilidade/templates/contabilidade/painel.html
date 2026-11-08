@@ -1,0 +1,62 @@
+{% extends "base/base.html" %}
+{% load led_ui %}
+
+{% block title %}Contabilidade{% endblock %}
+{% block breadcrumb %}Painel da contabilidade{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <h1 class="page-title">Contabilidade</h1>
+        <p class="page-subtitle">Contabilidade interna das empresas do grupo: tributos, obrigações, lançamentos e pessoal</p>
+    </div>
+    <div class="page-actions">
+        <a href="{% url 'contabilidade:relatorio_fiscal' %}" class="btn btn-secundario">Relatório fiscal</a>
+    </div>
+</div>
+
+{% include 'base/msg_sucesso.html' %}
+
+<section class="painel" aria-label="Resumo do grupo">
+    <div class="numeros">
+        <div class="numero"><span class="numero-rotulo">Tributos a pagar</span>{% valor_brl totais.tributos_a_pagar %}<span class="numero-nota">Apurações ainda não pagas, todas as empresas</span></div>
+        <div class="numero"><span class="numero-rotulo">Obrigações pendentes</span><span class="numero-grande{% if totais.obrigacoes_vencidas %} is-negativo{% endif %}">{{ totais.obrigacoes_pendentes }}</span><span class="numero-nota">{% if totais.obrigacoes_vencidas %}{{ totais.obrigacoes_vencidas }} vencida{{ totais.obrigacoes_vencidas|pluralize }}{% else %}Nenhuma vencida{% endif %}</span></div>
+        <div class="numero"><span class="numero-rotulo">Funcionários ativos</span><span class="numero-grande">{{ totais.funcionarios_ativos }}</span><span class="numero-nota">Somando as empresas</span></div>
+    </div>
+</section>
+
+{% if totais.obrigacoes_vencidas %}
+<div class="aviso aviso-erro" role="status">{% include 'base/componentes/icone_aviso.html' with tipo='erro' %}<span class="aviso-texto">{{ totais.obrigacoes_vencidas }} obrigaç{{ totais.obrigacoes_vencidas|pluralize:"ão acessória vencida,ões acessórias vencidas" }} sem entrega. Abra a empresa para ver qual.</span></div>
+{% endif %}
+
+<section class="painel" aria-labelledby="t-empresas">
+    <div class="painel-cabecalho"><h2 class="painel-titulo" id="t-empresas">Empresas do grupo</h2><span class="painel-nota">Empresas cadastradas em Cadastros &gt; Empresas</span></div>
+    {% if linhas %}
+    <div class="tabela-caixa">
+        <table class="tabela" style="min-width: 900px">
+            <thead><tr><th scope="col">Empresa</th><th scope="col">Regime</th><th scope="col" class="num">Tributos a pagar</th><th scope="col" class="num">Obrigações pendentes</th><th scope="col" class="num">Lançamentos no mês</th><th scope="col" class="num">Conciliações pendentes</th><th scope="col" class="num">Funcionários</th></tr></thead>
+            <tbody>
+                {% for l in linhas %}
+                <tr>
+                    <td class="forte"><a href="{% url 'contabilidade:empresa' l.empresa.pk %}">{{ l.nome }}</a>{% if l.empresa.nome_razao_social != l.nome %}<span class="sublinha">{{ l.empresa.nome_razao_social }}</span>{% endif %}</td>
+                    {% if l.resumo %}
+                    <td>{% if l.resumo.fiscal %}{{ l.resumo.fiscal.get_regime_tributario_display }}{% else %}<span class="etiqueta etiqueta-atencao">A informar</span>{% endif %}</td>
+                    <td class="num">{{ l.resumo.tributos_a_pagar|brl }}</td>
+                    <td class="num">{% if l.resumo.obrigacoes_vencidas %}<span class="etiqueta etiqueta-negativa">{{ l.resumo.obrigacoes_pendentes }}</span>{% else %}{{ l.resumo.obrigacoes_pendentes }}{% endif %}</td>
+                    <td class="num">{{ l.resumo.lancamentos_mes }}</td>
+                    <td class="num">{{ l.resumo.conciliacoes_pendentes }}</td>
+                    <td class="num">{{ l.resumo.funcionarios_ativos }}</td>
+                    {% else %}
+                    <td colspan="6" class="suave">Contabilidade ainda não iniciada. <a href="{% url 'contabilidade:empresa' l.empresa.pk %}">Abrir a empresa</a></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    {% url 'cadastro:addempresaview' as nova_empresa %}
+    {% include 'base/componentes/estado_vazio.html' with icone='lista' texto='Nenhuma empresa cadastrada. Cadastre as empresas do grupo para organizar a contabilidade de cada uma.' acao_url=nova_empresa acao_texto='Cadastrar empresa' %}
+    {% endif %}
+</section>
+{% endblock %}

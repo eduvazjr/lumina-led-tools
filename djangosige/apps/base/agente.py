@@ -362,18 +362,18 @@ def regras_contabilidade(hoje):
     limite = hoje + timedelta(days=DIAS_PROXIMOS)
 
     obrigacoes = (ObrigacaoAcessoria.objects.filter(entregue=False, data_vencimento__lte=limite)
-                  .select_related('fiscal__processo__cliente').order_by('data_vencimento'))
+                  .select_related('fiscal__processo__empresa', 'fiscal__processo__cliente').order_by('data_vencimento'))
     for o in obrigacoes:
         processo = o.fiscal.processo
         gravidade = CRITICO if o.data_vencimento <= hoje + timedelta(days=2) else ATENCAO
         alertas.append(Alerta(gravidade, 'Contabilidade',
                               f'{o.get_tipo_display()} {o.mes_referencia:02d}/{o.ano_referencia} não entregue',
-                              f'Cliente {processo.cliente} — {quando(o.data_vencimento, hoje)}. Atraso gera multa.',
-                              reverse('contabilidade:obrigacoes_acessorias', args=[o.fiscal_id]), prazo=o.data_vencimento))
+                              f'{processo.nome_empresa} — {quando(o.data_vencimento, hoje)}. Atraso gera multa.',
+                              _url_contabil(processo, 'fiscal'), prazo=o.data_vencimento))
 
     # Tributos apurados e nao pagos. O vencimento usado e o dia 20 do mes
     # seguinte a referencia (data usual de DAS, PIS/COFINS e ICMS).
-    for a in ApuracaoTributos.objects.filter(pago=False, total_tributos__gt=0).select_related('fiscal__processo__cliente'):
+    for a in ApuracaoTributos.objects.filter(pago=False, total_tributos__gt=0).select_related('fiscal__processo__empresa', 'fiscal__processo__cliente'):
         ano, mes = (a.ano_referencia + 1, 1) if a.mes_referencia == 12 else (a.ano_referencia, a.mes_referencia + 1)
         vencimento = date(ano, mes, 20)
         if vencimento > limite:
@@ -381,20 +381,20 @@ def regras_contabilidade(hoje):
         processo = a.fiscal.processo
         alertas.append(Alerta(CRITICO if vencimento <= hoje else ATENCAO, 'Contabilidade',
                               f'Tributos de {a.mes_referencia:02d}/{a.ano_referencia} não pagos',
-                              f'Cliente {processo.cliente}: {moeda(a.total_tributos)} — {quando(vencimento, hoje)} (previsto dia 20).',
-                              reverse('contabilidade:apuracao_tributos', args=[a.fiscal_id]), a.total_tributos, vencimento))
+                              f'{processo.nome_empresa}: {moeda(a.total_tributos)} — {quando(vencimento, hoje)} (previsto dia 20).',
+                              _url_contabil(processo, 'fiscal'), a.total_tributos, vencimento))
 
     n = Fiscal.objects.filter(em_dia=False, processo__ativo=True).count()
     if n:
-        alertas.append(Alerta(ATENCAO, 'Contabilidade', f'{plural(n, "cliente com fiscal em atraso", "clientes com fiscal em atraso")}',
-                              'Marcados como "fora do dia" no módulo fiscal.', reverse('contabilidade:lista_processos')))
-
-    parados = ProcessoContabil.objects.filter(ativo=True).exclude(status='concluido').filter(
-        data_atualizacao__date__lt=hoje - timedelta(days=15)).count()
-    if parados:
-        alertas.append(Alerta(INFO, 'Contabilidade', f'{plural(parados, "processo contábil parado", "processos contábeis parados")}',
-                              'Sem nenhuma atualização há mais de 15 dias.', reverse('contabilidade:lista_processos')))
+        alertas.append(Alerta(ATENCAO, 'Contabilidade', f'{plural(n, "empresa com fiscal em atraso", "empresas com fiscal em atraso")}',
+                              'Marcadas como "fora do dia" nos dados fiscais.', reverse('contabilidade:dashboard')))
     return alertas
+
+
+def _url_contabil(processo, area):
+    if processo.empresa_id:
+        return reverse('contabilidade:empresa', args=[processo.empresa_id]) + '#' + area
+    return reverse('contabilidade:dashboard')
 
 
 REGRAS = [

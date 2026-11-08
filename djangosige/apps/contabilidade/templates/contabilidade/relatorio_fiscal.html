@@ -8,7 +8,7 @@
     <div class="page-head-texto">
         <p class="page-subtitle"><a href="{% url 'contabilidade:relatorios' %}">Relatórios</a></p>
         <h1 class="page-title">Relatório fiscal</h1>
-        <p class="page-subtitle">Receita e tributos apurados{% if ano %} em {{ ano|stringformat:'d' }}{% endif %}, somando todos os processos</p>
+        <p class="page-subtitle">Receita e tributos apurados{% if ano %} em {{ ano|stringformat:'d' }}{% endif %}, somando todas as empresas do grupo</p>
     </div>
     {% if ano %}
     <div class="page-actions">
@@ -62,16 +62,15 @@
 </section>
 
 <section class="painel" aria-labelledby="t-apuracoes">
-    <div class="painel-cabecalho"><h2 class="painel-titulo" id="t-apuracoes">Apurações por processo</h2></div>
+    <div class="painel-cabecalho"><h2 class="painel-titulo" id="t-apuracoes">Apurações por empresa</h2></div>
     <div class="tabela-caixa">
         <table class="tabela" style="min-width: 820px">
-            <thead><tr><th scope="col">Competência</th><th scope="col">Processo</th><th scope="col">Cliente</th><th scope="col" class="num">Receita</th><th scope="col" class="num">Tributos</th><th scope="col">Situação</th></tr></thead>
+            <thead><tr><th scope="col">Competência</th><th scope="col" colspan="2">Empresa</th><th scope="col" class="num">Receita</th><th scope="col" class="num">Tributos</th><th scope="col">Situação</th></tr></thead>
             <tbody>
                 {% for apuracao in apuracoes %}
                 <tr>
                     <td class="forte">{{ apuracao.mes_referencia|stringformat:"02d" }}/{{ apuracao.ano_referencia|stringformat:"d" }}</td>
-                    <td><a href="{% url 'contabilidade:detalhe_processo' apuracao.fiscal.processo.pk %}">{{ apuracao.fiscal.processo.numero_processo }}</a></td>
-                    <td>{{ apuracao.fiscal.processo.cliente }}</td>
+                    <td colspan="2"><a href="{% if apuracao.fiscal.processo.empresa_id %}{% url 'contabilidade:empresa' apuracao.fiscal.processo.empresa_id %}{% else %}{% url 'contabilidade:detalhe_processo' apuracao.fiscal.processo.pk %}{% endif %}">{{ apuracao.fiscal.processo.nome_empresa }}</a></td>
                     <td class="num">{{ apuracao.receita_bruta|brl }}</td>
                     <td class="num forte">{{ apuracao.total_tributos|brl }}</td>
                     <td>{% if apuracao.pago %}<span class="etiqueta etiqueta-positiva">Pago{% if apuracao.data_pagamento %} em {{ apuracao.data_pagamento|date:"d/m/Y" }}{% endif %}</span>{% else %}<span class="etiqueta etiqueta-atencao">A pagar</span>{% endif %}</td>
@@ -83,7 +82,7 @@
 </section>
 {% else %}
 <section class="painel">
-    {% include 'base/componentes/estado_vazio.html' with icone='documento' texto='Nenhuma apuração de tributos encontrada.' dica='As apurações aparecem aqui depois de lançadas na etapa fiscal de cada processo.' %}
+    {% include 'base/componentes/estado_vazio.html' with icone='documento' texto='Nenhuma apuração de tributos encontrada.' dica='As apurações aparecem aqui depois de lançadas na página de cada empresa, em Contabilidade.' %}
 </section>
 {% endif %}
 {% endblock %}

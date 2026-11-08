@@ -1,0 +1,175 @@
+{% extends "base/base.html" %}
+{% load led_ui anexos %}
+
+{% block title %}Contabilidade · {{ nome }}{% endblock %}
+{% block breadcrumb %}{{ nome }}{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <p class="page-subtitle"><a href="{% url 'contabilidade:dashboard' %}">Contabilidade</a></p>
+        <h1 class="page-title">{{ nome }}</h1>
+        <p class="page-subtitle">{% if empresa.nome_razao_social != nome %}{{ empresa.nome_razao_social }} · {% endif %}{% if fiscal %}{{ fiscal.get_regime_tributario_display }}{% else %}Regime tributário não informado{% endif %}</p>
+    </div>
+    <nav class="page-actions" aria-label="Áreas">
+        <a href="#fiscal" class="btn btn-secundario">Fiscal</a>
+        <a href="#contabil" class="btn btn-secundario">Contábil</a>
+        <a href="#dp" class="btn btn-secundario">Departamento pessoal</a>
+    </nav>
+</div>
+
+{% include 'base/msg_sucesso.html' %}
+
+<section class="painel" aria-label="Resumo">
+    <div class="numeros">
+        <div class="numero"><span class="numero-rotulo">Tributos a pagar</span>{% valor_brl resumo.tributos_a_pagar %}</div>
+        <div class="numero"><span class="numero-rotulo">Obrigações pendentes</span><span class="numero-grande{% if resumo.obrigacoes_vencidas %} is-negativo{% endif %}">{{ resumo.obrigacoes_pendentes }}</span><span class="numero-nota">{% if resumo.obrigacoes_vencidas %}{{ resumo.obrigacoes_vencidas }} vencida{{ resumo.obrigacoes_vencidas|pluralize }}{% else %}Nenhuma vencida{% endif %}</span></div>
+        <div class="numero"><span class="numero-rotulo">Lançamentos no mês</span><span class="numero-grande">{{ resumo.lancamentos_mes }}</span><span class="numero-nota">{{ resumo.conciliacoes_pendentes }} conciliaç{{ resumo.conciliacoes_pendentes|pluralize:"ão pendente,ões pendentes" }}</span></div>
+        <div class="numero"><span class="numero-rotulo">Funcionários ativos</span><span class="numero-grande">{{ resumo.funcionarios_ativos }}</span></div>
+    </div>
+</section>
+
+{# ---------------- Fiscal ---------------- #}
+<h2 class="area-titulo" id="fiscal">Fiscal</h2>
+{% if not fiscal %}
+<section class="painel">
+    {% url 'contabilidade:dados_empresa' empresa.pk 'fiscal' as dados_fiscais %}
+    {% include 'base/componentes/estado_vazio.html' with icone='documento' texto='Informe o regime tributário e os dados fiscais da empresa para lançar apurações de tributos e obrigações acessórias.' acao_url=dados_fiscais acao_texto='Preencher dados fiscais' %}
+</section>
+{% else %}
+<section class="painel" aria-labelledby="t-apuracoes">
+    <div class="painel-cabecalho">
+        <h3 class="painel-titulo" id="t-apuracoes">Apuração de tributos</h3>
+        <span class="acoes-texto"><a href="{% url 'contabilidade:dados_empresa' empresa.pk 'fiscal' %}">Dados fiscais</a><a href="{% url 'contabilidade:novo_registro' empresa.pk 'apuracao' %}" class="btn btn-sm btn-primary">Adicionar apuração</a></span>
+    </div>
+    {% if apuracoes %}
+    <div class="tabela-caixa"><table class="tabela" style="min-width: 760px">
+        <thead><tr><th scope="col">Competência</th><th scope="col" class="num">Receita bruta</th><th scope="col" class="num">Total de tributos</th><th scope="col">Situação</th><th scope="col" class="num">Ações</th></tr></thead>
+        <tbody>{% for a in apuracoes %}<tr>
+            <td class="forte">{{ a.mes_referencia|stringformat:"02d" }}/{{ a.ano_referencia|stringformat:"d" }}</td>
+            <td class="num">{{ a.receita_bruta|brl }}</td><td class="num forte">{{ a.total_tributos|brl }}</td>
+            <td>{% if a.pago %}<span class="etiqueta etiqueta-positiva">Pago{% if a.data_pagamento %} em {{ a.data_pagamento|date:"d/m/Y" }}{% endif %}</span>{% else %}<span class="etiqueta etiqueta-atencao">A pagar</span>{% endif %}</td>
+            <td class="num"><a href="{% url 'contabilidade:editar_registro' empresa.pk 'apuracao' a.pk %}">Editar</a></td>
+        </tr>{% endfor %}</tbody>
+    </table></div>
+    {% else %}<p class="anexos-vazio" style="padding-bottom:20px">Nenhuma apuração lançada.</p>{% endif %}
+</section>
+
+<section class="painel" aria-labelledby="t-obrigacoes">
+    <div class="painel-cabecalho">
+        <h3 class="painel-titulo" id="t-obrigacoes">Obrigações acessórias</h3>
+        <a href="{% url 'contabilidade:novo_registro' empresa.pk 'obrigacao' %}" class="btn btn-sm btn-primary">Adicionar obrigação</a>
+    </div>
+    {% if obrigacoes %}
+    <div class="tabela-caixa"><table class="tabela" style="min-width: 760px">
+        <thead><tr><th scope="col">Obrigação</th><th scope="col">Competência</th><th scope="col">Vencimento</th><th scope="col">Situação</th><th scope="col" class="num">Ações</th></tr></thead>
+        <tbody>{% for o in obrigacoes %}<tr>
+            <td class="forte">{{ o.get_tipo_display }}</td>
+            <td>{{ o.mes_referencia|stringformat:"02d" }}/{{ o.ano_referencia|stringformat:"d" }}</td>
+            <td class="nowrap">{{ o.data_vencimento|date:"d/m/Y" }}</td>
+            <td>{% if o.entregue %}<span class="etiqueta etiqueta-positiva">Entregue{% if o.data_entrega %} em {{ o.data_entrega|date:"d/m/Y" }}{% endif %}</span>{% elif o.data_vencimento < hoje %}<span class="etiqueta etiqueta-negativa">Vencida</span>{% else %}<span class="etiqueta etiqueta-atencao">Pendente</span>{% endif %}</td>
+            <td class="num"><a href="{% url 'contabilidade:editar_registro' empresa.pk 'obrigacao' o.pk %}">Editar</a></td>
+        </tr>{% endfor %}</tbody>
+    </table></div>
+    {% else %}<p class="anexos-vazio" style="padding-bottom:20px">Nenhuma obrigação cadastrada.</p>{% endif %}
+</section>
+{% endif %}
+
+{# ---------------- Contábil ---------------- #}
+<h2 class="area-titulo" id="contabil">Contábil</h2>
+<section class="painel" aria-labelledby="t-lancamentos">
+    <div class="painel-cabecalho">
+        <h3 class="painel-titulo" id="t-lancamentos">Lançamentos contábeis</h3>
+        <span class="acoes-texto"><a href="{% url 'contabilidade:dados_empresa' empresa.pk 'contabil' %}">Dados contábeis</a><a href="{% url 'contabilidade:lancamentos_contabeis' contabil.pk %}">Ver todos</a><a href="{% url 'contabilidade:novo_registro' empresa.pk 'lancamento' %}" class="btn btn-sm btn-primary">Adicionar lançamento</a></span>
+    </div>
+    {% if lancamentos %}
+    <div class="tabela-caixa"><table class="tabela" style="min-width: 860px">
+        <thead><tr><th scope="col">Data</th><th scope="col">Número</th><th scope="col">Débito</th><th scope="col">Crédito</th><th scope="col">Histórico</th><th scope="col" class="num">Valor</th><th scope="col" class="num">Ações</th></tr></thead>
+        <tbody>{% for l in lancamentos %}<tr>
+            <td class="nowrap">{{ l.data_lancamento|date:"d/m/Y" }}</td><td class="forte nowrap">{{ l.numero_lancamento }}</td>
+            <td>{{ l.conta_debito }}</td><td>{{ l.conta_credito }}</td>
+            <td class="suave texto-longo">{{ l.historico|truncatewords:10 }}</td>
+            <td class="num forte">{{ l.valor|brl }}</td>
+            <td class="num"><a href="{% url 'contabilidade:editar_registro' empresa.pk 'lancamento' l.pk %}">Editar</a></td>
+        </tr>{% endfor %}</tbody>
+    </table></div>
+    {% else %}<p class="anexos-vazio" style="padding-bottom:20px">Nenhum lançamento registrado.</p>{% endif %}
+</section>
+
+<div class="dash-columns">
+    <section class="painel" aria-labelledby="t-conciliacoes">
+        <div class="painel-cabecalho">
+            <h3 class="painel-titulo" id="t-conciliacoes">Conciliação bancária</h3>
+            <a href="{% url 'contabilidade:novo_registro' empresa.pk 'conciliacao' %}" class="btn btn-sm btn-primary">Adicionar</a>
+        </div>
+        {% if conciliacoes %}
+        <div class="tabela-caixa"><table class="tabela">
+            <thead><tr><th scope="col">Competência</th><th scope="col">Conta</th><th scope="col">Situação</th><th scope="col" class="num">Ações</th></tr></thead>
+            <tbody>{% for c in conciliacoes %}<tr>
+                <td class="forte">{{ c.mes_referencia|stringformat:"02d" }}/{{ c.ano_referencia|stringformat:"d" }}</td>
+                <td>{{ c.banco }}<span class="sublinha">Saldo do extrato {{ c.saldo_extrato|brl }}</span></td>
+                <td>{% if c.conciliada %}<span class="etiqueta etiqueta-positiva">Conciliada</span>{% else %}<span class="etiqueta etiqueta-atencao">Pendente</span>{% endif %}</td>
+                <td class="num"><a href="{% url 'contabilidade:editar_registro' empresa.pk 'conciliacao' c.pk %}">Editar</a></td>
+            </tr>{% endfor %}</tbody>
+        </table></div>
+        {% else %}<p class="anexos-vazio" style="padding-bottom:20px">Nenhuma conciliação registrada.</p>{% endif %}
+    </section>
+    <section class="painel" aria-labelledby="t-dres">
+        <div class="painel-cabecalho">
+            <h3 class="painel-titulo" id="t-dres">DRE</h3>
+            <a href="{% url 'contabilidade:novo_registro' empresa.pk 'dre' %}" class="btn btn-sm btn-primary">Adicionar</a>
+        </div>
+        {% if dres %}
+        <div class="tabela-caixa"><table class="tabela">
+            <thead><tr><th scope="col">Competência</th><th scope="col" class="num">Receita líquida</th><th scope="col" class="num">Lucro líquido</th><th scope="col" class="num">Ações</th></tr></thead>
+            <tbody>{% for d in dres %}<tr>
+                <td class="forte">{{ d.mes_referencia|stringformat:"02d" }}/{{ d.ano_referencia|stringformat:"d" }}</td>
+                <td class="num">{{ d.receita_liquida|brl }}</td>
+                <td class="num forte"><span class="{% if d.lucro_liquido < 0 %}texto-negativo{% endif %}">{{ d.lucro_liquido|brl }}</span></td>
+                <td class="num"><a href="{% url 'contabilidade:editar_registro' empresa.pk 'dre' d.pk %}">Editar</a></td>
+            </tr>{% endfor %}</tbody>
+        </table></div>
+        {% else %}<p class="anexos-vazio" style="padding-bottom:20px">Nenhuma DRE registrada.</p>{% endif %}
+    </section>
+</div>
+
+{# ---------------- Departamento pessoal ---------------- #}
+<h2 class="area-titulo" id="dp">Departamento pessoal</h2>
+<div class="dash-columns">
+    <section class="painel" aria-labelledby="t-funcionarios">
+        <div class="painel-cabecalho">
+            <h3 class="painel-titulo" id="t-funcionarios">Funcionários</h3>
+            <span class="acoes-texto"><a href="{% url 'contabilidade:dados_empresa' empresa.pk 'dp' %}">Dados do DP</a><a href="{% url 'contabilidade:novo_registro' empresa.pk 'funcionario' %}" class="btn btn-sm btn-primary">Adicionar</a></span>
+        </div>
+        {% if funcionarios %}
+        <div class="tabela-caixa"><table class="tabela">
+            <thead><tr><th scope="col">Nome</th><th scope="col">Cargo</th><th scope="col" class="num">Salário</th><th scope="col" class="num">Ações</th></tr></thead>
+            <tbody>{% for f in funcionarios %}<tr>
+                <td class="forte">{{ f.nome_completo }}{% if not f.ativo %} <span class="etiqueta">Desligado</span>{% endif %}<span class="sublinha">Admissão {{ f.data_admissao|date:"d/m/Y" }}</span></td>
+                <td>{{ f.cargo }}</td><td class="num">{{ f.salario|brl }}</td>
+                <td class="num"><a href="{% url 'contabilidade:editar_registro' empresa.pk 'funcionario' f.pk %}">Editar</a></td>
+            </tr>{% endfor %}</tbody>
+        </table></div>
+        {% else %}<p class="anexos-vazio" style="padding-bottom:20px">Nenhum funcionário cadastrado.</p>{% endif %}
+    </section>
+    <section class="painel" aria-labelledby="t-folhas">
+        <div class="painel-cabecalho">
+            <h3 class="painel-titulo" id="t-folhas">Folhas de pagamento</h3>
+            <a href="{% url 'contabilidade:novo_registro' empresa.pk 'folha' %}" class="btn btn-sm btn-primary">Adicionar</a>
+        </div>
+        {% if folhas %}
+        <div class="tabela-caixa"><table class="tabela">
+            <thead><tr><th scope="col">Competência</th><th scope="col" class="num">Líquido</th><th scope="col">Situação</th><th scope="col" class="num">Ações</th></tr></thead>
+            <tbody>{% for f in folhas %}<tr>
+                <td class="forte">{{ f.mes_referencia|stringformat:"02d" }}/{{ f.ano_referencia|stringformat:"d" }}</td>
+                <td class="num">{{ f.total_liquido|brl }}</td>
+                <td>{% if f.data_pagamento %}<span class="etiqueta etiqueta-positiva">Paga em {{ f.data_pagamento|date:"d/m/Y" }}</span>{% elif f.processada %}<span class="etiqueta etiqueta-info">Processada</span>{% else %}<span class="etiqueta etiqueta-atencao">Pendente</span>{% endif %}</td>
+                <td class="num"><a href="{% url 'contabilidade:editar_registro' empresa.pk 'folha' f.pk %}">Editar</a></td>
+            </tr>{% endfor %}</tbody>
+        </table></div>
+        {% else %}<p class="anexos-vazio" style="padding-bottom:20px">Nenhuma folha registrada.</p>{% endif %}
+    </section>
+</div>
+
+{% documentos processo 'Documentos contábeis da empresa' %}
+{% endblock %}

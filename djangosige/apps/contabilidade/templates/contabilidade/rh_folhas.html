@@ -7,7 +7,7 @@
 <div class="list-header">
     <div class="list-heading">
         <h1 class="page-title">Folhas de pagamento</h1>
-        <p class="page-subtitle">{% if dp %}Departamento pessoal do processo {{ processo.numero_processo }} · {{ processo.cliente }}{% else %}Folhas mensais de todos os clientes{% endif %}</p>
+        <p class="page-subtitle">{% if dp %}Departamento pessoal de {{ processo.nome_empresa }}{% else %}Folhas mensais de todas as empresas do grupo{% endif %}</p>
     </div>
     <div class="page-actions">
         {% if total_pendentes %}<span class="badge badge-warning">{{ total_pendentes }} pendente{{ total_pendentes|pluralize }}</span>{% endif %}
@@ -41,7 +41,7 @@
                 {% for folha in folhas %}
                 <tr>
                     <td><strong>{{ folha.mes_referencia|stringformat:"02d" }}/{{ folha.ano_referencia }}</strong></td>
-                    {% if not dp %}<td><a href="{% url 'contabilidade:detalhe_processo' folha.dp.processo.pk %}" class="stat-link">{{ folha.dp.processo.cliente }}</a></td>{% endif %}
+                    {% if not dp %}<td><a href="{% if folha.dp.processo.empresa_id %}{% url 'contabilidade:empresa' folha.dp.processo.empresa_id %}{% else %}{% url 'contabilidade:detalhe_processo' folha.dp.processo.pk %}{% endif %}" class="stat-link">{{ folha.dp.processo.nome_empresa }}</a></td>{% endif %}
                     <td class="text-right">{{ folha.total_proventos|brl }}</td>
                     <td class="text-right">{{ folha.total_descontos|brl }}</td>
                     <td class="text-right"><strong>{{ folha.total_liquido|brl }}</strong></td>
@@ -54,7 +54,7 @@
         </table>
     </div>
     {% else %}
-    {% include 'base/list_empty.html' with message='Nenhuma folha de pagamento encontrada' hint='As folhas são geradas no departamento pessoal de cada processo contábil.' %}
+    {% include 'base/list_empty.html' with message='Nenhuma folha de pagamento encontrada' hint='Registre as folhas na página de cada empresa, em Contabilidade.' %}
     {% endif %}
 </div>
 {%endblock%}

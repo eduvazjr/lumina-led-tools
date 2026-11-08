@@ -60,7 +60,7 @@ class MenuRHTestCase(BaseTestCase):
         self.assertEqual(response.context['total_pendentes'], 1)
 
         response = self.client.get(reverse('contabilidade:rh_departamentos'))
-        self.assertContains(response, 'RH-001')
+        self.assertContains(response, response.context['departamentos'][0].processo.nome_empresa)
         self.assertEqual(response.context['departamentos'][0].qtd_funcionarios, 1)
 
     def test_telas_por_departamento(self):

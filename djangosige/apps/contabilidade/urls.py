@@ -1,13 +1,19 @@
 # -*- coding: utf-8 -*-
 
 from django.urls import re_path as url
-from . import views
+from . import views, empresas
 
 app_name = 'contabilidade'
 
 urlpatterns = [
     # Dashboard principal
-    url(r'^$', views.dashboard, name='dashboard'),
+    # Contabilidade interna por empresa do grupo
+    url(r'^$', empresas.painel, name='dashboard'),
+    url(r'^empresa/(?P<empresa_id>[0-9]+)/$', empresas.empresa, name='empresa'),
+    url(r'^empresa/(?P<empresa_id>[0-9]+)/dados/(?P<area>fiscal|contabil|dp)/$', empresas.dados, name='dados_empresa'),
+    url(r'^empresa/(?P<empresa_id>[0-9]+)/(?P<tipo>[a-z]+)/novo/$', empresas.registro, name='novo_registro'),
+    url(r'^empresa/(?P<empresa_id>[0-9]+)/(?P<tipo>[a-z]+)/(?P<pk>[0-9]+)/$', empresas.registro, name='editar_registro'),
+    url(r'^empresa/(?P<empresa_id>[0-9]+)/(?P<tipo>[a-z]+)/(?P<pk>[0-9]+)/remover/$', empresas.remover_registro, name='remover_registro'),
     
     # Processos
     url(r'^processos/$', views.lista_processos, name='lista_processos'),

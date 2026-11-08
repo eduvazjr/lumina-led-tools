@@ -6,7 +6,7 @@
 <div class="list-header">
     <div class="list-heading">
         <h1 class="page-title">Departamentos pessoais</h1>
-        <p class="page-subtitle">Situação do DP de cada cliente: funcionários, folhas e eSocial</p>
+        <p class="page-subtitle">Situação do departamento pessoal de cada empresa do grupo: funcionários, folhas e eSocial</p>
     </div>
 </div>
 
@@ -16,8 +16,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Processo</th>
-                    <th>Cliente</th>
+                    <th>Empresa</th>
                     <th class="text-right">Funcionários ativos</th>
                     <th class="text-right">Folhas pendentes</th>
                     <th>Última folha</th>
@@ -29,8 +28,7 @@
             <tbody>
                 {% for dp in departamentos %}
                 <tr>
-                    <td><strong>{{ dp.processo.numero_processo }}</strong></td>
-                    <td>{{ dp.processo.cliente }}</td>
+                                        <td><strong>{{ dp.processo.nome_empresa }}</strong></td>
                     <td class="text-right">{{ dp.qtd_funcionarios }}</td>
                     <td class="text-right">{% if dp.qtd_folhas_pendentes %}<span class="badge badge-warning">{{ dp.qtd_folhas_pendentes }}</span>{% else %}0{% endif %}</td>
                     <td>{{ dp.ultima_folha_processada|date:"m/Y"|default:"—" }}</td>
@@ -39,7 +37,7 @@
                     <td class="text-right">
                         <a href="{% url 'contabilidade:rh_dp_funcionarios' dp.pk %}" class="stat-link">Funcionários</a> ·
                         <a href="{% url 'contabilidade:rh_dp_folhas' dp.pk %}" class="stat-link">Folhas</a> ·
-                        <a href="{% url 'contabilidade:departamento_pessoal' dp.processo.pk %}" class="stat-link">Editar</a>
+                        {% if dp.processo.empresa_id %}<a href="{% url 'contabilidade:dados_empresa' dp.processo.empresa_id 'dp' %}" class="stat-link">Editar</a>{% endif %}
                     </td>
                 </tr>
                 {% endfor %}
@@ -47,7 +45,7 @@
         </table>
     </div>
     {% else %}
-    {% include 'base/list_empty.html' with message='Nenhum departamento pessoal cadastrado' hint='O departamento pessoal é criado na etapa DP de cada processo contábil.' %}
+    {% include 'base/list_empty.html' with message='Nenhum departamento pessoal cadastrado' hint='O departamento pessoal de cada empresa aparece aqui depois que ela é aberta em Contabilidade.' %}
     {% endif %}
 </div>
 {%endblock%}

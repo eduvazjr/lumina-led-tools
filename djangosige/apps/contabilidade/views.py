@@ -121,6 +121,8 @@ def detalhe_processo(request, pk):
     """Detalhes de um processo contábil"""
     
     processo = get_object_or_404(ProcessoContabil, pk=pk)
+    if processo.empresa_id:
+        return redirect('contabilidade:empresa', empresa_id=processo.empresa_id)
     
     # Verificar quais módulos já foram iniciados
     tem_entrada = hasattr(processo, 'entrada')

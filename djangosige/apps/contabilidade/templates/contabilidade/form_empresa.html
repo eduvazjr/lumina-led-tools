@@ -1,0 +1,36 @@
+{% extends "base/base.html" %}
+
+{% block title %}{{ titulo }} · {{ nome }}{% endblock %}
+{% block breadcrumb %}{{ titulo }}{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <p class="page-subtitle"><a href="{% url 'contabilidade:dashboard' %}">Contabilidade</a> · <a href="{% url 'contabilidade:empresa' empresa.pk %}#{{ area }}">{{ nome }}</a></p>
+        <h1 class="page-title">{% if instancia %}Editar {{ titulo|lower }}{% else %}{% if tipo %}Novo registro: {{ titulo|lower }}{% else %}{{ titulo }}{% endif %}{% endif %}</h1>
+    </div>
+</div>
+
+{% include 'base/msg_sucesso.html' %}
+
+<form method="post" class="painel">
+    {% csrf_token %}
+    <div class="painel-corpo">
+        {% if form.non_field_errors %}<div class="aviso aviso-erro" role="alert">{% include 'base/componentes/icone_aviso.html' with tipo='erro' %}<span class="aviso-texto">{{ form.non_field_errors|join:" " }}</span></div>{% endif %}
+        <div class="campos">
+            {% for field in form.visible_fields %}{% include 'base/componentes/campo.html' %}{% endfor %}
+        </div>
+        {% for field in form.hidden_fields %}{{ field }}{% endfor %}
+        <div class="form-acoes">
+            <a href="{% url 'contabilidade:empresa' empresa.pk %}#{{ area }}" class="btn btn-secundario">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+    </div>
+</form>
+{% if instancia %}
+<form method="post" action="{% url 'contabilidade:remover_registro' empresa.pk tipo instancia.pk %}" class="form-remover" onsubmit="return confirm('Remover este registro? Não dá para desfazer.');">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Remover registro</button>
+</form>
+{% endif %}
+{% endblock %}
