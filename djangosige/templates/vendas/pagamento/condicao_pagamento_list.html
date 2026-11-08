@@ -1,6 +1,6 @@
 {%extends 'base/base.html'%}
 
-{%block title%}{{title_complete|title}}{%endblock%}
+{%block title%}{{title_complete|lower|capfirst}}{%endblock%}
 {%block content%}
 {% include 'base/list_header.html' with subtitle='Formas e prazos de pagamento usados em vendas e compras' add_label='Nova condição' %}
 
@@ -29,7 +29,7 @@
                     <td><strong>{{cond.descricao}}</strong></td>
                     <td class="col-num">{{cond.n_parcelas}}</td>
                     <td>{{cond.get_forma_display}}</td>
-                    <td class="col-num">{% if cond.recorrencia %}{{cond.recorrencia}} dias{% else %}<span class="cell-muted">—</span>{% endif %}</td>
+                    <td class="col-num">{% if cond.dias_recorrencia %}a cada {{cond.dias_recorrencia}} dias{% else %}<span class="cell-muted">—</span>{% endif %}</td>
                     {% include 'base/list_check.html' with obj_id=cond.id %}
                 </tr>
                 {% endfor %}

@@ -104,13 +104,13 @@
 
         <div class="col-sm-12">
           <div class="form-group">
-            <label>{{form.fornecedor.label}}</label><strong style="color:red;"> *</strong>
+            <label>{{form.fornecedor.label}}</label> <span class="required" aria-hidden="true">*</span>
             {% if form.fornecedor.errors %}<label class="error">{% for error in form.fornecedor.errors %}{{error}}{% endfor %}</label>{% endif %}
-            <div class="input-group" style="margin-bottom: 0px;">
+            <div class="input-group">
               <div class="form-line">
                 {{form.fornecedor}}
               </div>
-              <a class="input-group-addon newwindow" style="color: green;" title="Adicionar fornecedor" href="{% url 'cadastro:addfornecedorview' %}"><i class="material-icons add-new-icon" title="Adicionar fornecedor">&#xE147;</i></a>
+              <a class="input-group-addon newwindow" title="Adicionar fornecedor" href="{% url 'cadastro:addfornecedorview' %}"><i class="material-icons add-new-icon" title="Adicionar fornecedor">&#xE147;</i></a>
             </div>
           </div>
         </div>
@@ -210,7 +210,7 @@
 
       <!-- Tab PRODUTOS -->
       <div role="tabpanel" class="tab-pane formset-tab" id="tab_produtos">
-        <h4 style="border-bottom: 1px solid #afabab;">Total</h4>
+        <h4 class="form-secao">Total</h4>
         <div class="col-sm-3">
           <div class="form-group">
             <div class="form-line">
@@ -297,7 +297,7 @@
 
         <div class="col-sm-12" style="padding:0px;">
           
-        <h4 style="border-bottom: 1px solid #afabab;">Produtos</h4>
+        <h4 class="form-secao">Produtos</h4>
 
         {% include 'formset/formset_table.html' with formset=produtos_form title='Itens' %}
 
@@ -315,11 +315,11 @@
           <div class="form-group">
             <label>{{form.cond_pagamento.label}}</label>
             {% if form.cond_pagamento.errors %}<label class="error">{% for error in form.cond_pagamento.errors %}{{error}}{% endfor %}</label>{% endif %}
-            <div class="input-group" style="margin-bottom: 0px;">
+            <div class="input-group">
               <div class="form-line">
                 {{form.cond_pagamento}}
               </div>
-              <a class="input-group-addon newwindow" style="color: green;" title="Adicionar condição de pagamento" href="{% url 'vendas:addcondicaopagamentoview' %}"><i class="material-icons add-new-icon" title="Adicionar condição de pagamento">&#xE147;</i></a>
+              <a class="input-group-addon newwindow" title="Adicionar condição de pagamento" href="{% url 'vendas:addcondicaopagamentoview' %}"><i class="material-icons add-new-icon" title="Adicionar condição de pagamento">&#xE147;</i></a>
             </div>
           </div>
         </div>
@@ -345,7 +345,7 @@
         <div class="col-sm-3">
           <div class="form-group">
             <div class="form-line">
-              <a id="calcular-parcelas" class="btn btn-primary" style="margin-top: 25px;">Calcular parcelas</a>
+              <a id="calcular-parcelas" class="btn btn-secundario" style="margin-top: 25px;">Calcular parcelas</a>
             </div>
           </div>
         </div>
@@ -362,11 +362,11 @@
           <div class="form-group">
             <label>{{form.local_dest.label}}</label>
             {% if form.local_dest.errors %}<label class="error">{% for error in form.local_dest.errors %}{{error}}{% endfor %}</label>{% endif %}
-            <div class="input-group" style="margin-bottom: 0px;">
+            <div class="input-group">
               <div class="form-line">
                 {{form.local_dest}}
               </div>
-              <a class="input-group-addon popup" style="color: green;" title="Adicionar localização de estoque" href="{% url 'estoque:addlocalview' %}"><i class="material-icons add-new-icon" title="Adicionar localização de estoque">&#xE147;</i></a>
+              <a class="input-group-addon popup" title="Adicionar localização de estoque" href="{% url 'estoque:addlocalview' %}"><i class="material-icons add-new-icon" title="Adicionar localização de estoque">&#xE147;</i></a>
             </div>
           </div>
         </div>
@@ -375,7 +375,7 @@
           <div class="form-group">
             <div class="form-line">
               {{form.movimentar_estoque}}
-              <label for="id_movimentar_estoque" style="font-weight: bold;" title="Selecionar para movimentar o estoque dos produtos com estoque controlado ao receber o pedido.">{{form.movimentar_estoque.label}}</label>
+              <label for="id_movimentar_estoque" title="Selecionar para movimentar o estoque dos produtos com estoque controlado ao receber o pedido.">{{form.movimentar_estoque.label}}</label>
             </div>
           </div>
         </div>

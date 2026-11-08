@@ -1057,6 +1057,8 @@ a.painel-nota { color: var(--destaque-texto); font-weight: 500; }
 .link-discreto:hover { color: var(--destaque-texto); text-decoration: underline; text-underline-offset: 3px; }
 .numero .progresso { width: 100%; }
 
+.form-secao { clear: both; margin: 24px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--linha-2); font-size: 16px; font-weight: 600; color: var(--tinta); }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }

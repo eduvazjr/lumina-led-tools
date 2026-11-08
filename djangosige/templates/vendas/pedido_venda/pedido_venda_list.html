@@ -1,6 +1,7 @@
 {%extends 'base/base.html'%}
+{% load led_ui %}
 
-{%block title%}{{title_complete|title}}{%endblock%}
+{%block title%}{{title_complete|lower|capfirst}}{%endblock%}
 
 {%block content%}
 {% include 'base/list_header.html' with subtitle='Pedidos dos clientes, do orçamento à entrega' add_label='Novo pedido' %}
@@ -35,7 +36,7 @@
                     </td>
                     <td><strong>{{pedido.cliente|default_if_none:"Sem cliente"}}</strong></td>
                     <td>{{pedido.format_data_entrega|default_if_none:"—"}}</td>
-                    <td class="col-num"><strong>{{pedido.format_valor_total}}</strong></td>
+                    <td class="col-num"><strong>{{ pedido.valor_total|brl }}</strong></td>
                     {% include 'base/list_check.html' with obj_id=pedido.id %}
                 </tr>
                 {% endfor %}

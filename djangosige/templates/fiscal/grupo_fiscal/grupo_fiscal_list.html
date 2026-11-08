@@ -1,6 +1,6 @@
 {%extends 'base/base.html'%}
 
-{%block title%}{{title_complete|title}}{%endblock%}
+{%block title%}{{title_complete|lower|capfirst}}{%endblock%}
 
 {%block content%}
 {% include 'base/list_header.html' with subtitle='Regras de tributação aplicadas aos produtos' add_label='Novo grupo' %}

@@ -1,6 +1,6 @@
 {%extends 'base/base.html'%}
 
-{%block title%}{{title_complete|title}}{%endblock%}
+{%block title%}{{title_complete|lower|capfirst}}{%endblock%}
 
 {%block content%}
 {% include 'base/list_header.html' with subtitle='Depósitos e locais físicos onde o estoque fica guardado' add_label='Novo local' add_popup=True %}

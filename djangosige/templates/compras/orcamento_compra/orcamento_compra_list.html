@@ -1,6 +1,7 @@
 {%extends 'base/base.html'%}
+{% load led_ui %}
 
-{%block title%}{{title_complete|title}}{%endblock%}
+{%block title%}{{title_complete|lower|capfirst}}{%endblock%}
 
 {%block content%}
 {% include 'base/list_header.html' with subtitle='Cotações com fornecedores, abertas e finalizadas' add_label='Novo orçamento' %}
@@ -35,7 +36,7 @@
                     </td>
                     <td><strong>{{orcamento.fornecedor|default_if_none:"Sem fornecedor"}}</strong></td>
                     <td>{{orcamento.format_data_vencimento|default_if_none:"—"}}</td>
-                    <td class="col-num"><strong>{{orcamento.format_valor_total}}</strong></td>
+                    <td class="col-num"><strong>{{ orcamento.valor_total|brl }}</strong></td>
                     <td class="col-actions">
                         {% if orcamento.status == '0' %}
                         <span class="row-actions">
