@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
+from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from django.contrib.auth.models import User
+from djangosige.apps.base.storage import DocumentosPrivadosStorage
 from djangosige.apps.cadastro.models import Empresa
 
 
@@ -194,3 +198,45 @@ class SaldoEmpresa(models.Model):
     
     def __str__(self):
         return f'{self.empresa} - {self.data_referencia.strftime("%m/%Y")} - R$ {self.saldo_liquido}'
+
+
+class ExtratoBancario(models.Model):
+    """Extrato de uma conta bancária de uma empresa do grupo, por mês.
+
+    O arquivo fica no armazenamento privado (fora da mídia pública) e só é
+    aberto pela tela de extratos, com login.
+    """
+
+    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT, related_name='extratos_bancarios',
+                                verbose_name='Empresa')
+    banco = models.CharField(max_length=60, verbose_name='Banco')
+    conta = models.CharField(max_length=40, blank=True, verbose_name='Agência e conta')
+    mes = models.PositiveSmallIntegerField(verbose_name='Mês')
+    ano = models.PositiveSmallIntegerField(verbose_name='Ano')
+    saldo_final = models.DecimalField(max_digits=16, decimal_places=2, null=True, blank=True,
+                                      verbose_name='Saldo no fim do mês')
+    arquivo = models.FileField(upload_to='extratos/%Y/%m/', storage=DocumentosPrivadosStorage(),
+                               verbose_name='Arquivo do extrato')
+    nome_arquivo = models.CharField(max_length=255)
+    tamanho = models.PositiveIntegerField(default=0)
+    observacoes = models.TextField(blank=True, verbose_name='Observações')
+    enviado_por = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,
+                                    on_delete=models.SET_NULL, related_name='+')
+    enviado_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Extrato bancário'
+        verbose_name_plural = 'Extratos bancários'
+        ordering = ['-ano', '-mes', 'empresa', 'banco']
+
+    def __str__(self):
+        return '%s · %s · %02d/%d' % (self.empresa, self.banco, self.mes, self.ano)
+
+    @property
+    def extensao(self):
+        return self.nome_arquivo.rsplit('.', 1)[-1].lower() if '.' in self.nome_arquivo else ''
+
+
+@receiver(post_delete, sender=ExtratoBancario)
+def remover_arquivo_extrato(sender, instance, **kwargs):
+    instance.arquivo.delete(save=False)

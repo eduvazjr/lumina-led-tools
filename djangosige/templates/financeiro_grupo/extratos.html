@@ -1,0 +1,88 @@
+{% extends 'base/base.html' %}
+{% load led_ui %}
+
+{% block title %}Extratos bancários{% endblock %}
+{% block breadcrumb %}Extratos bancários{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <p class="page-subtitle"><a href="{% url 'financeiro_grupo:dashboard' %}">Financeiro do grupo</a></p>
+        <h1 class="page-title">Extratos bancários</h1>
+        <p class="page-subtitle">Extratos mensais das contas das empresas do grupo</p>
+    </div>
+    <div class="page-actions">
+        <a href="{% url 'financeiro_grupo:extrato_add' %}" class="btn btn-primary">Enviar extrato</a>
+    </div>
+</div>
+
+{% include 'base/msg_sucesso.html' %}
+
+<section class="painel" aria-label="Resumo">
+    <div class="numeros">
+        <div class="numero"><span class="numero-rotulo">Extratos guardados</span><span class="numero-grande">{{ total_enviados }}</span></div>
+        <div class="numero"><span class="numero-rotulo">Meses sem extrato</span><span class="numero-grande{% if faltando %} is-negativo{% endif %}">{{ faltando }}</span><span class="numero-nota">Nos últimos 12 meses fechados, somando as empresas</span></div>
+    </div>
+</section>
+
+{% if cobertura %}
+<section class="painel">
+    <div class="painel-cabecalho">
+        <h2 class="painel-titulo">Meses enviados por empresa</h2>
+        <span class="painel-nota">Clique em "Enviar" para subir o extrato daquele mês</span>
+    </div>
+    <div class="tabela-caixa">
+        <table class="tabela tabela-cobertura">
+            <thead><tr><th scope="col">Empresa</th>{% for m in meses_cabecalho %}<th scope="col" class="centro">{{ m.rotulo }}</th>{% endfor %}</tr></thead>
+            <tbody>
+                {% for linha in cobertura %}
+                <tr>
+                    <th scope="row" class="forte">{{ linha.nome }}</th>
+                    {% for c in linha.meses %}
+                    <td class="centro">{% if c.ok %}<a class="etiqueta etiqueta-positiva" href="?empresa={{ linha.empresa.pk }}&amp;ano={{ c.ano }}#lista">Enviado</a>{% else %}<a class="etiqueta etiqueta-atencao" href="{% url 'financeiro_grupo:extrato_add' %}?empresa={{ linha.empresa.pk }}&amp;ano={{ c.ano }}&amp;mes={{ c.mes }}">Enviar</a>{% endif %}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endif %}
+
+<section class="painel" id="lista">
+    <form method="get" class="painel-cabecalho filtros" action="#lista">
+        <h2 class="painel-titulo">Extratos enviados</h2>
+        <label class="campo-filtro">Empresa
+            <select name="empresa"><option value="">Todas</option>{% for pk, nome in empresas %}<option value="{{ pk }}"{% if empresa_id == pk|stringformat:'d' %} selected{% endif %}>{{ nome }}</option>{% endfor %}</select>
+        </label>
+        <label class="campo-filtro">Ano
+            <select name="ano"><option value="">Todos</option>{% for a in anos %}<option value="{{ a }}"{% if ano == a|stringformat:'d' %} selected{% endif %}>{{ a }}</option>{% endfor %}</select>
+        </label>
+        <button type="submit" class="btn btn-secundario">Filtrar</button>
+    </form>
+    {% if extratos %}
+    <div class="tabela-caixa">
+        <table class="tabela" style="min-width: 860px">
+            <thead><tr><th scope="col">Mês</th><th scope="col">Empresa</th><th scope="col">Banco</th><th scope="col">Conta</th><th scope="col" class="num">Saldo final</th><th scope="col">Arquivo</th><th scope="col">Enviado</th><th scope="col">Ações</th></tr></thead>
+            <tbody>
+                {% for e in extratos %}
+                <tr>
+                    <td class="nowrap">{{ e.mes|stringformat:'02d' }}/{{ e.ano }}</td>
+                    <td>{{ e.empresa.pessoa_jur_info.nome_fantasia|default:e.empresa.nome_razao_social }}</td>
+                    <td>{{ e.banco }}</td>
+                    <td>{{ e.conta|default:"—" }}</td>
+                    <td class="num nowrap">{% if e.saldo_final is not None %}{{ e.saldo_final|brl }}{% else %}—{% endif %}</td>
+                    <td><a href="{% url 'financeiro_grupo:extrato_baixar' e.pk %}" target="_blank" rel="noopener">{{ e.nome_arquivo }}</a><span class="sublinha">{{ e.extensao|upper }} · {{ e.tamanho|filesizeformat }}</span></td>
+                    <td class="nowrap">{{ e.enviado_em|date:"d/m/Y" }}<span class="sublinha">{{ e.enviado_por.get_full_name|default:e.enviado_por.username|default:"" }}</span></td>
+                    <td><span class="acoes-texto"><a href="{% url 'financeiro_grupo:extrato_edit' e.pk %}">Editar</a></span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    {% url 'financeiro_grupo:extrato_add' as url_enviar %}
+    {% include 'base/componentes/estado_vazio.html' with texto='Nenhum extrato encontrado.' dica='Envie o extrato do banco em PDF, OFX, CSV, Excel ou foto.' acao_url=url_enviar acao_texto='Enviar extrato' icone='documento' %}
+    {% endif %}
+</section>
+{% endblock %}

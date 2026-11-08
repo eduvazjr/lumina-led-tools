@@ -1107,3 +1107,10 @@ input[type="file"]::file-selector-button:hover { background: #F3F4F5; }
   .app-content { padding: 0; }
   body { background: #fff; }
 }
+
+/* ---------- Extratos bancários ---------- */
+.tabela .centro { text-align: center; }
+.tabela-cobertura th[scope="row"] { background: transparent; color: var(--tinta); font-size: 14px; font-weight: 500; white-space: nowrap; padding-top: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--linha-tabela); }
+.tabela-cobertura tbody tr:last-child th { border-bottom: 0; }
+.tabela-cobertura td { padding-left: 6px; padding-right: 6px; }
+.tabela-cobertura .etiqueta { text-decoration: none; }

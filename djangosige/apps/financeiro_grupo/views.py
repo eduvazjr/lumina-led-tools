@@ -7,7 +7,9 @@ from django.utils import timezone
 from datetime import date, timedelta
 import json
 
-from .models import TransferenciaGrupo, ProprietarioGrupo, SaldoEmpresa
+from django.views.decorators.http import require_POST
+
+from .models import ExtratoBancario, TransferenciaGrupo, ProprietarioGrupo, SaldoEmpresa
 from djangosige.apps.cadastro.models import Empresa
 
 
@@ -225,3 +227,109 @@ def relatorio(request):
         'transferencias': transferencias, 'inicio': inicio, 'fim': fim, 'totais': totais,
         'por_tipo': [{'tipo': nomes_tipo.get(t['tipo'], t['tipo']), 'total': t['total']} for t in por_tipo],
     })
+
+
+# ---------------------------------------------------------------- extratos
+
+def _nome_empresa(empresa):
+    return getattr(getattr(empresa, 'pessoa_jur_info', None), 'nome_fantasia', None) or empresa.nome_razao_social
+
+
+def _ultimos_meses(hoje, quantidade=12):
+    """(ano, mês) dos últimos meses fechados, do mais antigo para o mais recente."""
+    ano, mes = hoje.year, hoje.month
+    meses = []
+    for _ in range(quantidade):
+        mes -= 1
+        if mes == 0:
+            ano, mes = ano - 1, 12
+        meses.append((ano, mes))
+    return list(reversed(meses))
+
+
+@login_required
+def extratos(request):
+    """Extratos bancários das empresas do grupo: o que já foi enviado e o que falta."""
+    from .forms import MESES
+    empresas = list(Empresa.objects.select_related('pessoa_jur_info').order_by('nome_razao_social'))
+    todos = ExtratoBancario.objects.select_related('empresa', 'empresa__pessoa_jur_info', 'enviado_por')
+
+    meses = list(reversed(_ultimos_meses(date.today())))  # mês mais recente primeiro
+    enviados = set(todos.filter(ano__gte=meses[-1][0]).values_list('empresa_id', 'ano', 'mes'))
+    nomes_mes = dict(MESES)
+    cobertura = [{
+        'empresa': empresa, 'nome': _nome_empresa(empresa),
+        'meses': [{'ano': a, 'mes': m, 'ok': (empresa.pk, a, m) in enviados} for a, m in meses],
+    } for empresa in empresas]
+    faltando = sum(1 for linha in cobertura for c in linha['meses'] if not c['ok'])
+
+    lista = todos
+    empresa_id = request.GET.get('empresa') or ''
+    ano = request.GET.get('ano') or ''
+    if empresa_id.isdigit():
+        lista = lista.filter(empresa_id=empresa_id)
+    if ano.isdigit():
+        lista = lista.filter(ano=ano)
+    anos = sorted(set(todos.values_list('ano', flat=True)) | {date.today().year}, reverse=True)
+    return render(request, 'financeiro_grupo/extratos.html', {
+        'extratos': lista, 'cobertura': cobertura, 'faltando': faltando,
+        'meses_cabecalho': [{'ano': a, 'mes': m, 'rotulo': '%s/%02d' % (nomes_mes[m][:3].lower(), a % 100)} for a, m in meses],
+        'empresas': [(e.pk, _nome_empresa(e)) for e in empresas], 'anos': anos,
+        'empresa_id': empresa_id, 'ano': ano, 'total_enviados': todos.count(),
+        'bancos_usados': sorted(set(todos.values_list('banco', flat=True))),
+    })
+
+
+def _formulario_extrato(request, extrato=None):
+    from django.contrib import messages
+    from .forms import ExtratoForm
+    inicial = {}
+    if extrato is None:
+        anterior = _ultimos_meses(date.today(), 1)[0]
+        inicial = {'ano': request.GET.get('ano') or anterior[0], 'mes': request.GET.get('mes') or anterior[1],
+                   'empresa': request.GET.get('empresa')}
+    form = ExtratoForm(request.POST or None, request.FILES or None, instance=extrato, initial=inicial)
+    if request.method == 'POST' and form.is_valid():
+        novo = form.save(commit=False)
+        enviado = request.FILES.get('arquivo')
+        if enviado:
+            if extrato is not None and extrato.arquivo:
+                extrato.arquivo.delete(save=False)
+            novo.nome_arquivo = enviado.name[:255]
+            novo.tamanho = enviado.size
+        if not novo.enviado_por_id:
+            novo.enviado_por = request.user
+        novo.save()
+        messages.success(request, 'Extrato salvo.')
+        return redirect('financeiro_grupo:extratos')
+    return render(request, 'financeiro_grupo/extrato_form.html', {
+        'form': form, 'extrato': extrato,
+        'bancos_usados': sorted(set(ExtratoBancario.objects.values_list('banco', flat=True))),
+    })
+
+
+@login_required
+def extrato_add(request):
+    return _formulario_extrato(request)
+
+
+@login_required
+def extrato_edit(request, pk):
+    return _formulario_extrato(request, get_object_or_404(ExtratoBancario, pk=pk))
+
+
+@login_required
+def extrato_baixar(request, pk):
+    from django.http import FileResponse
+    extrato = get_object_or_404(ExtratoBancario, pk=pk)
+    return FileResponse(extrato.arquivo.open('rb'), filename=extrato.nome_arquivo,
+                        as_attachment=extrato.extensao not in ('pdf', 'jpg', 'jpeg', 'png'))
+
+
+@login_required
+@require_POST
+def extrato_remover(request, pk):
+    from django.contrib import messages
+    get_object_or_404(ExtratoBancario, pk=pk).delete()
+    messages.success(request, 'Extrato removido.')
+    return redirect('financeiro_grupo:extratos')

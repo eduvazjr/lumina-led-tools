@@ -10,6 +10,7 @@
         <p class="page-subtitle">Transferências entre as empresas do grupo{% if proprietario_nome and proprietario_nome != 'N/A' %} · Proprietário: {{ proprietario_nome }}, CPF {{ proprietario_cpf }}{% endif %}</p>
     </div>
     <div class="page-actions">
+        <a href="{% url 'financeiro_grupo:extratos' %}" class="btn btn-secundario">Extratos bancários</a>
         <a href="{% url 'financeiro_grupo:relatorio' %}" class="btn btn-secundario">Relatório completo</a>
         <a href="{% url 'financeiro_grupo:transferencia_add' %}" class="btn btn-primary">Nova transferência</a>
     </div>

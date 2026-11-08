@@ -1,0 +1,35 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{% if extrato %}Editar extrato{% else %}Enviar extrato{% endif %}{% endblock %}
+{% block breadcrumb %}{% if extrato %}Editar extrato{% else %}Enviar extrato{% endif %}{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <p class="page-subtitle"><a href="{% url 'financeiro_grupo:dashboard' %}">Financeiro do grupo</a> · <a href="{% url 'financeiro_grupo:extratos' %}">Extratos bancários</a></p>
+        <h1 class="page-title">{% if extrato %}Editar extrato{% else %}Enviar extrato{% endif %}</h1>
+        {% if extrato %}<p class="page-subtitle">Arquivo atual: <a href="{% url 'financeiro_grupo:extrato_baixar' extrato.pk %}" target="_blank" rel="noopener">{{ extrato.nome_arquivo }}</a></p>{% endif %}
+    </div>
+</div>
+
+<form method="post" enctype="multipart/form-data" class="painel">
+    {% csrf_token %}
+    <div class="painel-corpo">
+        {% if form.non_field_errors %}<div class="aviso aviso-erro" role="alert">{% include 'base/componentes/icone_aviso.html' with tipo='erro' %}<span class="aviso-texto">{{ form.non_field_errors|join:" " }}</span></div>{% endif %}
+        <div class="campos">
+            {% for field in form.visible_fields %}{% include 'base/componentes/campo.html' %}{% endfor %}
+        </div>
+        <datalist id="bancos-usados">{% for b in bancos_usados %}<option value="{{ b }}">{% endfor %}</datalist>
+        <div class="form-acoes">
+            <a href="{% url 'financeiro_grupo:extratos' %}" class="btn btn-secundario">Cancelar</a>
+            <button type="submit" class="btn btn-primary">{% if extrato %}Salvar{% else %}Enviar extrato{% endif %}</button>
+        </div>
+    </div>
+</form>
+{% if extrato %}
+<form method="post" action="{% url 'financeiro_grupo:extrato_remover' extrato.pk %}" class="form-remover" onsubmit="return confirm('Remover este extrato e o arquivo? Não dá para desfazer.');">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Remover extrato</button>
+</form>
+{% endif %}
+{% endblock %}
