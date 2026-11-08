@@ -1,9 +1,9 @@
 {% extends 'base/base.html' %}
-{% load static %}
+{% load static gerencial_format %}
 {% block title %}Negociações com fornecedores{% endblock %}
 {% block content %}
 <style>
-.neg-wrap{padding:18px;background:#f6f7f8;min-height:calc(100vh - 60px);color:#20262d}.neg-head,.panel,.kpi{background:#fff;border:1px solid #d8dde3}.neg-head{padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:16px}.neg-title{font-size:18px;margin:0}.neg-subtitle,.muted{font-size:11px;color:#66707a}.sync{font-size:11px;border-left:3px solid #FF9100;padding-left:9px}.sync.error{border-color:#b42318;color:#8a1c13}.filter-bar{display:flex;gap:8px;align-items:end;margin-bottom:12px}.filter-bar label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;margin-bottom:4px}.filter-bar select,.filter-bar button{height:32px;border:1px solid #cbd2d9;background:#fff;padding:0 10px}.filter-bar button{background:#FF9100;border-color:#FF9100;color:#171717;font-weight:700}.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-bottom:12px}.kpi{padding:12px;border-top:3px solid #FF9100}.kpi-label{font-size:10px;color:#66707a;text-transform:uppercase;font-weight:700}.kpi-value{font-size:20px;font-weight:700;margin-top:4px}.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.panel-head{padding:10px 12px;border-bottom:1px solid #e2e6ea;font-size:12px;font-weight:700}.panel-body{padding:12px}.chart-box{height:230px}.table-scroll{overflow:auto}.data-table{width:100%;border-collapse:collapse;font-size:11px}.data-table th{background:#f3f4f5;text-align:left;text-transform:uppercase;font-size:9px;color:#59636e}.data-table th,.data-table td{padding:7px 8px;border-bottom:1px solid #e5e8eb;white-space:nowrap}.num{text-align:right}.supplier-summary{margin-bottom:12px}.empty{padding:28px;text-align:center;color:#66707a}@media(max-width:850px){.chart-grid{grid-template-columns:1fr}.neg-head{align-items:flex-start;flex-direction:column}}
+.neg-wrap{padding:18px;background:#f6f7f8;min-height:calc(100vh - 60px);color:#20262d}.neg-head,.panel,.kpi{background:#fff;border:1px solid #d8dde3}.neg-head{padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:16px}.neg-title{font-size:18px;margin:0}.neg-subtitle,.muted{font-size:11px;color:#66707a}.sync{font-size:11px;border-left:3px solid #FF9100;padding-left:9px}.sync.error{border-color:#b42318;color:#8a1c13}.filter-bar{display:flex;gap:8px;align-items:end;margin-bottom:12px}.filter-bar label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;margin-bottom:4px}.filter-bar select,.filter-bar button{height:32px;border:1px solid #cbd2d9;background:#fff;padding:0 10px}.filter-bar button{background:#FF9100;border-color:#FF9100;color:#171717;font-weight:700}.kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}.kpi{padding:12px;border-top:3px solid #FF9100}.kpi-label{font-size:10px;color:#66707a;text-transform:uppercase;font-weight:700}.kpi-value{font-size:20px;font-weight:700;margin-top:4px}.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.panel-head{padding:10px 12px;border-bottom:1px solid #e2e6ea;font-size:12px;font-weight:700}.panel-body{padding:12px}.chart-box{height:230px}.table-scroll{overflow:auto}.data-table{width:100%;border-collapse:collapse;font-size:11px}.data-table th{background:#f3f4f5;text-align:left;text-transform:uppercase;font-size:9px;color:#59636e}.data-table th,.data-table td{padding:7px 8px;border-bottom:1px solid #e5e8eb;white-space:nowrap}.num{text-align:right}.supplier-summary{margin-bottom:12px}.empty{padding:28px;text-align:center;color:#66707a}@media(max-width:850px){.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.chart-grid{grid-template-columns:1fr}.neg-head{align-items:flex-start;flex-direction:column}}@media(max-width:540px){.kpi-grid{grid-template-columns:1fr}}
 </style>
 <div class="neg-wrap">
   <header class="neg-head">
@@ -20,12 +20,12 @@
   </form>
 
   <section class="kpi-grid">
-    <div class="kpi"><div class="kpi-label">Total negociado</div><div class="kpi-value">R$ {{ kpis.total_negotiated|floatformat:2 }}</div></div>
-    <div class="kpi"><div class="kpi-label">Recebido estimado</div><div class="kpi-value">R$ {{ kpis.received_estimate|floatformat:2 }}</div></div>
-    <div class="kpi"><div class="kpi-label">Saldo em aberto</div><div class="kpi-value">R$ {{ kpis.outstanding_balance|floatformat:2 }}</div></div>
-    <div class="kpi"><div class="kpi-label">Pedidos</div><div class="kpi-value">{{ kpis.order_count }}</div></div>
-    <div class="kpi"><div class="kpi-label">Parcelas vencidas</div><div class="kpi-value">{{ kpis.overdue_installments }}</div></div>
-    <div class="kpi"><div class="kpi-label">Próximos 30 dias</div><div class="kpi-value">{{ kpis.upcoming_installments }}</div></div>
+    <div class="kpi"><div class="kpi-label">Total negociado</div><div class="kpi-value">{{ kpis.total_negotiated|ptbr_currency }}</div></div>
+    <div class="kpi"><div class="kpi-label">Recebido estimado</div><div class="kpi-value">{{ kpis.received_estimate|ptbr_currency }}</div></div>
+    <div class="kpi"><div class="kpi-label">Saldo em aberto</div><div class="kpi-value">{{ kpis.outstanding_balance|ptbr_currency }}</div></div>
+    <div class="kpi"><div class="kpi-label">Pedidos</div><div class="kpi-value">{{ kpis.order_count|ptbr_number:0 }}</div></div>
+    <div class="kpi"><div class="kpi-label">Parcelas vencidas</div><div class="kpi-value">{{ kpis.overdue_installments|ptbr_number:0 }}</div></div>
+    <div class="kpi"><div class="kpi-label">Próximos 30 dias</div><div class="kpi-value">{{ kpis.upcoming_installments|ptbr_number:0 }}</div></div>
   </section>
 
   <section class="chart-grid">
@@ -34,10 +34,10 @@
   </section>
 
   <section class="panel supplier-summary">
-    <div class="panel-head">KPIs por fornecedor</div><div class="table-scroll"><table class="data-table"><thead><tr><th>Fornecedor</th><th class="num">Negociado</th><th class="num">Recebido</th><th class="num">Em aberto</th><th class="num">Pedidos</th><th class="num">Vencidas</th></tr></thead><tbody>{% for supplier, supplier_data in supplier_kpis.items %}<tr><td>{{ supplier }}</td><td class="num">R$ {{ supplier_data.total_negotiated|floatformat:2 }}</td><td class="num">R$ {{ supplier_data.received_estimate|floatformat:2 }}</td><td class="num">R$ {{ supplier_data.outstanding_balance|floatformat:2 }}</td><td class="num">{{ supplier_data.order_count }}</td><td class="num">{{ supplier_data.overdue_installments }}</td></tr>{% endfor %}</tbody></table></div>
+    <div class="panel-head">KPIs por fornecedor</div><div class="table-scroll"><table class="data-table"><thead><tr><th>Fornecedor</th><th class="num">Negociado</th><th class="num">Recebido</th><th class="num">Em aberto</th><th class="num">Pedidos</th><th class="num">Vencidas</th></tr></thead><tbody>{% for supplier, supplier_data in supplier_kpis.items %}<tr><td>{{ supplier }}</td><td class="num">{{ supplier_data.total_negotiated|ptbr_currency }}</td><td class="num">{{ supplier_data.received_estimate|ptbr_currency }}</td><td class="num">{{ supplier_data.outstanding_balance|ptbr_currency }}</td><td class="num">{{ supplier_data.order_count|ptbr_number:0 }}</td><td class="num">{{ supplier_data.overdue_installments|ptbr_number:0 }}</td></tr>{% endfor %}</tbody></table></div>
   </section>
 
-  <section class="panel"><div class="panel-head">Negociações detalhadas</div><div class="table-scroll">{% if records %}<table class="data-table"><thead><tr><th>Fornecedor</th><th>Nº pedido</th><th>Produto</th><th class="num">Quantidade</th><th class="num">Valor unitário</th><th class="num">Valor total</th><th class="num">Parcela</th><th class="num">Parcelas</th><th class="num">Pagas</th><th>Vencimento</th></tr></thead><tbody>{% for item in records %}<tr><td>{{ item.supplier }}</td><td>{{ item.order_number }}</td><td>{{ item.product }}</td><td class="num">{{ item.quantity|floatformat:2 }}</td><td class="num">R$ {{ item.unit_value|floatformat:2 }}</td><td class="num">R$ {{ item.total_value|floatformat:2 }}</td><td class="num">R$ {{ item.installment_value|floatformat:2 }}</td><td class="num">{{ item.installment_count|floatformat:0 }}</td><td class="num">{{ item.paid_installments|floatformat:0 }}</td><td>{{ item.due_date|date:'d/m/Y'|default:'-' }}</td></tr>{% endfor %}</tbody></table>{% else %}<div class="empty">Nenhuma negociação disponível para o filtro selecionado.</div>{% endif %}</div></section>
+  <section class="panel"><div class="panel-head">Negociações detalhadas</div><div class="table-scroll">{% if records %}<table class="data-table"><thead><tr><th>Fornecedor</th><th>Nº pedido</th><th>Produto</th><th class="num">Quantidade</th><th class="num">Valor unitário</th><th class="num">Valor total</th><th class="num">Parcela</th><th class="num">Parcelas</th><th class="num">Pagas</th><th>Vencimento</th></tr></thead><tbody>{% for item in records %}<tr><td>{{ item.supplier }}</td><td>{{ item.order_number }}</td><td>{{ item.product }}</td><td class="num">{{ item.quantity|ptbr_number:2 }}</td><td class="num">{{ item.unit_value|ptbr_currency }}</td><td class="num">{{ item.total_value|ptbr_currency }}</td><td class="num">{{ item.installment_value|ptbr_currency }}</td><td class="num">{{ item.installment_count|ptbr_number:0 }}</td><td class="num">{{ item.paid_installments|ptbr_number:0 }}</td><td>{{ item.due_date|date:'d/m/Y'|default:'-' }}</td></tr>{% endfor %}</tbody></table>{% else %}<div class="empty">Nenhuma negociação disponível para o filtro selecionado.</div>{% endif %}</div></section>
 </div>
 {{ chart_distribution_data|json_script:"chart-dist-data" }}
 {{ chart_due_data|json_script:"chart-due-data" }}
@@ -46,9 +46,11 @@
 (function(){
   const dist=JSON.parse(document.getElementById('chart-dist-data').textContent);
   const due=JSON.parse(document.getElementById('chart-due-data').textContent);
-  const common={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:'#e6e9ec'}}}};
-  new Chart(document.getElementById('chartDist'),{type:'bar',data:{labels:dist.labels,datasets:[{data:dist.values,backgroundColor:'#FF9100'}]},options:common});
-  new Chart(document.getElementById('chartVenc'),{type:'bar',data:{labels:due.labels,datasets:[{data:due.values,backgroundColor:'#444b52'}]},options:common});
+  const brl=new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
+  const integer=new Intl.NumberFormat('pt-BR',{maximumFractionDigits:0});
+  const baseScales={x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:'#e6e9ec'}}};
+  new Chart(document.getElementById('chartDist'),{type:'bar',data:{labels:dist.labels,datasets:[{data:dist.values,backgroundColor:'#FF9100'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:(context)=>brl.format(context.parsed.y)}}},scales:{...baseScales,y:{...baseScales.y,ticks:{callback:(value)=>brl.format(value)}}}}});
+  new Chart(document.getElementById('chartVenc'),{type:'bar',data:{labels:due.labels,datasets:[{data:due.values,backgroundColor:'#444b52'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:(context)=>integer.format(context.parsed.y)}}},scales:{...baseScales,y:{...baseScales.y,ticks:{callback:(value)=>integer.format(value)}}}}});
 })();
 </script>
 {% endblock %}

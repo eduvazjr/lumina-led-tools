@@ -9,12 +9,22 @@ from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
 
 from .drive_negotiations import build_dashboard_data, load_negotiations, parse_xlsx
+from .templatetags.gerencial_format import ptbr_currency, ptbr_number
 
 
 HEADERS = (
     'Nº PEDIDO', 'PRODUTO', 'QUANTIDADE', 'VALOR UNITÁRIO', 'VALOR TOTAL',
     'VALOR PARCELA', 'QTD. PARCELAS', 'PARCELAS PAGAS', 'VENCIMENTO',
 )
+
+
+class BrazilianNumberFormatTests(SimpleTestCase):
+    def test_formats_currency_with_thousands_points_and_decimal_comma(self):
+        self.assertEqual(ptbr_currency('377407994.15'), 'R$ 377.407.994,15')
+
+    def test_formats_numbers_with_requested_decimal_places(self):
+        self.assertEqual(ptbr_number('1527.5', 2), '1.527,50')
+        self.assertEqual(ptbr_number('1527.5', 0), '1.528')
 
 
 def make_xlsx(rows, extra_sheets=None):
@@ -149,6 +159,7 @@ class DashboardViewTests(TestCase):
         self.assertTemplateUsed(response, 'gerencial/dashboard.html')
         self.assertContains(response, 'Negociações com fornecedores')
         self.assertContains(response, 'class="kpi-grid"')
+        self.assertContains(response, 'grid-template-columns:repeat(3,minmax(0,1fr))')
         self.assertContains(response, 'id="chartDist"')
         self.assertContains(response, 'id="chartVenc"')
         self.assertContains(response, 'vendor/chartjs/chart.umd.min.js')
