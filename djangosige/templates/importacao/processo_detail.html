@@ -1,26 +1,30 @@
 {%extends 'base/base.html'%}
+{% load led_ui gerencial_format %}
 
 {%block title%}{{processo.referencia}}{%endblock%}
 {%block content%}
 <div class="list-header">
     <div class="list-heading">
-        <h1 class="page-title"><a href="{% url 'importacao:listaprocessosview' %}" title="Voltar"><i class="material-icons">&#xE5C4;</i></a> {{processo.referencia}}</h1>
+        <p class="page-subtitle"><a href="{% url 'importacao:listaprocessosview' %}">Processos de importação</a></p>
+        <h1 class="page-title">{{processo.referencia}}</h1>
         <p class="page-subtitle">{{processo.mercadoria}} — {{processo.exportador}} ({{processo.pais_origem}}). OC {{processo.numero_ordem_compra}}{% if processo.pedido_compra %}, {{processo.pedido_compra}}{% endif %}.</p>
     </div>
     <div class="page-actions">
         <span class="badge {% if processo.status == 'concluido' %}badge-success{% elif processo.status == 'cancelado' %}badge-danger{% else %}badge-info{% endif %}">{{processo.get_status_display}}</span>
-        <a href="{% url 'importacao:editarprocessoview' processo.id %}" class="btn btn-default">Editar dados</a>
+        <a href="{% url 'importacao:editarprocessoview' processo.id %}" class="btn btn-secundario">Editar dados</a>
     </div>
 </div>
 
 {% include 'base/msg_sucesso.html' %}
 
-<div class="kpi-grid">
-    <div class="kpi"><span class="kpi-label">Progresso</span><span class="kpi-value">{{processo.progresso}}%</span><span class="kpi-foot">{% if processo.etapa_atual %}Próxima: {{processo.etapa_atual}}{% else %}Todas as etapas concluídas{% endif %}</span></div>
-    <div class="kpi"><span class="kpi-label">Valor aduaneiro estimado</span><span class="kpi-value"><small>R$</small>{{processo.valor_aduaneiro|floatformat:"2g"}}</span><span class="kpi-foot">{{processo.moeda}} a {{processo.taxa_cambio|floatformat:4}} ({{processo.get_incoterm_display}})</span></div>
-    <div class="kpi"><span class="kpi-label">Custo total</span><span class="kpi-value"><small>R$</small>{{processo.custo_total|floatformat:"2g"}}</span><span class="kpi-foot">Inclui R$ {{processo.total_custos|floatformat:"2g"}} em custos lançados</span></div>
-    <div class="kpi"><span class="kpi-label">Devolução do vazio até</span><span class="kpi-value">{{processo.prazo_devolucao|date:"d/m/Y"|default:"—"}}</span><span class="kpi-foot">{% if processo.demurrage_estimada %}Demurrage estimada: R$ {{processo.demurrage_estimada|floatformat:"2g"}}{% else %}Free time de {{processo.free_time_dias}} dias{% endif %}</span></div>
-</div>
+<section class="painel" aria-label="Resumo do processo">
+    <div class="numeros">
+        <div class="numero"><span class="numero-rotulo">Progresso</span><span class="numero-grande">{{processo.progresso}}%</span><span class="numero-nota">{% include 'base/componentes/progresso.html' with pct=processo.progresso rotulo='' %}</span><span class="numero-nota">{% if processo.etapa_atual %}Próxima etapa: {{processo.etapa_atual}}{% else %}Todas as etapas concluídas{% endif %}</span></div>
+        <div class="numero"><span class="numero-rotulo">Valor aduaneiro estimado</span>{% valor_brl processo.valor_aduaneiro %}<span class="numero-nota">{{processo.moeda}} a {{processo.taxa_cambio|ptbr_number:4}} ({{processo.get_incoterm_display}})</span></div>
+        <div class="numero"><span class="numero-rotulo">Custo total</span>{% valor_brl processo.custo_total %}<span class="numero-nota">Inclui {{processo.total_custos|brl}} em custos lançados</span></div>
+        <div class="numero"><span class="numero-rotulo">Devolução do contêiner vazio</span><span class="numero-grande">{{processo.prazo_devolucao|date:"d/m/Y"|default:"—"}}</span><span class="numero-nota">{% if processo.demurrage_estimada %}Demurrage estimada: {{processo.demurrage_estimada|brl}}{% else %}Free time de {{processo.free_time_dias}} dias{% endif %}</span></div>
+    </div>
+</section>
 
 <section class="section" id="etapas">
     <div class="section-header"><h2 class="section-title">Etapas do processo</h2></div>
@@ -81,7 +85,7 @@
 {% endif %}
 
 <section class="section" id="custos" style="margin-top:20px;">
-    <div class="section-header"><h2 class="section-title">Custos e tributos</h2><strong>Total: R$ {{processo.total_custos|floatformat:"2g"}}</strong></div>
+    <div class="section-header"><h2 class="section-title">Custos e tributos</h2><strong>Total: {{processo.total_custos|brl}}</strong></div>
     <form method="post" action="#custos">
         {% csrf_token %}
         <input type="hidden" name="secao" value="custos">

@@ -1,4 +1,4 @@
-{% load static led_ui %}{# Aumente ao publicar mudanças em led-ui.css ou admin.js, para o navegador não usar a versão em cache #}{% with ui_v='16' %}<!DOCTYPE html>
+{% load static led_ui %}{# Aumente ao publicar mudanças em led-ui.css ou admin.js, para o navegador não usar a versão em cache #}{% with ui_v='17' %}<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -254,7 +254,8 @@
             var atual = document.querySelector('.breadcrumb-atual');
             if (atual && !atual.textContent.trim()) {
                 var ativo = sidebar && sidebar.querySelector('.nav-sublink.active, a.nav-link.active');
-                atual.textContent = ativo ? ativo.textContent.trim() : document.title.split(' | ')[0];
+                var rotulo = ativo && (ativo.querySelector('span') || ativo);
+                atual.textContent = rotulo ? rotulo.textContent.trim() : document.title.split(' | ')[0];
             }
 
             // Busca do topo: filtra as telas do menu lateral; Enter abre a primeira encontrada

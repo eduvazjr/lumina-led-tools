@@ -1,4 +1,5 @@
 {%extends 'base/base.html'%}
+{% load led_ui %}
 
 {%block title%}Funcionários{%endblock%}
 
@@ -10,7 +11,7 @@
     </div>
     <div class="page-actions">
         <span class="badge badge-success">{{ total_ativos }} ativo{{ total_ativos|pluralize }}</span>
-        <span class="badge badge-led">Folha salarial R$ {{ folha_salarial|floatformat:2 }}</span>
+        <span class="page-subtitle">Folha salarial: <strong>{{ folha_salarial|brl }}</strong></span>
     </div>
 </div>
 
@@ -47,7 +48,7 @@
                     <td>{{ f.cargo }}</td>
                     {% if not dp %}<td><a href="{% url 'contabilidade:detalhe_processo' f.dp.processo.pk %}" class="stat-link">{{ f.dp.processo.cliente }}</a></td>{% endif %}
                     <td>{{ f.data_admissao|date:"d/m/Y" }}</td>
-                    <td class="text-right">R$ {{ f.salario|floatformat:2 }}</td>
+                    <td class="text-right">{{ f.salario|brl }}</td>
                     <td>{% if f.ativo %}<span class="badge badge-success">Ativo</span>{% else %}<span class="badge badge-danger" title="{{ f.motivo_demissao }}">Desligado {{ f.data_demissao|date:"d/m/Y" }}</span>{% endif %}</td>
                 </tr>
                 {% endfor %}

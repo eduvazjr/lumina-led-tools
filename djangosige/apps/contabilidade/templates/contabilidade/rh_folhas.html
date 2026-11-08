@@ -1,4 +1,5 @@
 {%extends 'base/base.html'%}
+{% load led_ui %}
 
 {%block title%}Folhas de pagamento{%endblock%}
 
@@ -41,11 +42,11 @@
                 <tr>
                     <td><strong>{{ folha.mes_referencia|stringformat:"02d" }}/{{ folha.ano_referencia }}</strong></td>
                     {% if not dp %}<td><a href="{% url 'contabilidade:detalhe_processo' folha.dp.processo.pk %}" class="stat-link">{{ folha.dp.processo.cliente }}</a></td>{% endif %}
-                    <td class="text-right">R$ {{ folha.total_proventos|floatformat:2 }}</td>
-                    <td class="text-right">R$ {{ folha.total_descontos|floatformat:2 }}</td>
-                    <td class="text-right"><strong>R$ {{ folha.total_liquido|floatformat:2 }}</strong></td>
-                    <td class="text-right">R$ {{ folha.inss_empresa|floatformat:2 }}</td>
-                    <td class="text-right">R$ {{ folha.fgts|floatformat:2 }}</td>
+                    <td class="text-right">{{ folha.total_proventos|brl }}</td>
+                    <td class="text-right">{{ folha.total_descontos|brl }}</td>
+                    <td class="text-right"><strong>{{ folha.total_liquido|brl }}</strong></td>
+                    <td class="text-right">{{ folha.inss_empresa|brl }}</td>
+                    <td class="text-right">{{ folha.fgts|brl }}</td>
                     <td>{% if folha.processada %}<span class="badge badge-success">Processada{% if folha.data_pagamento %} · paga {{ folha.data_pagamento|date:"d/m" }}{% endif %}</span>{% else %}<span class="badge badge-warning">Pendente</span>{% endif %}</td>
                 </tr>
                 {% endfor %}
