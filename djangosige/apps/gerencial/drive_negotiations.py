@@ -218,7 +218,11 @@ def _fallback_records(rows, supplier):
             if not purchase_value and not payment_value:
                 continue
             purchase_date = _excel_date(data_row.get(purchase_date_column))
-            description = data_row.get(purchase_description_column) or data_row.get(payment_description_column) or 'Pagamento'
+            raw_description = data_row.get(purchase_description_column) or data_row.get(payment_description_column)
+            payment_date_raw = data_row.get(payment_date_column) if payment_date_column is not None else None
+            if not purchase_date and not (_excel_date(payment_date_raw) if payment_date_raw not in (None, '') else None) and not str(raw_description or '').strip():
+                continue  # linha de TOTAL da planilha (sem data e sem descricao)
+            description = raw_description or 'Pagamento'
             status = _normalise_header(data_row.get(purchase_value_column + 1))
             if status == 'PAGO' and not payment_value:
                 payment_value = purchase_value

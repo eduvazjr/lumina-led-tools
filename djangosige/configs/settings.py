@@ -190,3 +190,6 @@ LOGIN_NOT_REQUIRED = (
     r'/logout/',
 )
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# FIX STATIC FILES
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
