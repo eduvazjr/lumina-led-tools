@@ -79,6 +79,9 @@ INSTALLED_APPS = [
     
     # HG Contabilidade - Sistema completo de contabilidade
     'djangosige.apps.contabilidade',
+
+    # Documentos anexados a qualquer registro
+    'djangosige.apps.anexos',
 ]
 
 

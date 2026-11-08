@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+{% load led_ui anexos %}
+
+{% block title %}Transferência #{{ transferencia.pk }}{% endblock %}
+{% block breadcrumb %}Transferência #{{ transferencia.pk }}{% endblock %}
+
+{% block content %}
+{% with origem=transferencia.empresa_origem destino=transferencia.empresa_destino %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <p class="page-subtitle"><a href="{% url 'financeiro_grupo:dashboard' %}">Financeiro do grupo</a></p>
+        <h1 class="page-title">Transferência #{{ transferencia.pk }}</h1>
+        <p class="page-subtitle">{{ origem.pessoa_jur_info.nome_fantasia|default:origem.nome_razao_social }} para {{ destino.pessoa_jur_info.nome_fantasia|default:destino.nome_razao_social }}</p>
+    </div>
+    <div class="page-actions">
+        {% if transferencia.status == 'concluida' %}<span class="etiqueta etiqueta-positiva">Concluída</span>{% elif transferencia.status == 'cancelada' %}<span class="etiqueta etiqueta-negativa">Cancelada</span>{% else %}<span class="etiqueta etiqueta-atencao">Pendente</span>{% endif %}
+    </div>
+</div>
+
+<section class="painel" aria-label="Valor">
+    <div class="numeros">
+        <div class="numero"><span class="numero-rotulo">Valor</span>{% valor_brl transferencia.valor %}<span class="numero-nota">{{ transferencia.get_tipo_display }}</span></div>
+        <div class="numero"><span class="numero-rotulo">Data</span><span class="numero-grande">{{ transferencia.data|date:"d/m/Y" }}</span><span class="numero-nota">{% if transferencia.data_confirmacao %}Confirmada em {{ transferencia.data_confirmacao|date:"d/m/Y H:i" }}{% else %}Ainda não confirmada{% endif %}</span></div>
+    </div>
+</section>
+
+<section class="painel" aria-labelledby="t-dados">
+    <div class="painel-cabecalho"><h2 class="painel-titulo" id="t-dados">Dados da transferência</h2></div>
+    <dl class="painel-corpo dados">
+        <div><dt>Origem</dt><dd>{{ origem.nome_razao_social }}</dd></div>
+        <div><dt>Destino</dt><dd>{{ destino.nome_razao_social }}</dd></div>
+        <div><dt>Registrada por</dt><dd>{{ transferencia.usuario|default:"—" }}</dd></div>
+        {% if transferencia.comprovante %}<div><dt>Comprovante antigo</dt><dd><a href="{{ transferencia.comprovante.url }}" target="_blank" rel="noopener">Abrir comprovante</a></dd></div>{% endif %}
+        {% if transferencia.finalidade %}<div class="dados-largo"><dt>Finalidade</dt><dd>{{ transferencia.finalidade|linebreaksbr }}</dd></div>{% endif %}
+        {% if transferencia.observacoes %}<div class="dados-largo"><dt>Observações</dt><dd>{{ transferencia.observacoes|linebreaksbr }}</dd></div>{% endif %}
+    </dl>
+</section>
+
+{% documentos transferencia 'Comprovantes e documentos' %}
+{% endwith %}
+{% endblock %}

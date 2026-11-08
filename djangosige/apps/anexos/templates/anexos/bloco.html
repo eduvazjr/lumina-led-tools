@@ -1,0 +1,47 @@
+{% if mostrar %}{% load led_ui %}
+<section class="painel anexos" id="documentos" aria-labelledby="t-documentos">
+    <div class="painel-cabecalho">
+        <h2 class="painel-titulo" id="t-documentos">{{ titulo }}</h2>
+        <span class="painel-nota">PDF, imagem, XML, Word ou Excel, até 10 MB cada</span>
+    </div>
+    {% if aviso %}<div class="aviso aviso-{{ aviso.tipo }} anexos-aviso" role="status">{% include 'base/componentes/icone_aviso.html' with tipo=aviso.tipo %}<span class="aviso-texto">{{ aviso.texto }}</span></div>{% endif %}
+    {% if anexos %}
+    <div class="tabela-caixa">
+        <table class="tabela">
+            <thead><tr><th scope="col">Arquivo</th><th scope="col">Enviado por</th><th scope="col">Data</th><th scope="col" class="num">Tamanho</th>{% if pode_editar %}<th scope="col" class="num"><span class="sr-only">Ações</span></th>{% endif %}</tr></thead>
+            <tbody>
+                {% for anexo in anexos %}
+                <tr>
+                    <td class="forte"><a href="{% url 'anexos:baixar' anexo.pk %}" target="_blank" rel="noopener">{{ anexo.nome }}</a></td>
+                    <td class="suave">{{ anexo.enviado_por|default:"—" }}</td>
+                    <td class="nowrap">{{ anexo.enviado_em|date:"d/m/Y H:i" }}</td>
+                    <td class="num suave">{{ anexo.tamanho|filesizeformat }}</td>
+                    {% if pode_editar %}
+                    <td class="num">
+                        <form method="post" action="{% url 'anexos:remover' anexo.pk %}" onsubmit="return confirm('Remover o documento {{ anexo.nome|escapejs }}?');">
+                            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                            <input type="hidden" name="next" value="{{ voltar }}">
+                            <button type="submit" class="btn btn-sm btn-soft-danger">Remover</button>
+                        </form>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="anexos-vazio">Nenhum documento anexado{% if pode_editar %}. Envie contratos, comprovantes, notas ou fotos abaixo{% endif %}.</p>
+    {% endif %}
+    {% if pode_editar %}
+    <form method="post" enctype="multipart/form-data" action="{% url 'anexos:enviar' content_type.pk objeto.pk %}" class="anexos-envio">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+        <input type="hidden" name="next" value="{{ voltar }}">
+        <label class="campo-filtro">Anexar arquivos
+            <input type="file" name="arquivos" multiple required accept="{{ aceita }}">
+        </label>
+        <button type="submit" class="btn btn-secundario">Enviar</button>
+    </form>
+    {% endif %}
+</section>
+{% endif %}

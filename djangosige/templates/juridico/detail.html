@@ -1,0 +1,78 @@
+{% extends 'base/base.html' %}
+{% load led_ui anexos %}
+
+{% block title %}Processo {{ processo.numero }}{% endblock %}
+{% block breadcrumb %}Processo {{ processo.numero }}{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <p class="page-subtitle"><a href="{% url 'juridico:dashboard' %}">Jurídico</a></p>
+        <h1 class="page-title">Processo {{ processo.numero }}</h1>
+        <p class="page-subtitle">{% firstof processo.get_tipo_processo_display processo.tipo_processo as tipo %}{% if tipo %}{{ tipo }} · {% endif %}{{ processo.orgao }}{% if processo.parte_contraria %} · contra {{ processo.parte_contraria }}{% endif %}</p>
+    </div>
+    <div class="page-actions">
+        {% if processo.nivel_risco == 'alto' %}<span class="etiqueta etiqueta-negativa">Risco alto</span>{% elif processo.nivel_risco == 'medio' %}<span class="etiqueta etiqueta-atencao">Risco médio</span>{% else %}<span class="etiqueta">Risco baixo</span>{% endif %}
+        <span class="etiqueta{% if processo.status == 'ganho' %} etiqueta-positiva{% elif processo.status == 'perdido' %} etiqueta-negativa{% endif %}">{{ processo.get_status_display }}</span>
+    </div>
+</div>
+
+{% if processo.prazo_vencido %}
+<div class="aviso aviso-erro" role="status">{% include 'base/componentes/icone_aviso.html' with tipo='erro' %}<span class="aviso-texto">O prazo de {{ processo.proximo_prazo|date:"d/m/Y" }} ({{ processo.descricao_prazo|default:"prazo processual" }}) está vencido.</span></div>
+{% endif %}
+
+<section class="painel" aria-label="Valores">
+    <div class="numeros">
+        <div class="numero"><span class="numero-rotulo">Valor da causa</span>{% valor_brl processo.valor_causa %}</div>
+        <div class="numero"><span class="numero-rotulo">Valor em risco</span>{% valor_brl processo.valor_risco %}<span class="numero-nota">Valor da causa × {{ processo.probabilidade_perda }}% de chance de perda</span></div>
+        <div class="numero"><span class="numero-rotulo">Próximo prazo</span><span class="numero-grande">{{ processo.proximo_prazo|date:"d/m/Y"|default:"—" }}</span><span class="numero-nota">{{ processo.descricao_prazo|default:"" }}</span></div>
+    </div>
+</section>
+
+<section class="painel" aria-labelledby="t-dados">
+    <div class="painel-cabecalho"><h2 class="painel-titulo" id="t-dados">Dados do processo</h2></div>
+    <dl class="painel-corpo dados">
+        <div><dt>Empresa</dt><dd>{{ processo.empresa }}</dd></div>
+        <div><dt>Distribuição</dt><dd>{{ processo.data_distribuicao|date:"d/m/Y"|default:"—" }}</dd></div>
+        <div><dt>Última movimentação</dt><dd>{{ processo.ultima_movimentacao|date:"d/m/Y"|default:"—" }}</dd></div>
+        <div><dt>Advogado responsável</dt><dd>{{ processo.advogado_responsavel|default:"—" }}</dd></div>
+        <div><dt>Diretoria</dt><dd>{% if processo.diretoria_alertada %}Alertada em {{ processo.data_alerta_diretoria|date:"d/m/Y" }}{% else %}Não alertada{% endif %}</dd></div>
+        {% if processo.descricao %}<div class="dados-largo"><dt>Descrição</dt><dd>{{ processo.descricao|linebreaksbr }}</dd></div>{% endif %}
+        {% if processo.observacoes %}<div class="dados-largo"><dt>Observações</dt><dd>{{ processo.observacoes|linebreaksbr }}</dd></div>{% endif %}
+    </dl>
+</section>
+
+<section class="painel" aria-labelledby="t-prazos">
+    <div class="painel-cabecalho"><h2 class="painel-titulo" id="t-prazos">Prazos</h2></div>
+    {% if prazos %}
+    <div class="tabela-caixa">
+        <table class="tabela">
+            <thead><tr><th scope="col">Prazo</th><th scope="col">Intimação</th><th scope="col">Vencimento</th><th scope="col">Cumprimento</th><th scope="col">Situação</th></tr></thead>
+            <tbody>
+                {% for prazo in prazos %}
+                <tr><td class="forte">{{ prazo.descricao }}</td><td>{{ prazo.data_intimacao|date:"d/m/Y"|default:"—" }}</td><td>{{ prazo.data_vencimento|date:"d/m/Y" }}</td><td>{{ prazo.data_cumprimento|date:"d/m/Y"|default:"—" }}</td><td><span class="etiqueta">{{ prazo.get_status_display }}</span></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}<p class="anexos-vazio" style="padding-bottom: 20px">Nenhum prazo cadastrado para este processo.</p>{% endif %}
+</section>
+
+{% if documentos %}
+<section class="painel" aria-labelledby="t-doc-antigos">
+    <div class="painel-cabecalho"><h2 class="painel-titulo" id="t-doc-antigos">Documentos cadastrados antes</h2></div>
+    <div class="tabela-caixa">
+        <table class="tabela">
+            <thead><tr><th scope="col">Documento</th><th scope="col">Tipo</th><th scope="col">Enviado em</th></tr></thead>
+            <tbody>
+                {% for doc in documentos %}
+                <tr><td class="forte">{% if doc.arquivo %}<a href="{{ doc.arquivo.url }}" target="_blank" rel="noopener">{{ doc.titulo }}</a>{% else %}{{ doc.titulo }}{% endif %}</td><td>{{ doc.get_tipo_display }}</td><td>{{ doc.data_upload|date:"d/m/Y H:i" }}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endif %}
+
+{% documentos processo %}
+{% endblock %}

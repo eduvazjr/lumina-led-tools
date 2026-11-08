@@ -24,6 +24,9 @@ urlpatterns = [
     
     # HG Contabilidade - Sistema completo de contabilidade
     url(r'^contabilidade/', include('djangosige.apps.contabilidade.urls')),
+
+    # Documentos anexados (todas as telas)
+    url(r'^anexos/', include('djangosige.apps.anexos.urls')),
 ]
 
 if DEBUG is True:

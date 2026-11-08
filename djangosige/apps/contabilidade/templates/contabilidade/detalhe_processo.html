@@ -61,4 +61,6 @@
         {% if processo.observacoes %}<div class="dados-largo"><dt>Observações</dt><dd>{{ processo.observacoes|linebreaksbr }}</dd></div>{% endif %}
     </dl>
 </section>
+
+{% load anexos %}{% documentos processo 'Documentos do processo' %}
 {% endblock %}
