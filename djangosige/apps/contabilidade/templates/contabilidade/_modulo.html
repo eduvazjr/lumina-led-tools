@@ -8,6 +8,7 @@
         <h1 class="page-title">{% block etapa_nome %}{% endblock %}</h1>
         <p class="page-subtitle">Etapa {% block etapa_numero %}{% endblock %} de 5 · {% block etapa_descricao %}{% endblock %}</p>
     </div>
+    {% block etapa_acoes %}{% endblock %}
 </div>
 
 <form method="post" class="painel">

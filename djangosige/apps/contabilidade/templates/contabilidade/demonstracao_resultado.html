@@ -1,0 +1,34 @@
+{% extends "contabilidade/_sub.html" %}
+{% load led_ui %}
+{% block title %}DRE · {{ processo.numero_processo }}{% endblock %}
+{% block breadcrumb %}Demonstração do resultado{% endblock %}
+{% block sub_titulo %}Demonstração do resultado (DRE){% endblock %}
+{% block sub_descricao %}Da receita bruta ao lucro líquido, mês a mês{% endblock %}
+{% block sub_voltar %}{% url 'contabilidade:contabil' processo.pk %}{% endblock %}
+{% block sub_corpo %}
+{% if dres %}
+<div class="tabela-caixa">
+    <table class="tabela" style="min-width: 1000px">
+        <thead><tr><th scope="col">Competência</th><th scope="col" class="num">Receita bruta</th><th scope="col" class="num">Deduções</th><th scope="col" class="num">Receita líquida</th><th scope="col" class="num">CMV</th><th scope="col" class="num">Lucro bruto</th><th scope="col" class="num">Despesas</th><th scope="col" class="num">Resultado antes do IR</th><th scope="col" class="num">IR e CSLL</th><th scope="col" class="num">Lucro líquido</th></tr></thead>
+        <tbody>
+            {% for d in dres %}
+            <tr>
+                <td class="forte">{{ d.mes_referencia|stringformat:"02d" }}/{{ d.ano_referencia|stringformat:"d" }}</td>
+                <td class="num">{{ d.receita_bruta|brl }}</td>
+                <td class="num">{{ d.deducoes_receita|brl }}</td>
+                <td class="num">{{ d.receita_liquida|brl }}</td>
+                <td class="num">{{ d.cmv|brl }}</td>
+                <td class="num">{{ d.lucro_bruto|brl }}</td>
+                <td class="num" title="Operacionais, administrativas e financeiras">{{ d.despesas_operacionais|add:d.despesas_administrativas|add:d.despesas_financeiras|brl }}</td>
+                <td class="num">{{ d.resultado_antes_ir|brl }}</td>
+                <td class="num">{{ d.provisao_ir_csll|brl }}</td>
+                <td class="num forte"><span class="{% if d.lucro_liquido < 0 %}texto-negativo{% endif %}">{{ d.lucro_liquido|brl }}</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+{% include 'base/componentes/estado_vazio.html' with icone='documento' texto='Nenhuma DRE gerada para este processo.' %}
+{% endif %}
+{% endblock %}

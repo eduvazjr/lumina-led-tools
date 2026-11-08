@@ -1,0 +1,31 @@
+{% extends "contabilidade/_sub.html" %}
+{% load led_ui %}
+{% block title %}Lançamentos contábeis · {{ processo.numero_processo }}{% endblock %}
+{% block breadcrumb %}Lançamentos contábeis{% endblock %}
+{% block sub_titulo %}Lançamentos contábeis{% endblock %}
+{% block sub_descricao %}Débitos e créditos registrados na contabilidade do processo{% endblock %}
+{% block sub_voltar %}{% url 'contabilidade:contabil' processo.pk %}{% endblock %}
+{% block sub_corpo %}
+{% if lancamentos %}
+<div class="tabela-caixa">
+    <table class="tabela" style="min-width: 900px">
+        <thead><tr><th scope="col">Data</th><th scope="col">Número</th><th scope="col">Tipo</th><th scope="col">Débito</th><th scope="col">Crédito</th><th scope="col">Histórico</th><th scope="col" class="num">Valor</th></tr></thead>
+        <tbody>
+            {% for l in lancamentos %}
+            <tr>
+                <td class="nowrap">{{ l.data_lancamento|date:"d/m/Y" }}</td>
+                <td class="forte nowrap">{{ l.numero_lancamento }}</td>
+                <td><span class="etiqueta">{{ l.get_tipo_display }}</span></td>
+                <td>{{ l.conta_debito }}</td>
+                <td>{{ l.conta_credito }}</td>
+                <td class="suave texto-longo">{{ l.historico|truncatewords:14 }}{% if l.documento_numero %}<span class="sublinha">{{ l.documento_tipo }} {{ l.documento_numero }}</span>{% endif %}</td>
+                <td class="num forte">{{ l.valor|brl }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+{% include 'base/componentes/estado_vazio.html' with icone='lista' texto='Nenhum lançamento contábil registrado para este processo.' %}
+{% endif %}
+{% endblock %}

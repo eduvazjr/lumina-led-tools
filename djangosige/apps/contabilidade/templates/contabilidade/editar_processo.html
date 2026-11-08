@@ -1,0 +1,33 @@
+{% extends "base/base.html" %}
+
+{% block title %}Editar processo {{ processo.numero_processo }}{% endblock %}
+{% block breadcrumb %}Editar processo{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <p class="page-subtitle"><a href="{% url 'contabilidade:detalhe_processo' processo.pk %}">Processo {{ processo.numero_processo }}</a></p>
+        <h1 class="page-title">Editar processo</h1>
+        <p class="page-subtitle">{{ processo.cliente }}</p>
+    </div>
+</div>
+
+<form method="post" class="painel">
+    {% csrf_token %}
+    <div class="painel-corpo">
+        {% if form.non_field_errors %}<div class="aviso aviso-erro" role="alert">{% include 'base/componentes/icone_aviso.html' with tipo='erro' %}<span class="aviso-texto">{{ form.non_field_errors|join:" " }}</span></div>{% endif %}
+        <div class="campos">
+            {% with field=form.numero_processo %}{% include 'base/componentes/campo.html' with rotulo='Número do processo' %}{% endwith %}
+            {% with field=form.cliente %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.empresa %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.status %}{% include 'base/componentes/campo.html' with rotulo='Etapa' %}{% endwith %}
+        </div>
+        {% with field=form.equipe %}{% include 'base/componentes/campo.html' %}{% endwith %}
+        {% with field=form.observacoes %}{% include 'base/componentes/campo.html' with rotulo='Observações' %}{% endwith %}
+        <div class="form-acoes">
+            <a href="{% url 'contabilidade:detalhe_processo' processo.pk %}" class="btn btn-secundario">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Salvar alterações</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "contabilidade/_sub.html" %}
+{% load led_ui %}
+{% block title %}Apuração de tributos · {{ processo.numero_processo }}{% endblock %}
+{% block breadcrumb %}Apuração de tributos{% endblock %}
+{% block sub_titulo %}Apuração de tributos{% endblock %}
+{% block sub_descricao %}Receita e tributos apurados mês a mês{% endblock %}
+{% block sub_voltar %}{% url 'contabilidade:fiscal' processo.pk %}{% endblock %}
+{% block sub_corpo %}
+{% if apuracoes %}
+<div class="tabela-caixa">
+    <table class="tabela" style="min-width: 1100px">
+        <thead><tr><th scope="col">Competência</th><th scope="col" class="num">Receita</th><th scope="col" class="num">IRPJ</th><th scope="col" class="num">CSLL</th><th scope="col" class="num">PIS</th><th scope="col" class="num">COFINS</th><th scope="col" class="num">Simples</th><th scope="col" class="num">ICMS</th><th scope="col" class="num">ISS</th><th scope="col" class="num">Total</th><th scope="col">Situação</th></tr></thead>
+        <tbody>
+            {% for a in apuracoes %}
+            <tr>
+                <td class="forte">{{ a.mes_referencia|stringformat:"02d" }}/{{ a.ano_referencia|stringformat:"d" }}</td>
+                <td class="num">{{ a.receita_bruta|brl }}</td><td class="num">{{ a.irpj|brl }}</td><td class="num">{{ a.csll|brl }}</td><td class="num">{{ a.pis|brl }}</td><td class="num">{{ a.cofins|brl }}</td><td class="num">{{ a.simples_nacional|brl }}</td><td class="num">{{ a.icms|brl }}</td><td class="num">{{ a.iss|brl }}</td>
+                <td class="num forte">{{ a.total_tributos|brl }}</td>
+                <td>{% if a.pago %}<span class="etiqueta etiqueta-positiva">Pago{% if a.data_pagamento %} em {{ a.data_pagamento|date:"d/m/Y" }}{% endif %}</span>{% else %}<span class="etiqueta etiqueta-atencao">A pagar</span>{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+{% include 'base/componentes/estado_vazio.html' with icone='documento' texto='Nenhuma apuração lançada para este processo.' %}
+{% endif %}
+{% endblock %}

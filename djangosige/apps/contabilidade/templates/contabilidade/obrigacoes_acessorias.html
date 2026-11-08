@@ -1,0 +1,29 @@
+{% extends "contabilidade/_sub.html" %}
+{% load led_ui %}
+{% block title %}Obrigações acessórias · {{ processo.numero_processo }}{% endblock %}
+{% block breadcrumb %}Obrigações acessórias{% endblock %}
+{% block sub_titulo %}Obrigações acessórias{% endblock %}
+{% block sub_descricao %}DAPI, SPED e demais entregas do processo, com vencimento e recibo{% endblock %}
+{% block sub_voltar %}{% url 'contabilidade:fiscal' processo.pk %}{% endblock %}
+{% block sub_corpo %}
+{% if obrigacoes %}
+<div class="tabela-caixa">
+    <table class="tabela" style="min-width: 760px">
+        <thead><tr><th scope="col">Obrigação</th><th scope="col">Competência</th><th scope="col">Vencimento</th><th scope="col">Situação</th><th scope="col">Recibo</th></tr></thead>
+        <tbody>
+            {% for o in obrigacoes %}
+            <tr>
+                <td class="forte">{{ o.get_tipo_display }}{% if o.observacoes %}<span class="sublinha">{{ o.observacoes|truncatewords:12 }}</span>{% endif %}</td>
+                <td>{{ o.mes_referencia|stringformat:"02d" }}/{{ o.ano_referencia|stringformat:"d" }}</td>
+                <td class="nowrap">{{ o.data_vencimento|date:"d/m/Y" }}</td>
+                <td>{% if o.entregue %}<span class="etiqueta etiqueta-positiva">Entregue{% if o.data_entrega %} em {{ o.data_entrega|date:"d/m/Y" }}{% endif %}</span>{% else %}<span class="etiqueta etiqueta-atencao">Pendente</span>{% endif %}</td>
+                <td class="suave">{{ o.numero_recibo|default:"—" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+{% include 'base/componentes/estado_vazio.html' with icone='calendario' texto='Nenhuma obrigação acessória cadastrada para este processo.' %}
+{% endif %}
+{% endblock %}

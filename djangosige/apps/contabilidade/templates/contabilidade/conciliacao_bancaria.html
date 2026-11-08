@@ -1,0 +1,30 @@
+{% extends "contabilidade/_sub.html" %}
+{% load led_ui %}
+{% block title %}Conciliação bancária · {{ processo.numero_processo }}{% endblock %}
+{% block breadcrumb %}Conciliação bancária{% endblock %}
+{% block sub_titulo %}Conciliação bancária{% endblock %}
+{% block sub_descricao %}Saldo contábil comparado com o extrato do banco, mês a mês{% endblock %}
+{% block sub_voltar %}{% url 'contabilidade:contabil' processo.pk %}{% endblock %}
+{% block sub_corpo %}
+{% if conciliacoes %}
+<div class="tabela-caixa">
+    <table class="tabela" style="min-width: 960px">
+        <thead><tr><th scope="col">Competência</th><th scope="col">Conta</th><th scope="col" class="num">Saldo inicial</th><th scope="col" class="num">Saldo final</th><th scope="col" class="num">Saldo do extrato</th><th scope="col">Situação</th></tr></thead>
+        <tbody>
+            {% for c in conciliacoes %}
+            <tr>
+                <td class="forte">{{ c.mes_referencia|stringformat:"02d" }}/{{ c.ano_referencia|stringformat:"d" }}</td>
+                <td>{{ c.banco }}<span class="sublinha">Agência {{ c.agencia }} · conta {{ c.conta }}</span></td>
+                <td class="num">{{ c.saldo_inicial|brl }}</td>
+                <td class="num">{{ c.saldo_final|brl }}</td>
+                <td class="num">{{ c.saldo_extrato|brl }}</td>
+                <td>{% if c.conciliada %}<span class="etiqueta etiqueta-positiva">Conciliada{% if c.data_conciliacao %} em {{ c.data_conciliacao|date:"d/m/Y" }}{% endif %}</span>{% else %}<span class="etiqueta etiqueta-atencao">Pendente</span>{% endif %}{% if c.divergencias %}<span class="sublinha">{{ c.divergencias|truncatewords:10 }}</span>{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+{% include 'base/componentes/estado_vazio.html' with icone='lista' texto='Nenhuma conciliação bancária registrada para este processo.' %}
+{% endif %}
+{% endblock %}

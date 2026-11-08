@@ -4,3 +4,8 @@
 {% block etapa_nome %}Contábil{% endblock %}
 {% block etapa_numero %}5{% endblock %}
 {% block etapa_descricao %}Lançamentos, conciliação e demonstrações{% endblock %}
+{% block etapa_acoes %}{% if contabil %}<div class="page-actions">
+    <a href="{% url 'contabilidade:lancamentos_contabeis' contabil.pk %}" class="btn btn-secundario">Lançamentos</a>
+    <a href="{% url 'contabilidade:conciliacao_bancaria' contabil.pk %}" class="btn btn-secundario">Conciliação bancária</a>
+    <a href="{% url 'contabilidade:demonstracao_resultado' contabil.pk %}" class="btn btn-secundario">DRE</a>
+</div>{% endif %}{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base/base.html" %}
+{% comment %}Página de consulta ligada a uma etapa do processo (apuração, obrigações, lançamentos, conciliação, DRE).{% endcomment %}
+{% load led_ui %}
+{% block content %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <p class="page-subtitle"><a href="{% url 'contabilidade:detalhe_processo' processo.pk %}">Processo {{ processo.numero_processo }}</a> · {{ processo.cliente }}</p>
+        <h1 class="page-title">{% block sub_titulo %}{% endblock %}</h1>
+        <p class="page-subtitle">{% block sub_descricao %}{% endblock %}</p>
+    </div>
+    <div class="page-actions"><a href="{% block sub_voltar %}{% endblock %}" class="btn btn-secundario">Voltar à etapa</a></div>
+</div>
+<section class="painel">{% block sub_corpo %}{% endblock %}</section>
+{% endblock %}

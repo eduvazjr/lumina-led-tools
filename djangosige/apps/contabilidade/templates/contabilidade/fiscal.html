@@ -4,3 +4,7 @@
 {% block etapa_nome %}Fiscal{% endblock %}
 {% block etapa_numero %}4{% endblock %}
 {% block etapa_descricao %}Notas fiscais, tributos e obrigações acessórias{% endblock %}
+{% block etapa_acoes %}{% if fiscal %}<div class="page-actions">
+    <a href="{% url 'contabilidade:apuracao_tributos' fiscal.pk %}" class="btn btn-secundario">Apuração de tributos</a>
+    <a href="{% url 'contabilidade:obrigacoes_acessorias' fiscal.pk %}" class="btn btn-secundario">Obrigações acessórias</a>
+</div>{% endif %}{% endblock %}

@@ -10,7 +10,7 @@
         <h1 class="page-title">Processo {{ processo.numero_processo }}</h1>
         <p class="page-subtitle">{{ processo.cliente }}</p>
     </div>
-    <div class="page-actions">{% include 'contabilidade/_etapa.html' %}</div>
+    <div class="page-actions">{% include 'contabilidade/_etapa.html' %}<a href="{% url 'contabilidade:editar_processo' processo.pk %}" class="btn btn-secundario">Editar processo</a></div>
 </div>
 
 <section class="painel" aria-labelledby="t-etapas">
