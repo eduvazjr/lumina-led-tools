@@ -1,56 +1,161 @@
 {% extends 'base/base.html' %}
-{% load static gerencial_format %}
+{% load led_ui gerencial_format %}
+
 {% block title %}Negociações com fornecedores{% endblock %}
+{% block breadcrumb %}Controle gerencial{% endblock %}
+
 {% block content %}
-<style>
-.neg-wrap{padding:18px;background:#f6f7f8;min-height:calc(100vh - 60px);color:#20262d}.neg-head,.panel,.kpi{background:#fff;border:1px solid #d8dde3}.neg-head{padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:16px}.neg-title{font-size:18px;margin:0}.neg-subtitle,.muted{font-size:11px;color:#66707a}.sync{font-size:11px;border-left:3px solid #FF9100;padding-left:9px}.sync.error{border-color:#b42318;color:#8a1c13}.filter-bar{display:flex;gap:8px;align-items:end;margin-bottom:12px}.filter-bar label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;margin-bottom:4px}.filter-bar select,.filter-bar button{height:32px;border:1px solid #cbd2d9;background:#fff;padding:0 10px}.filter-bar button{background:#FF9100;border-color:#FF9100;color:#171717;font-weight:700}.kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}.kpi{padding:12px;border-top:3px solid #FF9100}.kpi-label{font-size:10px;color:#66707a;text-transform:uppercase;font-weight:700}.kpi-value{font-size:20px;font-weight:700;margin-top:4px}.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.panel-head{padding:10px 12px;border-bottom:1px solid #e2e6ea;font-size:12px;font-weight:700}.panel-body{padding:12px}.chart-box{height:230px}.table-scroll{overflow:auto}.data-table{width:100%;border-collapse:collapse;font-size:11px}.data-table th{background:#f3f4f5;text-align:left;text-transform:uppercase;font-size:9px;color:#59636e}.data-table th,.data-table td{padding:7px 8px;border-bottom:1px solid #e5e8eb;white-space:nowrap}.num{text-align:right}.supplier-summary{margin-bottom:12px}.empty{padding:28px;text-align:center;color:#66707a}@media(max-width:850px){.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.chart-grid{grid-template-columns:1fr}.neg-head{align-items:flex-start;flex-direction:column}}@media(max-width:540px){.kpi-grid{grid-template-columns:1fr}}
-</style>
-<div class="neg-wrap">
-  <header class="neg-head">
-    <div><h1 class="neg-title">Negociações com fornecedores</h1><div class="neg-subtitle">Consolidado das abas da planilha privada no Google Drive</div></div>
-    <div class="sync{% if sync_error %} error{% endif %}">
-      {% if sync_error %}{{ sync_error }}{% if is_stale %} Dados da última sincronização válida.{% endif %}{% else %}Fonte sincronizada{% endif %}
-      {% if synced_at %}<div class="muted">{{ synced_at }}</div>{% endif %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <h1 class="page-title">Negociações com fornecedores</h1>
+        <p class="page-subtitle">
+            {% if sync_error %}<span class="status-dot is-negativo" aria-hidden="true"></span>{% if is_stale %}Mostrando a última sincronização válida{% if synced_at %}, {{ synced_at|quando_sincronizou }}{% endif %}{% else %}Planilha do Google Drive não sincronizada{% endif %}
+            {% else %}<span class="status-dot" aria-hidden="true"></span>Planilha do Google Drive sincronizada {{ synced_at|quando_sincronizou }}{% endif %}
+        </p>
     </div>
-  </header>
-
-  <form class="filter-bar" method="get">
-    <div><label for="fornecedor">Fornecedor</label><select id="fornecedor" name="fornecedor"><option value="">Todos os fornecedores</option>{% for supplier in all_suppliers %}<option value="{{ supplier }}"{% if supplier == selected_supplier %} selected{% endif %}>{{ supplier }}</option>{% endfor %}</select></div>
-    <button type="submit">Aplicar</button>
-  </form>
-
-  <section class="kpi-grid">
-    <div class="kpi"><div class="kpi-label">Total negociado</div><div class="kpi-value">{{ kpis.total_negotiated|ptbr_currency }}</div></div>
-    <div class="kpi"><div class="kpi-label">Recebido estimado</div><div class="kpi-value">{{ kpis.received_estimate|ptbr_currency }}</div></div>
-    <div class="kpi"><div class="kpi-label">Saldo em aberto</div><div class="kpi-value">{{ kpis.outstanding_balance|ptbr_currency }}</div></div>
-    <div class="kpi"><div class="kpi-label">Pedidos</div><div class="kpi-value">{{ kpis.order_count|ptbr_number:0 }}</div></div>
-    <div class="kpi"><div class="kpi-label">Parcelas vencidas</div><div class="kpi-value">{{ kpis.overdue_installments|ptbr_number:0 }}</div></div>
-    <div class="kpi"><div class="kpi-label">Próximos 30 dias</div><div class="kpi-value">{{ kpis.upcoming_installments|ptbr_number:0 }}</div></div>
-  </section>
-
-  <section class="chart-grid">
-    <div class="panel"><div class="panel-head">Valor negociado por fornecedor</div><div class="panel-body chart-box"><canvas id="chartDist"></canvas></div></div>
-    <div class="panel"><div class="panel-head">Parcelas vencidas por fornecedor</div><div class="panel-body chart-box"><canvas id="chartVenc"></canvas></div></div>
-  </section>
-
-  <section class="panel supplier-summary">
-    <div class="panel-head">KPIs por fornecedor</div><div class="table-scroll"><table class="data-table"><thead><tr><th>Fornecedor</th><th class="num">Negociado</th><th class="num">Recebido</th><th class="num">Em aberto</th><th class="num">Pedidos</th><th class="num">Vencidas</th></tr></thead><tbody>{% for supplier, supplier_data in supplier_kpis.items %}<tr><td>{{ supplier }}</td><td class="num">{{ supplier_data.total_negotiated|ptbr_currency }}</td><td class="num">{{ supplier_data.received_estimate|ptbr_currency }}</td><td class="num">{{ supplier_data.outstanding_balance|ptbr_currency }}</td><td class="num">{{ supplier_data.order_count|ptbr_number:0 }}</td><td class="num">{{ supplier_data.overdue_installments|ptbr_number:0 }}</td></tr>{% endfor %}</tbody></table></div>
-  </section>
-
-  <section class="panel"><div class="panel-head">Negociações detalhadas</div><div class="table-scroll">{% if records %}<table class="data-table"><thead><tr><th>Fornecedor</th><th>Nº pedido</th><th>Produto</th><th class="num">Quantidade</th><th class="num">Valor unitário</th><th class="num">Valor total</th><th class="num">Parcela</th><th class="num">Parcelas</th><th class="num">Pagas</th><th>Vencimento</th></tr></thead><tbody>{% for item in records %}<tr><td>{{ item.supplier }}</td><td>{{ item.order_number }}</td><td>{{ item.product }}</td><td class="num">{{ item.quantity|ptbr_number:2 }}</td><td class="num">{{ item.unit_value|ptbr_currency }}</td><td class="num">{{ item.total_value|ptbr_currency }}</td><td class="num">{{ item.installment_value|ptbr_currency }}</td><td class="num">{{ item.installment_count|ptbr_number:0 }}</td><td class="num">{{ item.paid_installments|ptbr_number:0 }}</td><td>{{ item.due_date|date:'d/m/Y'|default:'-' }}</td></tr>{% endfor %}</tbody></table>{% else %}<div class="empty">Nenhuma negociação disponível para o filtro selecionado.</div>{% endif %}</div></section>
+    <form method="get" class="page-actions">
+        <label class="campo-filtro" for="fornecedor">Fornecedor
+            <select id="fornecedor" name="fornecedor" onchange="this.form.submit()">
+                <option value="">Todos os fornecedores</option>
+                {% for supplier in all_suppliers %}<option value="{{ supplier }}"{% if supplier == selected_supplier %} selected{% endif %}>{{ supplier }}</option>{% endfor %}
+            </select>
+        </label>
+        <noscript><button type="submit" class="btn btn-secundario">Aplicar</button></noscript>
+    </form>
 </div>
-{{ chart_distribution_data|json_script:"chart-dist-data" }}
-{{ chart_due_data|json_script:"chart-due-data" }}
-<script src="{% static 'vendor/chartjs/chart.umd.min.js' %}"></script>
-<script>
-(function(){
-  const dist=JSON.parse(document.getElementById('chart-dist-data').textContent);
-  const due=JSON.parse(document.getElementById('chart-due-data').textContent);
-  const brl=new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
-  const integer=new Intl.NumberFormat('pt-BR',{maximumFractionDigits:0});
-  const baseScales={x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:'#e6e9ec'}}};
-  new Chart(document.getElementById('chartDist'),{type:'bar',data:{labels:dist.labels,datasets:[{data:dist.values,backgroundColor:'#FF9100'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:(context)=>brl.format(context.parsed.y)}}},scales:{...baseScales,y:{...baseScales.y,ticks:{callback:(value)=>brl.format(value)}}}}});
-  new Chart(document.getElementById('chartVenc'),{type:'bar',data:{labels:due.labels,datasets:[{data:due.values,backgroundColor:'#444b52'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:(context)=>integer.format(context.parsed.y)}}},scales:{...baseScales,y:{...baseScales.y,ticks:{callback:(value)=>integer.format(value)}}}}});
-})();
-</script>
+
+{% if sync_error %}
+<div class="aviso aviso-erro" role="alert">
+    {% include 'base/componentes/icone_aviso.html' with tipo='erro' %}
+    <span class="aviso-texto">{{ sync_error }}{% if is_stale %} Os números abaixo são da última sincronização que funcionou.{% endif %}</span>
+</div>
+{% endif %}
+
+<section class="painel" aria-label="Resumo financeiro">
+    <div class="numeros">
+        <div class="numero">
+            <span class="numero-rotulo">Total negociado</span>
+            {% valor_brl kpis.total_negotiated %}
+            <span class="numero-nota">{% if selected_supplier %}{{ selected_supplier }}{% else %}{{ suppliers|length }} fornecedores{% endif %}, {{ kpis.order_count|ptbr_number:0 }} pedido{{ kpis.order_count|pluralize }}</span>
+        </div>
+        <div class="numero">
+            <span class="numero-rotulo">Recebido estimado</span>
+            {% valor_brl kpis.received_estimate %}
+            {% if kpis.total_negotiated %}
+            <span class="numero-nota">{% include 'base/componentes/progresso.html' with pct=kpis.received_estimate|percentual:kpis.total_negotiated casas=1 rotulo='quitado' %}</span>
+            {% else %}<span class="numero-nota">Nada negociado</span>{% endif %}
+        </div>
+        <div class="numero">
+            <span class="numero-rotulo">Saldo em aberto</span>
+            {% valor_brl kpis.outstanding_balance %}
+            <span class="numero-nota">A pagar aos fornecedores</span>
+        </div>
+    </div>
+    <div class="numeros-faixa">
+        <div class="numero"><span class="numero-rotulo">Pedidos</span><span class="numero-valor">{{ kpis.order_count|ptbr_number:0 }}</span></div>
+        <div class="numero"><span class="numero-rotulo">Parcelas vencidas</span><span class="numero-valor{% if kpis.overdue_installments %} is-negativo{% endif %}">{{ kpis.overdue_installments|ptbr_number:0 }}</span></div>
+        <div class="numero"><span class="numero-rotulo">Vencem em 30 dias</span><span class="numero-valor">{{ kpis.upcoming_installments|ptbr_number:0 }}</span></div>
+    </div>
+</section>
+
+{% with vencidas=supplier_kpis|com_vencidas %}{% if vencidas %}
+<div class="aviso aviso-erro" role="status">
+    {% include 'base/componentes/icone_aviso.html' with tipo='erro' %}
+    {% if vencidas|length == 1 %}{% with nome=vencidas.0.0 dados=vencidas.0.1 %}
+    <span class="aviso-texto">{% if kpis.overdue_installments == 1 %}A parcela vencida é{% else %}Todas as {{ kpis.overdue_installments|ptbr_number:0 }} parcelas vencidas são{% endif %} de <strong>{{ nome }}</strong>, com {{ dados.outstanding_balance|brl }} em aberto.</span>
+    <a href="?fornecedor={{ nome|urlencode }}#detalhes">Ver parcelas</a>
+    {% endwith %}{% else %}
+    <span class="aviso-texto">{{ kpis.overdue_installments|ptbr_number:0 }} parcelas vencidas em {{ vencidas|length }} fornecedores; a maior parte é de <strong>{{ vencidas.0.0 }}</strong> ({{ vencidas.0.1.overdue_installments|ptbr_number:0 }}).</span>
+    <a href="?fornecedor={{ vencidas.0.0|urlencode }}#detalhes">Ver parcelas</a>
+    {% endif %}
+</div>
+{% endif %}{% endwith %}
+
+{% with acima=supplier_kpis|com_pago_acima %}{% if acima %}
+<div class="aviso aviso-atencao" role="status">
+    {% include 'base/componentes/icone_aviso.html' with tipo='atencao' %}
+    <span class="aviso-texto">{{ kpis.paid_above_negotiated|brl }} foram pagos acima do valor negociado ({% for nome, dados in acima %}<strong>{{ nome }}</strong> {{ dados.paid_above_negotiated|brl }}{% if not forloop.last %}; {% endif %}{% endfor %}). Esse valor não entra no recebido; confira se é adiantamento ou lançamento errado na planilha.</span>
+    <a href="?fornecedor={{ acima.0.0|urlencode }}#detalhes">Ver lançamentos</a>
+</div>
+{% endif %}{% endwith %}
+
+<section class="painel" aria-labelledby="t-forn">
+    <div class="painel-cabecalho">
+        <h2 class="painel-titulo" id="t-forn">Por fornecedor</h2>
+        <span class="painel-nota">Ordenado pelo valor negociado</span>
+    </div>
+    <div class="tabela-caixa">
+        <table class="tabela" style="min-width: 860px">
+            <thead>
+                <tr>
+                    <th scope="col">Fornecedor</th>
+                    <th scope="col" class="num">Negociado</th>
+                    <th scope="col" class="num">Recebido</th>
+                    <th scope="col" class="num">Em aberto</th>
+                    <th scope="col" style="width: 190px">Quitação</th>
+                    <th scope="col" class="num">Pedidos</th>
+                    <th scope="col" class="num">Vencidas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for linha in supplier_kpis|fornecedores_por_negociado %}
+                <tr>
+                    <td class="forte nowrap"><a href="?fornecedor={{ linha.nome|urlencode }}" class="link-discreto">{{ linha.nome }}</a></td>
+                    <td class="num">{{ linha.dados.total_negotiated|brl }}</td>
+                    <td class="num">{{ linha.dados.received_estimate|brl }}</td>
+                    <td class="num forte">{{ linha.dados.outstanding_balance|brl }}</td>
+                    <td>{% if linha.pct is not None %}{% include 'base/componentes/progresso.html' with pct=linha.pct %}{% else %}<span class="suave">—</span>{% endif %}</td>
+                    <td class="num">{{ linha.dados.order_count|ptbr_number:0 }}</td>
+                    <td class="num">{% if linha.dados.overdue_installments %}<span class="etiqueta etiqueta-negativa">{{ linha.dados.overdue_installments|ptbr_number:0 }}</span>{% else %}<span class="suave">0</span>{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="painel" id="detalhes" aria-labelledby="t-detalhes">
+    <div class="painel-cabecalho">
+        <h2 class="painel-titulo" id="t-detalhes">Negociações detalhadas</h2>
+        <span class="painel-nota">{% if selected_supplier %}{{ selected_supplier }} · <a href="?">ver todos</a>{% else %}Todos os fornecedores{% endif %}</span>
+    </div>
+    {% if records %}
+    <div class="tabela-caixa">
+        <table class="tabela" style="min-width: 1100px">
+            <thead>
+                <tr>
+                    <th scope="col">Fornecedor</th>
+                    <th scope="col">Pedido</th>
+                    <th scope="col">Produto</th>
+                    <th scope="col" class="num">Quantidade</th>
+                    <th scope="col" class="num">Valor unitário</th>
+                    <th scope="col" class="num">Valor total</th>
+                    <th scope="col" class="num">Parcela</th>
+                    <th scope="col" class="num">Parcelas</th>
+                    <th scope="col" class="num">Pagas</th>
+                    <th scope="col">Vencimento</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in records %}
+                <tr>
+                    <td class="nowrap">{{ item.supplier }}</td>
+                    <td class="nowrap">{{ item.order_number }}</td>
+                    <td class="texto-longo">{{ item.product }}</td>
+                    <td class="num">{{ item.quantity|ptbr_number:2 }}</td>
+                    <td class="num">{{ item.unit_value|brl }}</td>
+                    <td class="num forte">{{ item.total_value|brl }}</td>
+                    <td class="num">{{ item.installment_value|brl }}</td>
+                    <td class="num">{{ item.installment_count|ptbr_number:0 }}</td>
+                    <td class="num">{{ item.paid_installments|ptbr_number:0 }}</td>
+                    <td class="nowrap">{{ item.due_date|date:'d/m/Y'|default:'—' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    {% include 'base/componentes/estado_vazio.html' with icone='busca' texto='Nenhuma negociação para este filtro. Escolha outro fornecedor ou confira a planilha no Google Drive.' %}
+    {% endif %}
+</section>
 {% endblock %}

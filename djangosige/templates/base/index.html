@@ -1,6 +1,7 @@
 {%extends 'base/base.html'%}
 
 {%block title%}Dashboard{%endblock%}
+{% load led_ui %}
 
 {%block content%}
 {% with a=alertas h=agenda_hoje %}
@@ -54,35 +55,25 @@
 {% endwith %}
 
 {# ---------- Caixa ---------- #}
-<div class="kpi-grid">
-    <div class="kpi kpi-highlight">
-        <span class="kpi-label">Saldo em caixa</span>
-        <span class="kpi-value">
-            <small>R$</small>
-            {% if movimento_dia %}{{ movimento_dia.saldo_final|floatformat:"2g" }}{% elif saldo == '0,00' %}0,00{% else %}{{ saldo|floatformat:"2g" }}{% endif %}
-        </span>
-        <span class="kpi-foot">{% if movimento_dia %}Atualizado com o movimento de hoje{% else %}Último fechamento registrado{% endif %}</span>
+<section class="painel" aria-label="Caixa de hoje">
+    <div class="numeros">
+        <div class="numero">
+            <span class="numero-rotulo">Saldo em caixa</span>
+            {% if movimento_dia %}{% valor_brl movimento_dia.saldo_final %}{% else %}{% valor_brl saldo %}{% endif %}
+            <span class="numero-nota">{% if movimento_dia %}Com o movimento de hoje{% else %}Último fechamento{% endif %}{% if perms.financeiro.acesso_fluxodecaixa %} · <a href="{% url 'financeiro:fluxodecaixaview' %}">Ver fluxo de caixa</a>{% endif %}</span>
+        </div>
+        <div class="numero">
+            <span class="numero-rotulo">Entradas hoje</span>
+            {% if movimento_dia %}{% valor_brl movimento_dia.entradas %}{% else %}{% valor_brl 0 %}{% endif %}
+            <span class="numero-nota">{{ h.contas_receber_hoje }} conta{{ h.contas_receber_hoje|pluralize }} a receber vencendo hoje</span>
+        </div>
+        <div class="numero">
+            <span class="numero-rotulo">Saídas hoje</span>
+            {% if movimento_dia %}{% valor_brl movimento_dia.saidas %}{% else %}{% valor_brl 0 %}{% endif %}
+            <span class="numero-nota">{{ h.contas_pagar_hoje }} conta{{ h.contas_pagar_hoje|pluralize }} a pagar vencendo hoje</span>
+        </div>
     </div>
-    <div class="kpi">
-        <span class="kpi-label kpi-pos">Entradas hoje</span>
-        <span class="kpi-value"><small>R$</small>{% if movimento_dia %}{{ movimento_dia.entradas|floatformat:"2g" }}{% else %}0,00{% endif %}</span>
-        <span class="kpi-foot">{{ h.contas_receber_hoje }} conta{{ h.contas_receber_hoje|pluralize }} a receber vencendo hoje</span>
-    </div>
-    <div class="kpi">
-        <span class="kpi-label kpi-neg">Saídas hoje</span>
-        <span class="kpi-value"><small>R$</small>{% if movimento_dia %}{{ movimento_dia.saidas|floatformat:"2g" }}{% else %}0,00{% endif %}</span>
-        <span class="kpi-foot">{{ h.contas_pagar_hoje }} conta{{ h.contas_pagar_hoje|pluralize }} a pagar vencendo hoje</span>
-    </div>
-    {% if perms.financeiro.acesso_fluxodecaixa %}
-    <a href="{% url 'financeiro:fluxodecaixaview' %}" class="kpi kpi-link">
-        <span class="kpi-label">Fluxo de caixa</span>
-        <span class="kpi-cta">Ver relatório
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </span>
-        <span class="kpi-foot">Entradas e saídas por período</span>
-    </a>
-    {% endif %}
-</div>
+</section>
 
 <div class="dash-columns">
     {# ---------- Pendências ---------- #}
@@ -108,7 +99,7 @@
     <section class="section">
         <div class="section-header">
             <h2 class="section-title">Agenda de hoje</h2>
-            <span class="text-muted" style="font-size:13px">{{ data_atual }}</span>
+            <span class="painel-nota">{{ data_atual }}</span>
         </div>
         <ul class="item-list">
             {% include 'base/dash_item.html' with n=h.contas_receber_hoje label='Contas a receber' url_name='financeiro:listacontareceberhojeview' tone='info' %}

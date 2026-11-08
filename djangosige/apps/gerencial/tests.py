@@ -1,6 +1,7 @@
 import io
 import zipfile
 from datetime import date
+from decimal import Decimal
 from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
@@ -177,12 +178,23 @@ class DashboardViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'gerencial/dashboard.html')
         self.assertContains(response, 'Negociações com fornecedores')
-        self.assertContains(response, 'class="kpi-grid"')
-        self.assertContains(response, 'grid-template-columns:repeat(3,minmax(0,1fr))')
-        self.assertContains(response, 'id="chartDist"')
-        self.assertContains(response, 'id="chartVenc"')
-        self.assertContains(response, 'vendor/chartjs/chart.umd.min.js')
+        self.assertContains(response, 'class="numeros"')
+        self.assertContains(response, 'Por fornecedor')
+        self.assertContains(response, 'Negociações detalhadas')
         self.assertNotContains(response, 'cdn.jsdelivr.net')
+
+    @patch('djangosige.apps.gerencial.views.load_negotiations')
+    def test_dashboard_mostra_valores_no_padrao_brasileiro_e_aviso_de_vencidas(self, load):
+        load.return_value = {'records': [
+            {'supplier': 'Nakasaki', 'order_number': '1', 'product': 'Lote A', 'total_value': Decimal('98208627.00'), 'payment_value': Decimal('90353583.47'), 'due_date': date(2030, 1, 1)},
+            {'supplier': 'Negociacoes knakasaki', 'order_number': '2', 'product': 'Lote B', 'total_value': Decimal('1000.00'), 'installment_value': Decimal('100'), 'installment_count': Decimal('10'), 'paid_installments': Decimal('2'), 'due_date': date(2020, 1, 1)},
+        ], 'synced_at': '2026-11-07T12:00:00-03:00', 'is_stale': False, 'sync_error': ''}
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        self.assertContains(response, '<span class="valor-inteiro">98.209.627</span>')
+        self.assertContains(response, 'R$ 7.855.043,53')
+        self.assertContains(response, 'Todas as 8 parcelas vencidas são de <strong>Negociacoes knakasaki</strong>')
+        self.assertNotContains(response, 'R$ 0.00')
 
     @patch('djangosige.apps.gerencial.views.load_negotiations')
     def test_dashboard_shows_graceful_sync_error(self, load):
