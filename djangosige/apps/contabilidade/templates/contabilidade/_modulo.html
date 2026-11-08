@@ -1,0 +1,27 @@
+{% extends "base/base.html" %}
+{% comment %}Página de uma etapa do processo contábil: o formulário da etapa com rótulos visíveis.{% endcomment %}
+
+{% block content %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <p class="page-subtitle"><a href="{% url 'contabilidade:detalhe_processo' processo.pk %}">Processo {{ processo.numero_processo }}</a> · {{ processo.cliente }}</p>
+        <h1 class="page-title">{% block etapa_nome %}{% endblock %}</h1>
+        <p class="page-subtitle">Etapa {% block etapa_numero %}{% endblock %} de 5 · {% block etapa_descricao %}{% endblock %}</p>
+    </div>
+</div>
+
+<form method="post" class="painel">
+    {% csrf_token %}
+    <div class="painel-corpo">
+        {% if form.non_field_errors %}<div class="aviso aviso-erro" role="alert">{% include 'base/componentes/icone_aviso.html' with tipo='erro' %}<span class="aviso-texto">{{ form.non_field_errors|join:" " }}</span></div>{% endif %}
+        <div class="campos">
+            {% for field in form.visible_fields %}{% include 'base/componentes/campo.html' %}{% endfor %}
+        </div>
+        {% for field in form.hidden_fields %}{{ field }}{% endfor %}
+        <div class="form-acoes">
+            <a href="{% url 'contabilidade:detalhe_processo' processo.pk %}" class="btn btn-secundario">Voltar ao processo</a>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

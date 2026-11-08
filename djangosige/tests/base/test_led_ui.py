@@ -3,7 +3,7 @@ from decimal import Decimal
 from django.template import Context, Template
 from django.test import SimpleTestCase
 
-from djangosige.apps.base.templatetags.led_ui import brl, valor_brl
+from djangosige.apps.base.templatetags.led_ui import brl, rotulo_pt, valor_brl
 
 
 class ValorBrlTests(SimpleTestCase):
@@ -28,7 +28,21 @@ class ValorBrlTests(SimpleTestCase):
         self.assertEqual(brl(0), 'R$ 0,00')
         self.assertEqual(brl('-10'), '-R$ 10,00')
 
+    def test_aceita_texto_ja_formatado(self):
+        self.assertEqual(brl('1,234,567.80'), 'R$ 1.234.567,80')
+        self.assertEqual(brl('1.234,56'), 'R$ 1.234,56')
+        self.assertEqual(brl('0,00'), 'R$ 0,00')
+        self.assertEqual(brl('N/A'), 'R$ 0,00')
+
     def test_tag_no_template(self):
         saida = Template('{% load led_ui %}{% valor_brl v %}|{{ v|brl }}').render(Context({'v': 1000}))
         self.assertIn('>1.000<', saida)
         self.assertIn('R$ 1.000,00', saida)
+
+
+class RotuloPtTests(SimpleTestCase):
+    def test_acentua_rotulos_vindos_do_model(self):
+        self.assertEqual(rotulo_pt('Numero protocolo junta'), 'Número protocolo junta')
+        self.assertEqual(rotulo_pt('Data inscricao municipal'), 'Data inscrição municipal')
+        self.assertEqual(rotulo_pt('Cnpj'), 'CNPJ')
+        self.assertEqual(rotulo_pt('Nome fantasia'), 'Nome fantasia')

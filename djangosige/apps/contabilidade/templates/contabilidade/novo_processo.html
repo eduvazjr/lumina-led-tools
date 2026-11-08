@@ -1,63 +1,32 @@
 {% extends "base/base.html" %}
-{% load static %}
 
-{% block title %}Novo Processo{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'contabilidade/css/contabilidade.css' %}">
-{% endblock %}
+{% block title %}Novo processo contábil{% endblock %}
+{% block breadcrumb %}Novo processo{% endblock %}
 
 {% block content %}
-<div class="hg-contabilidade">
-    <div class="page-header">
-        <h1>Novo Processo Contábil</h1>
-    </div>
-    
-    <div class="form-container">
-        <form method="post" class="hg-form">
-            {% csrf_token %}
-            
-            <div class="form-group">
-                <label>{{ form.numero_processo.label }}</label>
-                {{ form.numero_processo }}
-                {% if form.numero_processo.errors %}
-                    <span class="error">{{ form.numero_processo.errors }}</span>
-                {% endif %}
-            </div>
-            
-            <div class="form-group">
-                <label>{{ form.cliente.label }}</label>
-                {{ form.cliente }}
-                {% if form.cliente.errors %}
-                    <span class="error">{{ form.cliente.errors }}</span>
-                {% endif %}
-            </div>
-            
-            <div class="form-group">
-                <label>{{ form.empresa.label }}</label>
-                {{ form.empresa }}
-            </div>
-            
-            <div class="form-group">
-                <label>{{ form.status.label }}</label>
-                {{ form.status }}
-            </div>
-            
-            <div class="form-group">
-                <label>{{ form.equipe.label }}</label>
-                {{ form.equipe }}
-            </div>
-            
-            <div class="form-group">
-                <label>{{ form.observacoes.label }}</label>
-                {{ form.observacoes }}
-            </div>
-            
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Criar Processo</button>
-                <a href="{% url 'contabilidade:lista_processos' %}" class="btn btn-secondary">Cancelar</a>
-            </div>
-        </form>
+<div class="page-head">
+    <div class="page-head-texto">
+        <h1 class="page-title">Novo processo contábil</h1>
+        <p class="page-subtitle">O processo começa na etapa escolhida e avança até a contábil</p>
     </div>
 </div>
+
+<form method="post" class="painel">
+    {% csrf_token %}
+    <div class="painel-corpo">
+        {% if form.non_field_errors %}<div class="aviso aviso-erro" role="alert">{% include 'base/componentes/icone_aviso.html' with tipo='erro' %}<span class="aviso-texto">{{ form.non_field_errors|join:" " }}</span></div>{% endif %}
+        <div class="campos">
+            {% with field=form.numero_processo %}{% include 'base/componentes/campo.html' with rotulo='Número do processo' %}{% endwith %}
+            {% with field=form.cliente %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.empresa %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.status %}{% include 'base/componentes/campo.html' with rotulo='Etapa inicial' %}{% endwith %}
+        </div>
+        {% with field=form.equipe %}{% include 'base/componentes/campo.html' %}{% endwith %}
+        {% with field=form.observacoes %}{% include 'base/componentes/campo.html' with rotulo='Observações' %}{% endwith %}
+        <div class="form-acoes">
+            <a href="{% url 'contabilidade:lista_processos' %}" class="btn btn-secundario">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Criar processo</button>
+        </div>
+    </div>
+</form>
 {% endblock %}

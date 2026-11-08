@@ -7,12 +7,34 @@ Uso nos templates: {% load led_ui %}
     {{ valor|brl }}                  texto simples: R$ 1.234,56
     {% secao_menu %}                 grupo do menu da página atual (breadcrumb)
 """
+from decimal import Decimal, InvalidOperation
+
 from django import template
 from django.utils.html import format_html
 
-from djangosige.apps.gerencial.templatetags.gerencial_format import _as_decimal, ptbr_number
+from djangosige.apps.gerencial.templatetags.gerencial_format import ptbr_number
 
 register = template.Library()
+
+
+def _as_decimal(value):
+    """Aceita número, '1234.56', '1,234.56' (formato americano) ou '1.234,56'."""
+    if value in (None, ''):
+        return Decimal('0')
+    if isinstance(value, (int, float, Decimal)):
+        return Decimal(str(value))
+    texto = str(value).replace('R$', '').replace(' ', '').replace('\xa0', '').strip()
+    if ',' in texto and '.' in texto:
+        if texto.rfind('.') > texto.rfind(','):
+            texto = texto.replace(',', '')
+        else:
+            texto = texto.replace('.', '').replace(',', '.')
+    elif ',' in texto:
+        texto = texto.replace(',', '.')
+    try:
+        return Decimal(texto)
+    except (InvalidOperation, ValueError):
+        return Decimal('0')
 
 
 @register.filter
@@ -34,6 +56,40 @@ def valor_brl(value, tamanho=''):
         '<span class="valor-inteiro">{}</span><span class="valor-centavos">,{}</span></span>',
         classe, sinal, inteiro, centavos,
     )
+
+
+# Rótulos que vêm dos models sem acento (verbose_name automático)
+ACENTOS = {
+    'numero': 'número', 'operacao': 'operação', 'juridica': 'jurídica', 'emissao': 'emissão',
+    'inscricao': 'inscrição', 'alvara': 'alvará', 'licencas': 'licenças', 'orgaos': 'órgãos',
+    'conclusao': 'conclusão', 'observacoes': 'observações', 'observacao': 'observação',
+    'descricao': 'descrição', 'situacao': 'situação', 'regime': 'regime', 'tributario': 'tributário',
+    'referencia': 'referência', 'mes': 'mês', 'servico': 'serviço', 'informacoes': 'informações',
+    'responsavel': 'responsável', 'periodo': 'período', 'salario': 'salário', 'admissao': 'admissão',
+    'demissao': 'demissão', 'funcao': 'função', 'endereco': 'endereço', 'razao': 'razão',
+    'contabil': 'contábil', 'contabeis': 'contábeis', 'balanco': 'balanço', 'apuracao': 'apuração',
+    'conciliacao': 'conciliação', 'demonstracao': 'demonstração', 'liquido': 'líquido', 'liquida': 'líquida',
+    'necessaria': 'necessária', 'necessarias': 'necessárias', 'proximo': 'próximo', 'ultima': 'última',
+    'ultimo': 'último', 'distribuicao': 'distribuição', 'orgao': 'órgão', 'nivel': 'nível',
+    'cnpj': 'CNPJ', 'cpf': 'CPF', 'rg': 'RG', 'ie': 'IE', 'nire': 'NIRE', 'icms': 'ICMS', 'iss': 'ISS',
+    'pis': 'PIS', 'cofins': 'COFINS', 'irpj': 'IRPJ', 'csll': 'CSLL', 'inss': 'INSS', 'fgts': 'FGTS',
+    'dre': 'DRE', 'sped': 'SPED', 'nf': 'NF', 'nfe': 'NF-e', 'cfop': 'CFOP', 'ncm': 'NCM',
+}
+
+
+@register.filter
+def rotulo_pt(texto):
+    """'Numero protocolo junta' -> 'Número protocolo junta'; 'Cnpj' -> 'CNPJ'."""
+    palavras = str(texto or '').split(' ')
+    saida = []
+    for i, palavra in enumerate(palavras):
+        troca = ACENTOS.get(palavra.lower())
+        if troca:
+            if i == 0 and troca.islower():
+                troca = troca[0].upper() + troca[1:]
+            palavra = troca
+        saida.append(palavra)
+    return ' '.join(saida)
 
 
 # Rótulo do grupo do menu lateral para cada app (namespace da URL).

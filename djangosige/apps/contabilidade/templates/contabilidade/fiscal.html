@@ -1,7 +1,6 @@
-{%extends "base/base.html"%}{% load static %}
-{% block content %}
-<div class="hg-contabilidade">
-    <h1>Fiscal</h1>
-    <p>Template em desenvolvimento</p>
-</div>
-{% endblock %}
+{% extends "contabilidade/_modulo.html" %}
+{% block title %}Fiscal · {{ processo.numero_processo }}{% endblock %}
+{% block breadcrumb %}Fiscal{% endblock %}
+{% block etapa_nome %}Fiscal{% endblock %}
+{% block etapa_numero %}4{% endblock %}
+{% block etapa_descricao %}Notas fiscais, tributos e obrigações acessórias{% endblock %}

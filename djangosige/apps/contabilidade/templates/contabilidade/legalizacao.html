@@ -1,7 +1,6 @@
-{%extends "base/base.html"%}{% load static %}
-{% block content %}
-<div class="hg-contabilidade">
-    <h1>Legalizacao</h1>
-    <p>Template em desenvolvimento</p>
-</div>
-{% endblock %}
+{% extends "contabilidade/_modulo.html" %}
+{% block title %}Legalização · {{ processo.numero_processo }}{% endblock %}
+{% block breadcrumb %}Legalização{% endblock %}
+{% block etapa_nome %}Legalização{% endblock %}
+{% block etapa_numero %}2{% endblock %}
+{% block etapa_descricao %}Abertura, CNPJ, inscrições e alvarás{% endblock %}

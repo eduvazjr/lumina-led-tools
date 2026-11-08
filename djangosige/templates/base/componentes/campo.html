@@ -1,0 +1,11 @@
+{% comment %}
+Campo de formulário com o rótulo sempre visível acima.
+  {% for field in form %}{% include 'base/componentes/campo.html' %}{% endfor %}
+Use rotulo='...' para corrigir um rótulo sem acento vindo do model.
+{% endcomment %}{% load led_ui %}
+<div class="campo{% if field.errors %} has-error{% endif %}">
+    <label for="{{ field.id_for_label }}">{% if rotulo %}{{ rotulo }}{% else %}{{ field.label|rotulo_pt }}{% endif %}{% if field.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}</label>
+    {{ field }}
+    {% if field.help_text %}<span class="campo-ajuda">{{ field.help_text }}</span>{% endif %}
+    {% for erro in field.errors %}<span class="error-message">{{ erro }}</span>{% endfor %}
+</div>

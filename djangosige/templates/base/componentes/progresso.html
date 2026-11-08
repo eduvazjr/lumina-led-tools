@@ -1,9 +1,9 @@
 {% comment %}
 Barra de progresso fina (6px) para quitação e percentuais.
   {% include 'base/componentes/progresso.html' with pct=87.2 rotulo='quitado' %}
-pct: número de 0 a 100. A barra fica verde em 100%.
+pct: número de 0 a 100. A barra fica verde em 100%. casas: decimais do percentual (padrão 0).
 {% endcomment %}
-{% load gerencial_format %}<span class="progresso">
+{% load gerencial_format %}{% firstof casas "0" as decimais %}<span class="progresso">
     <span class="progresso-trilho" aria-hidden="true"><span class="progresso-barra{% if pct >= 99.95 %} is-completo{% endif %}" style="width: {{ pct|stringformat:'.1f' }}%"></span></span>
-    <span class="progresso-valor">{{ pct|ptbr_number:1 }}%{% if rotulo %} {{ rotulo }}{% endif %}</span>
+    <span class="progresso-valor">{{ pct|ptbr_number:decimais }}%{% if rotulo %} {{ rotulo }}{% endif %}</span>
 </span>

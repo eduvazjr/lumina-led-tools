@@ -1,310 +1,185 @@
 {% extends 'base/base.html' %}
+{% load static led_ui %}
 
-{% block title %}Controle Financeiro - Grupo{% endblock %}
+{% block title %}Financeiro do grupo{% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <h1 class="page-title">🏢 Controle Financeiro entre Empresas</h1>
-    <p class="page-subtitle">Manobras financeiras internas do grupo</p>
-</div>
-
-<!-- Dashboard Cards -->
-<div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 40px;">
-    <div class="stat-card">
-        <div class="stat-header">
-            <span class="stat-label">Total em Movimentação</span>
-            <div class="stat-icon">💸</div>
-        </div>
-        <div class="stat-value">R$ {{ total_movimentacao|default:"0,00" }}</div>
-        <div class="stat-description">Últimos 30 dias</div>
+<div class="page-head">
+    <div class="page-head-texto">
+        <h1 class="page-title">Financeiro do grupo</h1>
+        <p class="page-subtitle">Transferências entre as empresas do grupo{% if proprietario_nome and proprietario_nome != 'N/A' %} · Proprietário: {{ proprietario_nome }}, CPF {{ proprietario_cpf }}{% endif %}</p>
     </div>
-    
-    <div class="stat-card">
-        <div class="stat-header">
-            <span class="stat-label">Empresa Credora</span>
-            <div class="stat-icon">📈</div>
-        </div>
-        <div class="stat-value">{{ empresa_credora|default:"N/A" }}</div>
-        <div class="stat-description">R$ {{ saldo_credora|default:"0,00" }}</div>
-    </div>
-    
-    <div class="stat-card">
-        <div class="stat-header">
-            <span class="stat-label">Empresa Devedora</span>
-            <div class="stat-icon">📉</div>
-        </div>
-        <div class="stat-value">{{ empresa_devedora|default:"N/A" }}</div>
-        <div class="stat-description">R$ {{ saldo_devedora|default:"0,00" }}</div>
-    </div>
-    
-    <div class="stat-card">
-        <div class="stat-header">
-            <span class="stat-label">Transferências Pendentes</span>
-            <div class="stat-icon">⏳</div>
-        </div>
-        <div class="stat-value">{{ qtd_pendentes|default:"0" }}</div>
-        <div class="stat-description">R$ {{ valor_pendentes|default:"0,00" }}</div>
-    </div>
-    
-    <div class="stat-card">
-        <div class="stat-header">
-            <span class="stat-label">Proprietário</span>
-            <div class="stat-icon">👤</div>
-        </div>
-        <div class="stat-value">{{ proprietario_nome|default:"N/A" }}</div>
-        <div class="stat-description">CPF: {{ proprietario_cpf|default:"***.***.***-**" }}</div>
-    </div>
-    
-    <div class="stat-card">
-        <div class="stat-header">
-            <span class="stat-label">Empresas Ativas</span>
-            <div class="stat-icon">🏭</div>
-        </div>
-        <div class="stat-value">{{ qtd_empresas|default:"0" }}</div>
-        <div class="stat-description">No grupo</div>
+    <div class="page-actions">
+        <a href="{% url 'financeiro_grupo:relatorio' %}" class="btn btn-secundario">Relatório completo</a>
+        <a href="{% url 'financeiro_grupo:transferencia_add' %}" class="btn btn-primary">Nova transferência</a>
     </div>
 </div>
 
-<!-- Gráficos -->
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; margin-bottom: 40px;">
-    <!-- Fluxo entre Empresas -->
-    <div class="section">
-        <div class="section-header">
-            <h2 class="section-title">Fluxo entre Empresas (Mês)</h2>
+<section class="painel" aria-label="Resumo">
+    <div class="numeros">
+        <div class="numero">
+            <span class="numero-rotulo">Movimentado nos últimos 30 dias</span>
+            {% valor_brl total_movimentacao %}
+            <span class="numero-nota">{{ qtd_empresas|default:0 }} empresa{{ qtd_empresas|pluralize }} ativa{{ qtd_empresas|pluralize }} no grupo</span>
         </div>
-        <div class="section-body">
-            <canvas id="graficoFluxo" style="max-height: 300px;"></canvas>
+        <div class="numero">
+            <span class="numero-rotulo">Empresa credora</span>
+            {% valor_brl saldo_credora %}
+            <span class="numero-nota">{% if empresa_credora and empresa_credora != 'N/A' %}{{ empresa_credora }}{% else %}Nenhuma empresa com saldo{% endif %}</span>
         </div>
-    </div>
-    
-    <!-- Saldos por Empresa -->
-    <div class="section">
-        <div class="section-header">
-            <h2 class="section-title">Saldos por Empresa</h2>
-        </div>
-        <div class="section-body">
-            <canvas id="graficoSaldos" style="max-height: 300px;"></canvas>
+        <div class="numero">
+            <span class="numero-rotulo">Empresa devedora</span>
+            {% valor_brl saldo_devedora %}
+            <span class="numero-nota">{% if empresa_devedora and empresa_devedora != 'N/A' %}{{ empresa_devedora }}{% else %}Nenhuma empresa com saldo{% endif %}</span>
         </div>
     </div>
+    <div class="numeros-faixa">
+        <div class="numero"><span class="numero-rotulo">Transferências pendentes</span><span class="numero-valor{% if qtd_pendentes %} is-negativo{% endif %}">{{ qtd_pendentes|default:0 }}</span></div>
+        <div class="numero"><span class="numero-rotulo">Valor pendente</span><span class="numero-valor">{{ valor_pendentes|brl }}</span></div>
+    </div>
+</section>
+
+{% if qtd_pendentes %}
+<div class="aviso aviso-atencao" role="status">
+    {% include 'base/componentes/icone_aviso.html' with tipo='atencao' %}
+    <span class="aviso-texto">{{ qtd_pendentes }} transferência{{ qtd_pendentes|pluralize }} entre empresas aguarda{{ qtd_pendentes|pluralize:",m" }} confirmação, somando {{ valor_pendentes|brl }}.</span>
+    <a href="?status=pendente">Ver pendentes</a>
+</div>
+{% endif %}
+
+<div class="dash-columns">
+    <section class="painel" aria-labelledby="t-fluxo">
+        <div class="painel-cabecalho"><h2 class="painel-titulo" id="t-fluxo">Transferências concluídas por dia</h2><span class="painel-nota">Últimos 30 dias</span></div>
+        <div class="painel-corpo"><div class="grafico"><canvas id="graficoFluxo" aria-label="Transferências concluídas por dia" role="img"></canvas></div></div>
+    </section>
+    <section class="painel" aria-labelledby="t-saldos">
+        <div class="painel-cabecalho"><h2 class="painel-titulo" id="t-saldos">Saldo por empresa</h2><span class="painel-nota">Recebido menos enviado, só transferências concluídas</span></div>
+        <div class="painel-corpo"><div class="grafico"><canvas id="graficoSaldos" aria-label="Saldo por empresa" role="img"></canvas></div></div>
+    </section>
 </div>
 
-<!-- Filtros e Tabela -->
-<div class="section">
-    <div class="section-header">
-        <h2 class="section-title">Manobras Financeiras</h2>
-        <div style="display: flex; gap: 10px;">
-            <a href="{% url 'financeiro_grupo:transferencia_add' %}" class="btn btn-primary">
-                ➕ Nova Transferência
-            </a>
-            <a href="{% url 'financeiro_grupo:relatorio' %}" class="btn btn-secondary">
-                📊 Relatório Completo
-            </a>
-        </div>
+<section class="painel" aria-labelledby="t-transf">
+    <div class="painel-cabecalho"><h2 class="painel-titulo" id="t-transf">Transferências</h2><span class="painel-nota">As 50 mais recentes</span></div>
+    <form method="get" class="painel-cabecalho filtros">
+        <label class="campo-filtro">Empresa de origem
+            <select name="origem">
+                <option value="">Todas</option>
+                {% for emp in empresas %}<option value="{{ emp.id }}"{% if request.GET.origem == emp.id|stringformat:'d' %} selected{% endif %}>{{ emp.pessoa_jur_info.nome_fantasia|default:emp.nome_razao_social }}</option>{% endfor %}
+            </select>
+        </label>
+        <label class="campo-filtro">Empresa de destino
+            <select name="destino">
+                <option value="">Todas</option>
+                {% for emp in empresas %}<option value="{{ emp.id }}"{% if request.GET.destino == emp.id|stringformat:'d' %} selected{% endif %}>{{ emp.pessoa_jur_info.nome_fantasia|default:emp.nome_razao_social }}</option>{% endfor %}
+            </select>
+        </label>
+        <label class="campo-filtro">Situação
+            <select name="status">
+                <option value="">Todas</option>
+                <option value="pendente"{% if request.GET.status == 'pendente' %} selected{% endif %}>Pendente</option>
+                <option value="concluida"{% if request.GET.status == 'concluida' %} selected{% endif %}>Concluída</option>
+                <option value="cancelada"{% if request.GET.status == 'cancelada' %} selected{% endif %}>Cancelada</option>
+            </select>
+        </label>
+        <button type="submit" class="btn btn-secundario">Filtrar</button>
+    </form>
+    {% if transferencias %}
+    <div class="tabela-caixa">
+        <table class="tabela" style="min-width: 960px">
+            <thead>
+                <tr>
+                    <th scope="col">Data</th>
+                    <th scope="col">Origem</th>
+                    <th scope="col">Destino</th>
+                    <th scope="col" class="num">Valor</th>
+                    <th scope="col">Finalidade</th>
+                    <th scope="col">Situação</th>
+                    <th scope="col">Responsável</th>
+                    <th scope="col" class="num">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trans in transferencias %}
+                <tr>
+                    <td class="nowrap">{{ trans.data|date:"d/m/Y H:i" }}</td>
+                    <td class="forte">{{ trans.empresa_origem.pessoa_jur_info.nome_fantasia|default:trans.empresa_origem.nome_razao_social }}</td>
+                    <td class="forte">{{ trans.empresa_destino.pessoa_jur_info.nome_fantasia|default:trans.empresa_destino.nome_razao_social }}</td>
+                    <td class="num forte">{{ trans.valor|brl }}</td>
+                    <td class="suave texto-longo">{{ trans.finalidade|truncatewords:8 }}</td>
+                    <td>
+                        {% if trans.status == 'concluida' %}<span class="etiqueta etiqueta-positiva">Concluída</span>
+                        {% elif trans.status == 'cancelada' %}<span class="etiqueta etiqueta-negativa">Cancelada</span>
+                        {% else %}<span class="etiqueta etiqueta-atencao">Pendente</span>{% endif %}
+                    </td>
+                    <td>{{ trans.usuario.username }}</td>
+                    <td class="num nowrap">
+                        <span class="acoes-texto"><a href="{% url 'financeiro_grupo:transferencia_detail' trans.id %}">Ver</a><a href="{% url 'financeiro_grupo:transferencia_edit' trans.id %}">Editar</a>{% if trans.status == 'pendente' %}<a href="{% url 'financeiro_grupo:transferencia_confirmar' trans.id %}">Confirmar</a>{% endif %}</span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    
-    <div class="section-body">
-        <!-- Filtros -->
-        <form method="get" style="display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 200px;">
-                <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 6px;">
-                    Empresa Origem
-                </label>
-                <select name="origem" style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px;">
-                    <option value="">Todas</option>
-                    {% for emp in empresas %}
-                    <option value="{{ emp.id }}">{{ emp.nome_fantasia }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            
-            <div style="flex: 1; min-width: 200px;">
-                <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 6px;">
-                    Empresa Destino
-                </label>
-                <select name="destino" style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px;">
-                    <option value="">Todas</option>
-                    {% for emp in empresas %}
-                    <option value="{{ emp.id }}">{{ emp.nome_fantasia }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            
-            <div style="flex: 1; min-width: 150px;">
-                <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 6px;">
-                    Status
-                </label>
-                <select name="status" style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px;">
-                    <option value="">Todos</option>
-                    <option value="pendente">Pendente</option>
-                    <option value="concluida">Concluída</option>
-                    <option value="cancelada">Cancelada</option>
-                </select>
-            </div>
-            
-            <div style="display: flex; align-items: flex-end;">
-                <button type="submit" class="btn btn-primary" style="height: 44px;">🔍 Filtrar</button>
-            </div>
-        </form>
-        
-        <!-- Tabela -->
-        <div style="overflow-x: auto;">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Origem</th>
-                        <th>→</th>
-                        <th>Destino</th>
-                        <th>Valor</th>
-                        <th>Finalidade</th>
-                        <th>Status</th>
-                        <th>Responsável</th>
-                        <th style="text-align: center;">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for trans in transferencias %}
-                    <tr>
-                        <td>{{ trans.data|date:"d/m/Y H:i" }}</td>
-                        <td><strong>{{ trans.empresa_origem.nome_fantasia }}</strong></td>
-                        <td style="text-align: center; color: #C2490A; font-size: 18px;">→</td>
-                        <td><strong>{{ trans.empresa_destino.nome_fantasia }}</strong></td>
-                        <td style="font-family: 'Courier New', monospace; font-weight: 700; color: #C2490A;">
-                            R$ {{ trans.valor|floatformat:2 }}
-                        </td>
-                        <td>{{ trans.finalidade|truncatewords:8 }}</td>
-                        <td>
-                            {% if trans.status == 'concluida' %}
-                            <span class="badge badge-success">✓ Concluída</span>
-                            {% elif trans.status == 'cancelada' %}
-                            <span class="badge badge-danger">✗ Cancelada</span>
-                            {% else %}
-                            <span class="badge badge-warning">⏱ Pendente</span>
-                            {% endif %}
-                        </td>
-                        <td>{{ trans.usuario.username }}</td>
-                        <td style="text-align: center;">
-                            <a href="{% url 'financeiro_grupo:transferencia_detail' trans.id %}" class="btn-icon" title="Ver Detalhes">👁️</a>
-                            <a href="{% url 'financeiro_grupo:transferencia_edit' trans.id %}" class="btn-icon" title="Editar">✏️</a>
-                            <a href="{% url 'financeiro_grupo:transferencia_confirmar' trans.id %}" class="btn-icon" title="Confirmar">✓</a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="9" class="empty-state">
-                            <div class="empty-state-icon">💸</div>
-                            <div class="empty-state-text">Nenhuma transferência registrada</div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+    {% else %}
+    {% url 'financeiro_grupo:transferencia_add' as nova_url %}
+    {% include 'base/componentes/estado_vazio.html' with texto='Nenhuma transferência registrada. Registre a primeira para acompanhar os saldos entre as empresas.' acao_url=nova_url acao_texto='Nova transferência' %}
+    {% endif %}
+</section>
 
-<!-- Matriz de Fluxo -->
-<div class="section">
-    <div class="section-header">
-        <h2 class="section-title">Matriz de Transferências (Resumo)</h2>
+{% if empresas %}
+<section class="painel" aria-labelledby="t-matriz">
+    <div class="painel-cabecalho"><h2 class="painel-titulo" id="t-matriz">Quem enviou para quem</h2><span class="painel-nota">Transferências concluídas; linha é a origem, coluna é o destino</span></div>
+    <div class="tabela-caixa">
+        <table class="tabela">
+            <thead>
+                <tr>
+                    <th scope="col">Origem / destino</th>
+                    {% for emp in empresas %}<th scope="col" class="num">{{ emp.pessoa_jur_info.nome_fantasia|default:emp.nome_razao_social|truncatewords:3 }}</th>{% endfor %}
+                    <th scope="col" class="num">Total enviado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for linha in matriz_fluxo %}
+                <tr>
+                    <th scope="row" class="forte" style="background: none; text-align: left">{{ linha.empresa }}</th>
+                    {% for valor in linha.valores %}<td class="num{% if not valor %} suave{% endif %}">{% if valor %}{{ valor|brl }}{% else %}—{% endif %}</td>{% endfor %}
+                    <td class="num forte">{{ linha.total|brl }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total recebido</td>
+                    {% for total in totais_entrada %}<td class="num">{{ total|brl }}</td>{% endfor %}
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
-    <div class="section-body">
-        <div style="overflow-x: auto;">
-            <table class="table" style="text-align: center;">
-                <thead>
-                    <tr>
-                        <th style="text-align: left;">De \ Para</th>
-                        {% for emp in empresas %}
-                        <th>{{ emp.nome_fantasia|truncatewords:2 }}</th>
-                        {% endfor %}
-                        <th style="background: #FFF3E0; color: #C2490A;">Total Saída</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for linha in matriz_fluxo %}
-                    <tr>
-                        <th style="text-align: left;">{{ linha.empresa }}</th>
-                        {% for valor in linha.valores %}
-                        <td style="{% if valor > 0 %}background: #FFF3E0; font-weight: 700; color: #C2490A;{% endif %}">
-                            {% if valor > 0 %}R$ {{ valor|floatformat:2 }}{% else %}-{% endif %}
-                        </td>
-                        {% endfor %}
-                        <td style="font-weight: 700; background: #FFF3E0; color: #C2490A;">
-                            R$ {{ linha.total|floatformat:2 }}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    <tr style="background: #f8fafc; font-weight: 700;">
-                        <th>Total Entrada</th>
-                        {% for total in totais_entrada %}
-                        <td style="color: #10b981;">R$ {{ total|floatformat:2 }}</td>
-                        {% endfor %}
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+</section>
+{% endif %}
+{% endblock %}
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+{% block js %}
+<script src="{% static 'vendor/chartjs/chart.umd.min.js' %}"></script>
 <script>
-// Gráfico de Fluxo
-const ctxFluxo = document.getElementById('graficoFluxo').getContext('2d');
-new Chart(ctxFluxo, {
-    type: 'line',
-    data: {
-        labels: {{ fluxo_labels|safe }},
-        datasets: [{
-            label: 'Transferências (R$)',
-            data: {{ fluxo_valores|safe }},
-            borderColor: '#FF9100',
-            backgroundColor: 'rgba(255, 145, 0, 0.1)',
-            tension: 0.4,
-            fill: true
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: { y: { beginAtZero: true } }
-    }
-});
-
-// Gráfico de Saldos
-const ctxSaldos = document.getElementById('graficoSaldos').getContext('2d');
-new Chart(ctxSaldos, {
-    type: 'bar',
-    data: {
-        labels: {{ saldos_labels|safe }},
-        datasets: [{
-            label: 'Saldo (R$)',
-            data: {{ saldos_valores|safe }},
-            backgroundColor: '#FF9100',
-            borderColor: '#E67E00',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: { y: { beginAtZero: true } }
-    }
-});
+(function () {
+    if (!window.Chart) return;
+    Chart.defaults.font.family = "'IBM Plex Sans', 'Segoe UI', Arial, sans-serif";
+    Chart.defaults.color = '#59626B';
+    var brl = function (v) { return 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+    var eixo = { beginAtZero: true, grid: { color: '#EEF0F2' }, ticks: { callback: function (v) { return Number(v).toLocaleString('pt-BR'); } } };
+    var opcoes = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return brl(c.parsed.y); } } } }, scales: { y: eixo, x: { grid: { display: false } } } };
+    new Chart(document.getElementById('graficoFluxo'), {
+        type: 'line',
+        data: { labels: {{ fluxo_labels|safe }}, datasets: [{ data: {{ fluxo_valores|safe }}, borderColor: '#3E6E8E', backgroundColor: '#3E6E8E', pointRadius: 3, tension: 0.3 }] },
+        options: opcoes
+    });
+    new Chart(document.getElementById('graficoSaldos'), {
+        type: 'bar',
+        data: { labels: {{ saldos_labels|safe }}, datasets: [{ data: {{ saldos_valores|safe }}, backgroundColor: '#3E6E8E', borderRadius: 4, maxBarThickness: 40 }] },
+        options: opcoes
+    });
+})();
 </script>
-
-<style>
-.btn-icon {
-    display: inline-block;
-    padding: 6px 10px;
-    font-size: 16px;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: all 0.15s ease;
-}
-.btn-icon:hover {
-    background: #FFF3E0;
-    transform: scale(1.1);
-}
-</style>
 {% endblock %}

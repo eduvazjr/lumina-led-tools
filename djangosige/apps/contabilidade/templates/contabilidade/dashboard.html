@@ -1,260 +1,99 @@
 {% extends "base/base.html" %}
-{% load static %}
 
-{% block title %}HG Contabilidade - Dashboard{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'contabilidade/css/contabilidade.css' %}">
-{% endblock %}
+{% block title %}Contabilidade{% endblock %}
+{% block breadcrumb %}Painel da contabilidade{% endblock %}
 
 {% block content %}
-<div class="hg-contabilidade">
-    <!-- Header -->
-    <div class="hg-header">
-        <div class="hg-header-content">
-            <div class="hg-logo">
-                <svg width="60" height="60" viewBox="0 0 60 60">
-                    <text x="10" y="40" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#0f172a">HG</text>
-                </svg>
-                <div>
-                    <h1>CONTABILIDADE</h1>
-                    <p>Do seu negócio, do nosso lado.</p>
-                </div>
-            </div>
-            <div class="hg-stats">
-                <div class="stat-card">
-                    <div class="stat-number">{{ total_processos }}</div>
-                    <div class="stat-label">Processos Ativos</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">{{ processos_concluidos }}</div>
-                    <div class="stat-label">Concluídos</div>
-                </div>
-            </div>
-        </div>
+<div class="page-head">
+    <div class="page-head-texto">
+        <h1 class="page-title">Contabilidade</h1>
+        <p class="page-subtitle">Processos contábeis dos clientes, da entrada à contabilidade mensal</p>
     </div>
-
-    <!-- Fluxo de Processos -->
-    <div class="fluxo-container">
-        <h2 class="section-title">FLUXO DE PROCESSOS</h2>
-        <p class="section-subtitle">Juntos em todas as etapas</p>
-        
-        <div class="fluxo-steps">
-            <!-- Etapa 1: Entrada de Cliente -->
-            <div class="step step-entrada">
-                <div class="step-number">1</div>
-                <div class="step-icon">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                        <line x1="19" y1="8" x2="19" y2="14"></line>
-                        <line x1="22" y1="11" x2="16" y2="11"></line>
-                    </svg>
-                </div>
-                <h3>ENTRADA DE CLIENTE</h3>
-                <ul class="step-tasks">
-                    <li>✓ Contato inicial</li>
-                    <li>✓ Coleta de informações</li>
-                    <li>✓ Análise da necessidade</li>
-                    <li>✓ Abertura do processo no sistema</li>
-                    <li>✓ Definição do escopo e equipe responsável</li>
-                </ul>
-                <div class="step-count">{{ processos_entrada }}</div>
-                <div class="step-status">CLIENTE ATIVO NO SISTEMA</div>
-            </div>
-
-            <div class="step-arrow">→</div>
-
-            <!-- Etapa 2: Legalização -->
-            <div class="step step-legalizacao">
-                <div class="step-number">2</div>
-                <div class="step-icon">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10 9 9 9 8 9"></polyline>
-                    </svg>
-                </div>
-                <h3>LEGALIZAÇÃO</h3>
-                <ul class="step-tasks">
-                    <li>✓ Abertura / alteração / baixa de empresa</li>
-                    <li>✓ Registro na Junta Comercial (JUCEMG)</li>
-                    <li>✓ Inscrições municipais e estaduais</li>
-                    <li>✓ Alvarás e licenças</li>
-                    <li>✓ Cadastro em órgãos reguladores (quando necessário)</li>
-                </ul>
-                <div class="step-count">{{ processos_legalizacao }}</div>
-                <div class="step-status">EMPRESA REGULARIZADA E LEGALIZADA</div>
-            </div>
-
-            <div class="step-arrow">→</div>
-
-            <!-- Etapa 3: DP -->
-            <div class="step step-dp">
-                <div class="step-number">3</div>
-                <div class="step-icon">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="9" cy="7" r="4"></circle>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                </div>
-                <h3>DP</h3>
-                <ul class="step-tasks">
-                    <li>✓ Admissões e demissões</li>
-                    <li>✓ Folha de pagamento</li>
-                    <li>✓ Férias e rescisões</li>
-                    <li>✓ eSocial e obrigações trabalhistas</li>
-                    <li>✓ Benefícios e encargos sociais</li>
-                </ul>
-                <div class="step-count">{{ processos_dp }}</div>
-                <div class="step-status">EQUIPE E OBRIGAÇÕES TRABALHISTAS EM DIA</div>
-            </div>
-
-            <div class="step-arrow">→</div>
-
-            <!-- Etapa 4: Fiscal -->
-            <div class="step step-fiscal">
-                <div class="step-number">4</div>
-                <div class="step-icon">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="12" y1="18" x2="12" y2="12"></line>
-                        <line x1="9" y1="15" x2="15" y2="15"></line>
-                    </svg>
-                </div>
-                <h3>FISCAL</h3>
-                <ul class="step-tasks">
-                    <li>✓ Emissão e controle de notas fiscais</li>
-                    <li>✓ Apuração de tributos</li>
-                    <li>✓ Obrigações acessórias (DAPI, SPED, etc.)</li>
-                    <li>✓ Monitoramento de regimes fiscais</li>
-                    <li>✓ Atendimento a fiscalizações</li>
-                </ul>
-                <div class="step-count">{{ processos_fiscal }}</div>
-                <div class="step-status">OBRIGAÇÕES FISCAIS EM DIA</div>
-            </div>
-
-            <div class="step-arrow">→</div>
-
-            <!-- Etapa 5: Contábil -->
-            <div class="step step-contabil">
-                <div class="step-number">5</div>
-                <div class="step-icon">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <line x1="12" y1="1" x2="12" y2="23"></line>
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                    </svg>
-                </div>
-                <h3>CONTÁBIL</h3>
-                <ul class="step-tasks">
-                    <li>✓ Classificação e lançamentos contábeis</li>
-                    <li>✓ Conciliação bancária</li>
-                    <li>✓ Demonstrações contábeis</li>
-                    <li>✓ Apuração de resultados</li>
-                    <li>✓ Suporte para decisões e planejamento</li>
-                </ul>
-                <div class="step-count">{{ processos_contabil }}</div>
-                <div class="step-status">INFORMAÇÕES CONFIÁVEIS PARA O SEU CRESCIMENTO</div>
-            </div>
-        </div>
-
-        <!-- Processo Integrado -->
-        <div class="processo-integrado">
-            <div class="integrado-badge">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                </svg>
-                <strong>PROCESSO INTEGRADO</strong>
-            </div>
-            <p>Mais agilidade • Mais segurança • Mais resultados</p>
-        </div>
-    </div>
-
-    <!-- Processos Recentes e Alertas -->
-    <div class="content-grid">
-        <!-- Processos Recentes -->
-        <div class="card">
-            <h3 class="card-title">Processos Recentes</h3>
-            <div class="processos-list">
-                {% for processo in processos_recentes %}
-                <a href="{% url 'contabilidade:detalhe_processo' processo.pk %}" class="processo-item">
-                    <div class="processo-info">
-                        <strong>{{ processo.numero_processo }}</strong>
-                        <span>{{ processo.cliente }}</span>
-                    </div>
-                    <div class="processo-status status-{{ processo.status }}">
-                        {{ processo.get_status_display }}
-                    </div>
-                </a>
-                {% empty %}
-                <p class="empty-state">Nenhum processo cadastrado ainda.</p>
-                {% endfor %}
-            </div>
-            <a href="{% url 'contabilidade:lista_processos' %}" class="btn-link">Ver todos os processos →</a>
-        </div>
-
-        <!-- Alertas -->
-        <div class="card">
-            <h3 class="card-title">Alertas e Pendências</h3>
-            
-            {% if obrigacoes_vencendo %}
-            <div class="alert alert-warning">
-                <strong>{{ obrigacoes_vencendo.count }} obrigação(ões) vencendo nos próximos 7 dias</strong>
-                {% for obr in obrigacoes_vencendo %}
-                <div class="alert-item">
-                    {{ obr.get_tipo_display }} - {{ obr.fiscal.processo.numero_processo }} ({{ obr.data_vencimento|date:"d/m/Y" }})
-                </div>
-                {% endfor %}
-            </div>
-            {% endif %}
-            
-            {% if folhas_pendentes %}
-            <div class="alert alert-info">
-                <strong>{{ folhas_pendentes.count }} folha(s) de pagamento pendente(s)</strong>
-            </div>
-            {% endif %}
-            
-            {% if not obrigacoes_vencendo and not folhas_pendentes %}
-            <p class="empty-state">✓ Nenhuma pendência no momento</p>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- Ações Rápidas -->
-    <div class="quick-actions">
-        <a href="{% url 'contabilidade:novo_processo' %}" class="btn btn-primary">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-            Novo Processo
-        </a>
-        <a href="{% url 'contabilidade:lista_processos' %}" class="btn btn-secondary">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-            </svg>
-            Ver Todos os Processos
-        </a>
-        <a href="{% url 'contabilidade:relatorios' %}" class="btn btn-secondary">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <line x1="18" y1="20" x2="18" y2="10"></line>
-                <line x1="12" y1="20" x2="12" y2="4"></line>
-                <line x1="6" y1="20" x2="6" y2="14"></line>
-            </svg>
-            Relatórios
-        </a>
+    <div class="page-actions">
+        <a href="{% url 'contabilidade:relatorios' %}" class="btn btn-secundario">Relatórios</a>
+        <a href="{% url 'contabilidade:lista_processos' %}" class="btn btn-secundario">Ver processos</a>
+        <a href="{% url 'contabilidade:novo_processo' %}" class="btn btn-primary">Novo processo</a>
     </div>
 </div>
-{% endblock %}
 
-{% block extra_js %}
-<script src="{% static 'contabilidade/js/contabilidade.js' %}"></script>
+<section class="painel" aria-label="Resumo dos processos">
+    <div class="numeros">
+        <div class="numero">
+            <span class="numero-rotulo">Processos ativos</span>
+            <span class="numero-grande">{{ total_processos }}</span>
+            <span class="numero-nota">Marcados como ativos</span>
+        </div>
+        <div class="numero">
+            <span class="numero-rotulo">Concluídos</span>
+            <span class="numero-grande">{{ processos_concluidos }}</span>
+            <span class="numero-nota">Com a etapa marcada como concluída</span>
+        </div>
+    </div>
+    <div class="numeros-faixa">
+        <a href="{% url 'contabilidade:lista_processos' %}?status=entrada" class="numero numero-link"><span class="numero-rotulo">1. Entrada de cliente</span><span class="numero-valor">{{ processos_entrada }}</span></a>
+        <a href="{% url 'contabilidade:lista_processos' %}?status=legalizacao" class="numero numero-link"><span class="numero-rotulo">2. Legalização</span><span class="numero-valor">{{ processos_legalizacao }}</span></a>
+        <a href="{% url 'contabilidade:lista_processos' %}?status=dp" class="numero numero-link"><span class="numero-rotulo">3. Dep. pessoal</span><span class="numero-valor">{{ processos_dp }}</span></a>
+        <a href="{% url 'contabilidade:lista_processos' %}?status=fiscal" class="numero numero-link"><span class="numero-rotulo">4. Fiscal</span><span class="numero-valor">{{ processos_fiscal }}</span></a>
+        <a href="{% url 'contabilidade:lista_processos' %}?status=contabil" class="numero numero-link"><span class="numero-rotulo">5. Contábil</span><span class="numero-valor">{{ processos_contabil }}</span></a>
+    </div>
+</section>
+
+{% if obrigacoes_vencendo %}
+<div class="aviso aviso-atencao" role="status">
+    {% include 'base/componentes/icone_aviso.html' with tipo='atencao' %}
+    <span class="aviso-texto">{{ obrigacoes_vencendo.count }} obrigaç{{ obrigacoes_vencendo.count|pluralize:"ão,ões" }} acessória{{ obrigacoes_vencendo.count|pluralize }} vence{{ obrigacoes_vencendo.count|pluralize:",m" }} nos próximos 7 dias:
+        {% for obr in obrigacoes_vencendo %}<strong>{{ obr.get_tipo_display }}</strong> do processo {{ obr.fiscal.processo.numero_processo }} em {{ obr.data_vencimento|date:"d/m/Y" }}{% if not forloop.last %}; {% else %}.{% endif %}{% endfor %}
+    </span>
+    <a href="{% url 'contabilidade:relatorio_fiscal' %}">Ver relatório fiscal</a>
+</div>
+{% endif %}
+{% if folhas_pendentes %}
+<div class="aviso" role="status">
+    {% include 'base/componentes/icone_aviso.html' %}
+    <span class="aviso-texto">{{ folhas_pendentes.count }} folha{{ folhas_pendentes.count|pluralize }} de pagamento ainda não processada{{ folhas_pendentes.count|pluralize }} e sem data de pagamento.</span>
+    <a href="{% url 'contabilidade:rh_folhas' %}">Ver folhas</a>
+</div>
+{% endif %}
+
+<div class="dash-columns">
+    <section class="painel" aria-labelledby="t-recentes">
+        <div class="painel-cabecalho">
+            <h2 class="painel-titulo" id="t-recentes">Processos recentes</h2>
+            <a href="{% url 'contabilidade:lista_processos' %}" class="painel-nota">Ver todos</a>
+        </div>
+        {% if processos_recentes %}
+        <div class="tabela-caixa">
+            <table class="tabela">
+                <thead><tr><th scope="col">Processo</th><th scope="col">Cliente</th><th scope="col">Etapa</th></tr></thead>
+                <tbody>
+                    {% for processo in processos_recentes %}
+                    <tr>
+                        <td class="forte"><a href="{% url 'contabilidade:detalhe_processo' processo.pk %}">{{ processo.numero_processo }}</a></td>
+                        <td>{{ processo.cliente }}</td>
+                        <td>{% include 'contabilidade/_etapa.html' %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        {% url 'contabilidade:novo_processo' as novo_url %}
+        {% include 'base/componentes/estado_vazio.html' with icone='documento' texto='Nenhum processo cadastrado. Abra o primeiro para acompanhar as etapas do cliente.' acao_url=novo_url acao_texto='Novo processo' %}
+        {% endif %}
+    </section>
+
+    <section class="painel" aria-labelledby="t-fluxo">
+        <div class="painel-cabecalho">
+            <h2 class="painel-titulo" id="t-fluxo">Etapas do processo</h2>
+            <span class="painel-nota">Cada cliente passa pelas cinco, nesta ordem</span>
+        </div>
+        <ol class="etapas-lista">
+            <li><strong>Entrada de cliente</strong><span>Contato inicial, coleta de informações, análise da necessidade e definição da equipe.</span></li>
+            <li><strong>Legalização</strong><span>Abertura, alteração ou baixa de empresa, Junta Comercial (JUCEMG), inscrições, alvarás e licenças.</span></li>
+            <li><strong>Departamento pessoal</strong><span>Admissões, demissões, folha, férias, rescisões, eSocial e encargos.</span></li>
+            <li><strong>Fiscal</strong><span>Notas fiscais, apuração de tributos, obrigações acessórias (DAPI, SPED) e fiscalizações.</span></li>
+            <li><strong>Contábil</strong><span>Lançamentos, conciliação bancária, demonstrações e apuração de resultados.</span></li>
+        </ol>
+    </section>
+</div>
 {% endblock %}

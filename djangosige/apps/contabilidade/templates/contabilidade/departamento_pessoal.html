@@ -1,7 +1,6 @@
-{%extends "base/base.html"%}{% load static %}
-{% block content %}
-<div class="hg-contabilidade">
-    <h1>Departamento Pessoal</h1>
-    <p>Template em desenvolvimento</p>
-</div>
-{% endblock %}
+{% extends "contabilidade/_modulo.html" %}
+{% block title %}Departamento pessoal · {{ processo.numero_processo }}{% endblock %}
+{% block breadcrumb %}Departamento pessoal{% endblock %}
+{% block etapa_nome %}Departamento pessoal{% endblock %}
+{% block etapa_numero %}3{% endblock %}
+{% block etapa_descricao %}Folha, admissões, férias e eSocial{% endblock %}

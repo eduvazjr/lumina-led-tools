@@ -1,73 +1,69 @@
 {% extends "base/base.html" %}
-{% load static %}
 
-{% block title %}Processos Contábeis{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'contabilidade/css/contabilidade.css' %}">
-{% endblock %}
+{% block title %}Processos contábeis{% endblock %}
 
 {% block content %}
-<div class="hg-contabilidade">
-    <div class="page-header">
-        <h1>Processos Contábeis</h1>
-        <a href="{% url 'contabilidade:novo_processo' %}" class="btn btn-primary">+ Novo Processo</a>
+<div class="page-head">
+    <div class="page-head-texto">
+        <h1 class="page-title">Processos contábeis</h1>
+        <p class="page-subtitle">Todos os processos, com a etapa em que cada um está</p>
     </div>
-    
-    <div class="filters">
-        <form method="get">
-            <input type="text" name="q" value="{{ busca }}" placeholder="Buscar processo..." class="search-input">
-            <select name="status" class="status-filter">
-                <option value="">Todos os status</option>
-                <option value="entrada" {% if status_filtro == "entrada" %}selected{% endif %}>Entrada de Cliente</option>
+    <div class="page-actions">
+        <a href="{% url 'contabilidade:novo_processo' %}" class="btn btn-primary">Novo processo</a>
+    </div>
+</div>
+
+<section class="painel">
+    <form method="get" class="painel-cabecalho filtros">
+        <label class="campo-filtro">Buscar
+            <input type="search" name="q" value="{{ busca }}" placeholder="Número do processo ou cliente">
+        </label>
+        <label class="campo-filtro">Etapa
+            <select name="status">
+                <option value="">Todas as etapas</option>
+                <option value="entrada" {% if status_filtro == "entrada" %}selected{% endif %}>Entrada de cliente</option>
                 <option value="legalizacao" {% if status_filtro == "legalizacao" %}selected{% endif %}>Legalização</option>
-                <option value="dp" {% if status_filtro == "dp" %}selected{% endif %}>DP</option>
+                <option value="dp" {% if status_filtro == "dp" %}selected{% endif %}>Departamento pessoal</option>
                 <option value="fiscal" {% if status_filtro == "fiscal" %}selected{% endif %}>Fiscal</option>
                 <option value="contabil" {% if status_filtro == "contabil" %}selected{% endif %}>Contábil</option>
                 <option value="concluido" {% if status_filtro == "concluido" %}selected{% endif %}>Concluído</option>
             </select>
-            <button type="submit" class="btn btn-secondary">Filtrar</button>
-        </form>
-    </div>
-    
-    <div class="processos-table">
-        <table>
+        </label>
+        <button type="submit" class="btn btn-secundario">Filtrar</button>
+    </form>
+
+    {% if processos %}
+    <div class="tabela-caixa">
+        <table class="tabela" style="min-width: 760px">
             <thead>
                 <tr>
-                    <th>Número</th>
-                    <th>Cliente</th>
-                    <th>Status</th>
-                    <th>Responsável</th>
-                    <th>Data Abertura</th>
-                    <th>Progresso</th>
-                    <th>Ações</th>
+                    <th scope="col">Processo</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Etapa</th>
+                    <th scope="col">Responsável</th>
+                    <th scope="col">Abertura</th>
+                    <th scope="col" style="width: 180px">Progresso</th>
                 </tr>
             </thead>
             <tbody>
                 {% for processo in processos %}
                 <tr>
-                    <td><strong>{{ processo.numero_processo }}</strong></td>
+                    <td class="forte"><a href="{% url 'contabilidade:detalhe_processo' processo.pk %}">{{ processo.numero_processo }}</a></td>
                     <td>{{ processo.cliente }}</td>
-                    <td><span class="processo-status status-{{ processo.status }}">{{ processo.get_status_display }}</span></td>
-                    <td>{{ processo.responsavel }}</td>
+                    <td>{% include 'contabilidade/_etapa.html' %}</td>
+                    <td>{{ processo.responsavel|default:"—" }}</td>
                     <td>{{ processo.data_abertura|date:"d/m/Y" }}</td>
-                    <td>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: {{ processo.get_progresso }}%"></div>
-                        </div>
-                        <span class="progress-text">{{ processo.get_progresso|floatformat:0 }}%</span>
-                    </td>
-                    <td>
-                        <a href="{% url 'contabilidade:detalhe_processo' processo.pk %}" class="btn-small">Ver</a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="7" class="empty-state">Nenhum processo encontrado.</td>
+                    <td>{% include 'base/componentes/progresso.html' with pct=processo.get_progresso %}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-</div>
+    {% elif busca or status_filtro %}
+    {% include 'base/componentes/estado_vazio.html' with icone='busca' texto='Nenhum processo encontrado com esses filtros. Mude a busca ou escolha outra etapa.' %}
+    {% else %}
+    {% url 'contabilidade:novo_processo' as novo_url %}
+    {% include 'base/componentes/estado_vazio.html' with icone='documento' texto='Nenhum processo cadastrado. Abra o primeiro para acompanhar as etapas do cliente.' acao_url=novo_url acao_texto='Novo processo' %}
+    {% endif %}
+</section>
 {% endblock %}

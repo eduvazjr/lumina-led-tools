@@ -1,108 +1,64 @@
 {% extends "base/base.html" %}
-{% load static %}
 
 {% block title %}Processo {{ processo.numero_processo }}{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'contabilidade/css/contabilidade.css' %}">
-{% endblock %}
+{% block breadcrumb %}Processo {{ processo.numero_processo }}{% endblock %}
 
 {% block content %}
-<div class="hg-contabilidade">
-    <div class="breadcrumb">
-        <a href="{% url 'contabilidade:dashboard' %}">Dashboard</a> /
-        <a href="{% url 'contabilidade:lista_processos' %}">Processos</a> /
-        <span>{{ processo.numero_processo }}</span>
+<div class="page-head">
+    <div class="page-head-texto">
+        <p class="page-subtitle"><a href="{% url 'contabilidade:lista_processos' %}">Processos contábeis</a></p>
+        <h1 class="page-title">Processo {{ processo.numero_processo }}</h1>
+        <p class="page-subtitle">{{ processo.cliente }}</p>
     </div>
-    
-    <div class="processo-header">
-        <div>
-            <h1>{{ processo.numero_processo }}</h1>
-            <p class="cliente-name">{{ processo.cliente }}</p>
-        </div>
-        <span class="processo-status status-{{ processo.status }}">{{ processo.get_status_display }}</span>
-    </div>
-    
-    <div class="progress-container">
-        <h3>Progresso do Processo</h3>
-        <div class="progress-steps">
-            <div class="progress-step {% if processo.get_etapa_atual >= 1 %}completed{% endif %}">
-                <div class="step-circle">1</div>
-                <span>Entrada</span>
-            </div>
-            <div class="progress-step {% if processo.get_etapa_atual >= 2 %}completed{% endif %}">
-                <div class="step-circle">2</div>
-                <span>Legalização</span>
-            </div>
-            <div class="progress-step {% if processo.get_etapa_atual >= 3 %}completed{% endif %}">
-                <div class="step-circle">3</div>
-                <span>DP</span>
-            </div>
-            <div class="progress-step {% if processo.get_etapa_atual >= 4 %}completed{% endif %}">
-                <div class="step-circle">4</div>
-                <span>Fiscal</span>
-            </div>
-            <div class="progress-step {% if processo.get_etapa_atual >= 5 %}completed{% endif %}">
-                <div class="step-circle">5</div>
-                <span>Contábil</span>
-            </div>
-        </div>
-    </div>
-    
-    <div class="modulos-grid">
-        <a href="{% url 'contabilidade:entrada_cliente' processo.pk %}" class="modulo-card {% if tem_entrada %}has-data{% endif %}">
-            <h3>1. Entrada de Cliente</h3>
-            <p>Contato inicial, coleta de informações e definição de escopo</p>
-            {% if tem_entrada %}<span class="badge-ok">✓ Cadastrado</span>{% endif %}
-        </a>
-        
-        <a href="{% url 'contabilidade:legalizacao' processo.pk %}" class="modulo-card {% if tem_legalizacao %}has-data{% endif %}">
-            <h3>2. Legalização</h3>
-            <p>Abertura, CNPJ, inscrições e alvarás</p>
-            {% if tem_legalizacao %}<span class="badge-ok">✓ Cadastrado</span>{% endif %}
-        </a>
-        
-        <a href="{% url 'contabilidade:departamento_pessoal' processo.pk %}" class="modulo-card {% if tem_dp %}has-data{% endif %}">
-            <h3>3. Departamento Pessoal</h3>
-            <p>Folha, admissões, férias e eSocial</p>
-            {% if tem_dp %}<span class="badge-ok">✓ Cadastrado</span>{% endif %}
-        </a>
-        
-        <a href="{% url 'contabilidade:fiscal' processo.pk %}" class="modulo-card {% if tem_fiscal %}has-data{% endif %}">
-            <h3>4. Fiscal</h3>
-            <p>Notas fiscais, tributos e obrigações acessórias</p>
-            {% if tem_fiscal %}<span class="badge-ok">✓ Cadastrado</span>{% endif %}
-        </a>
-        
-        <a href="{% url 'contabilidade:contabil' processo.pk %}" class="modulo-card {% if tem_contabil %}has-data{% endif %}">
-            <h3>5. Contábil</h3>
-            <p>Lançamentos, conciliação e demonstrações</p>
-            {% if tem_contabil %}<span class="badge-ok">✓ Cadastrado</span>{% endif %}
-        </a>
-    </div>
-    
-    <div class="info-section">
-        <h3>Informações do Processo</h3>
-        <div class="info-grid">
-            <div class="info-item">
-                <label>Data de Abertura</label>
-                <span>{{ processo.data_abertura|date:"d/m/Y H:i" }}</span>
-            </div>
-            <div class="info-item">
-                <label>Responsável</label>
-                <span>{{ processo.responsavel }}</span>
-            </div>
-            <div class="info-item">
-                <label>Equipe</label>
-                <span>{% for user in processo.equipe.all %}{{ user }}{% if not forloop.last %}, {% endif %}{% empty %}Nenhum membro{% endfor %}</span>
-            </div>
-            {% if processo.observacoes %}
-            <div class="info-item full-width">
-                <label>Observações</label>
-                <p>{{ processo.observacoes }}</p>
-            </div>
-            {% endif %}
-        </div>
-    </div>
+    <div class="page-actions">{% include 'contabilidade/_etapa.html' %}</div>
 </div>
+
+<section class="painel" aria-labelledby="t-etapas">
+    <div class="painel-cabecalho">
+        <h2 class="painel-titulo" id="t-etapas">Etapas</h2>
+        <span class="painel-nota" style="min-width: 220px">{% include 'base/componentes/progresso.html' with pct=processo.get_progresso rotulo='concluído' %}</span>
+    </div>
+    <div class="tabela-caixa">
+        <table class="tabela">
+            <thead><tr><th scope="col">Etapa</th><th scope="col">O que inclui</th><th scope="col">Situação</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td class="forte"><a href="{% url 'contabilidade:entrada_cliente' processo.pk %}">1. Entrada de cliente</a></td>
+                    <td class="suave">Contato inicial, coleta de informações e definição do escopo</td>
+                    <td>{% if tem_entrada %}<span class="etiqueta etiqueta-positiva">Preenchida</span>{% else %}<span class="etiqueta">A preencher</span>{% endif %}</td>
+                </tr>
+                <tr>
+                    <td class="forte"><a href="{% url 'contabilidade:legalizacao' processo.pk %}">2. Legalização</a></td>
+                    <td class="suave">Abertura, CNPJ, inscrições e alvarás</td>
+                    <td>{% if tem_legalizacao %}<span class="etiqueta etiqueta-positiva">Preenchida</span>{% else %}<span class="etiqueta">A preencher</span>{% endif %}</td>
+                </tr>
+                <tr>
+                    <td class="forte"><a href="{% url 'contabilidade:departamento_pessoal' processo.pk %}">3. Departamento pessoal</a></td>
+                    <td class="suave">Folha, admissões, férias e eSocial</td>
+                    <td>{% if tem_dp %}<span class="etiqueta etiqueta-positiva">Preenchida</span>{% else %}<span class="etiqueta">A preencher</span>{% endif %}</td>
+                </tr>
+                <tr>
+                    <td class="forte"><a href="{% url 'contabilidade:fiscal' processo.pk %}">4. Fiscal</a></td>
+                    <td class="suave">Notas fiscais, tributos e obrigações acessórias</td>
+                    <td>{% if tem_fiscal %}<span class="etiqueta etiqueta-positiva">Preenchida</span>{% else %}<span class="etiqueta">A preencher</span>{% endif %}</td>
+                </tr>
+                <tr>
+                    <td class="forte"><a href="{% url 'contabilidade:contabil' processo.pk %}">5. Contábil</a></td>
+                    <td class="suave">Lançamentos, conciliação e demonstrações</td>
+                    <td>{% if tem_contabil %}<span class="etiqueta etiqueta-positiva">Preenchida</span>{% else %}<span class="etiqueta">A preencher</span>{% endif %}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="painel" aria-labelledby="t-info">
+    <div class="painel-cabecalho"><h2 class="painel-titulo" id="t-info">Informações do processo</h2></div>
+    <dl class="painel-corpo dados">
+        <div><dt>Abertura</dt><dd>{{ processo.data_abertura|date:"d/m/Y H:i" }}</dd></div>
+        <div><dt>Responsável</dt><dd>{{ processo.responsavel|default:"—" }}</dd></div>
+        <div><dt>Equipe</dt><dd>{% for user in processo.equipe.all %}{{ user }}{% if not forloop.last %}, {% endif %}{% empty %}Nenhum membro{% endfor %}</dd></div>
+        {% if processo.observacoes %}<div class="dados-largo"><dt>Observações</dt><dd>{{ processo.observacoes|linebreaksbr }}</dd></div>{% endif %}
+    </dl>
+</section>
 {% endblock %}

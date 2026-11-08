@@ -1,7 +1,6 @@
-{%extends "base/base.html"%}{% load static %}
-{% block content %}
-<div class="hg-contabilidade">
-    <h1>Contabil</h1>
-    <p>Template em desenvolvimento</p>
-</div>
-{% endblock %}
+{% extends "contabilidade/_modulo.html" %}
+{% block title %}Contábil · {{ processo.numero_processo }}{% endblock %}
+{% block breadcrumb %}Contábil{% endblock %}
+{% block etapa_nome %}Contábil{% endblock %}
+{% block etapa_numero %}5{% endblock %}
+{% block etapa_descricao %}Lançamentos, conciliação e demonstrações{% endblock %}
