@@ -118,6 +118,25 @@ class NegotiationsParserTests(SimpleTestCase):
         self.assertEqual(data['kpis']['overdue_installments'], 3)
         self.assertEqual(data['supplier_kpis']['Amarante']['total_negotiated'], 100)
 
+    def test_card_totals_equal_sum_of_supplier_table(self):
+        # Amarante recebeu mais do que foi comprado (pagamento acima do negociado);
+        # esse excesso não pode abater o saldo em aberto de outro fornecedor.
+        records = [
+            {'supplier': 'Amarante', 'order_number': '1', 'product': 'A', 'total_value': 100, 'payment_value': 160, 'due_date': date(2025, 1, 1)},
+            {'supplier': 'Nakasaki', 'order_number': '2', 'product': 'B', 'total_value': 200, 'payment_value': 50, 'due_date': date(2025, 1, 1)},
+        ]
+
+        data = build_dashboard_data(records, today=date(2025, 1, 15))
+        table = data['supplier_kpis'].values()
+
+        for field in ('total_negotiated', 'received_estimate', 'outstanding_balance',
+                      'paid_above_negotiated', 'order_count', 'installment_count',
+                      'overdue_installments', 'upcoming_installments'):
+            self.assertEqual(data['kpis'][field], sum(row[field] for row in table), field)
+        self.assertEqual(data['kpis']['received_estimate'], 150)
+        self.assertEqual(data['kpis']['outstanding_balance'], 150)
+        self.assertEqual(data['kpis']['paid_above_negotiated'], 60)
+
 
 @override_settings(GOOGLE_DRIVE_FILE_ID='file-id', GOOGLE_DRIVE_CREDENTIALS_FILE='credential.json')
 class NegotiationsCacheTests(SimpleTestCase):

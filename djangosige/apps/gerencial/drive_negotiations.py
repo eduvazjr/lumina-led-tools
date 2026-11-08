@@ -272,16 +272,29 @@ def _kpis(records, today):
         min(_decimal(record.get('paid_installments')), _decimal(record.get('installment_count'))) * _decimal(record.get('installment_value'))
         for record in records
     ), Decimal('0'))
+    # Pagamento acima do negociado fica separado: não conta como recebido nem
+    # abate saldo em aberto. Por isso os totais gerais devem ser a soma por
+    # fornecedor (_sum_kpis), nunca este cálculo sobre todos os registros juntos.
+    paid_above = max(Decimal('0'), received - total)
     received = min(received, total)
     overdue = sum(int(max(Decimal('0'), _decimal(record.get('installment_count')) - _decimal(record.get('paid_installments')))) for record in records if record.get('due_date') and record['due_date'] < today)
     upcoming = sum(int(max(Decimal('0'), _decimal(record.get('installment_count')) - _decimal(record.get('paid_installments')))) for record in records if record.get('due_date') and today <= record['due_date'] <= today + timedelta(days=30))
     return {
         'total_negotiated': total, 'received_estimate': received,
         'outstanding_balance': max(Decimal('0'), total - received),
+        'paid_above_negotiated': paid_above,
         'order_count': len({(record.get('supplier'), record.get('order_number')) for record in records if _decimal(record.get('total_value')) > 0}),
         'installment_count': sum(int(_decimal(record.get('installment_count'))) for record in records),
         'overdue_installments': overdue, 'upcoming_installments': upcoming,
     }
+
+
+def _sum_kpis(supplier_kpis):
+    fields = (
+        'total_negotiated', 'received_estimate', 'outstanding_balance', 'paid_above_negotiated',
+        'order_count', 'installment_count', 'overdue_installments', 'upcoming_installments',
+    )
+    return {field: sum((kpis[field] for kpis in supplier_kpis), Decimal('0') if field in fields[:4] else 0) for field in fields}
 
 
 def build_dashboard_data(records, today=None):
@@ -294,7 +307,7 @@ def build_dashboard_data(records, today=None):
     return {
         'records': records,
         'suppliers': suppliers,
-        'kpis': _kpis(records, today),
+        'kpis': _sum_kpis(supplier_kpis.values()),
         'supplier_kpis': supplier_kpis,
         'chart_distribution': {
             'labels': suppliers,
