@@ -1,0 +1,16 @@
+{% comment %}
+Estado vazio: ícone de traço, uma frase dizendo o que fazer e o botão da ação.
+  {% include 'base/componentes/estado_vazio.html' with texto='Nenhum processo cadastrado. Cadastre o primeiro para acompanhar prazos.' acao_url=url acao_texto='Novo processo' icone='documento' %}
+icone: lista (padrão), documento, busca, calendario.
+{% endcomment %}
+<div class="vazio">
+    <span class="vazio-icone" aria-hidden="true">
+        {% if icone == 'documento' %}<svg class="ico" viewBox="0 0 24 24"><path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg>
+        {% elif icone == 'busca' %}<svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        {% elif icone == 'calendario' %}<svg class="ico" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        {% else %}<svg class="ico" viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h10"/></svg>{% endif %}
+    </span>
+    <p class="vazio-texto">{{ texto }}</p>
+    {% if dica %}<p class="vazio-dica">{{ dica }}</p>{% endif %}
+    {% if acao_url %}<a href="{{ acao_url }}" class="btn btn-primary">{{ acao_texto|default:'Adicionar' }}</a>{% endif %}
+</div>

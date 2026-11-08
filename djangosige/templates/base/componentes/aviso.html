@@ -1,0 +1,12 @@
+{% comment %}
+Aviso: uma frase objetiva com o problema e um link de ação.
+  {% include 'base/componentes/aviso.html' with tipo='erro' texto='...' link_url=url link_texto='Ver parcelas' %}
+tipo: erro, atencao, info (padrão) ou sucesso.
+Para texto com negrito, use a marcação direto:
+  <div class="aviso aviso-erro" role="status">ÍCONE<span class="aviso-texto">... <strong>...</strong></span><a href="">Ver</a></div>
+{% endcomment %}
+<div class="aviso{% if tipo %} aviso-{{ tipo }}{% endif %}" role="status">
+    {% include 'base/componentes/icone_aviso.html' %}
+    <span class="aviso-texto">{{ texto }}</span>
+    {% if link_url %}<a href="{{ link_url }}">{{ link_texto|default:'Ver detalhes' }}</a>{% endif %}
+</div>
