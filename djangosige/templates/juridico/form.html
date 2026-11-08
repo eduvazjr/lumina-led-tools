@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{% if processo %}Editar processo {{ processo.numero }}{% else %}Nova demanda{% endif %}{% endblock %}
+{% block breadcrumb %}{% if processo %}Editar processo{% else %}Nova demanda{% endif %}{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <p class="page-subtitle"><a href="{% url 'juridico:dashboard' %}">Jurídico</a>{% if processo %} · <a href="{% url 'juridico:processo_detail' processo.pk %}">Processo {{ processo.numero }}</a>{% endif %}</p>
+        <h1 class="page-title">{% if processo %}Editar processo{% else %}Nova demanda{% endif %}</h1>
+        <p class="page-subtitle">O valor em risco é calculado pelo valor da causa vezes a chance de perda</p>
+    </div>
+</div>
+
+<form method="post" class="painel">
+    {% csrf_token %}
+    <div class="painel-corpo">
+        {% if form.non_field_errors %}<div class="aviso aviso-erro" role="alert">{% include 'base/componentes/icone_aviso.html' with tipo='erro' %}<span class="aviso-texto">{{ form.non_field_errors|join:" " }}</span></div>{% endif %}
+        <h2 class="form-secao" style="margin-top:0">Identificação</h2>
+        <div class="campos">
+            {% with field=form.numero %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.empresa %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.parte_contraria %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.orgao %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.tipo_processo %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.status %}{% include 'base/componentes/campo.html' %}{% endwith %}
+        </div>
+        {% with field=form.descricao %}{% include 'base/componentes/campo.html' %}{% endwith %}
+        <h2 class="form-secao">Risco</h2>
+        <div class="campos">
+            {% with field=form.valor_causa %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.nivel_risco %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.probabilidade_perda %}{% include 'base/componentes/campo.html' %}{% endwith %}
+        </div>
+        <h2 class="form-secao">Prazos e andamento</h2>
+        <div class="campos">
+            {% with field=form.data_distribuicao %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.proximo_prazo %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.descricao_prazo %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.ultima_movimentacao %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.advogado_responsavel %}{% include 'base/componentes/campo.html' %}{% endwith %}
+        </div>
+        {% with field=form.observacoes %}{% include 'base/componentes/campo.html' %}{% endwith %}
+        <div class="form-acoes">
+            <a href="{% if processo %}{% url 'juridico:processo_detail' processo.pk %}{% else %}{% url 'juridico:dashboard' %}{% endif %}" class="btn btn-secundario">Cancelar</a>
+            <button type="submit" class="btn btn-primary">{% if processo %}Salvar alterações{% else %}Cadastrar demanda{% endif %}</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

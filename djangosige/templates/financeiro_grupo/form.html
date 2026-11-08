@@ -1,0 +1,34 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{% if transferencia %}Editar transferência #{{ transferencia.pk }}{% else %}Nova transferência{% endif %}{% endblock %}
+{% block breadcrumb %}{% if transferencia %}Editar transferência{% else %}Nova transferência{% endif %}{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <p class="page-subtitle"><a href="{% url 'financeiro_grupo:dashboard' %}">Financeiro do grupo</a></p>
+        <h1 class="page-title">{% if transferencia %}Editar transferência #{{ transferencia.pk }}{% else %}Nova transferência{% endif %}</h1>
+        <p class="page-subtitle">{% if transferencia %}A situação ({{ transferencia.get_status_display|lower }}) não muda ao salvar.{% else %}A transferência entra como pendente; use "Confirmar" na lista quando o dinheiro cair.{% endif %}</p>
+    </div>
+</div>
+
+<form method="post" class="painel">
+    {% csrf_token %}
+    <div class="painel-corpo">
+        {% if form.non_field_errors %}<div class="aviso aviso-erro" role="alert">{% include 'base/componentes/icone_aviso.html' with tipo='erro' %}<span class="aviso-texto">{{ form.non_field_errors|join:" " }}</span></div>{% endif %}
+        <div class="campos">
+            {% with field=form.empresa_origem %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.empresa_destino %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.valor %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.tipo %}{% include 'base/componentes/campo.html' %}{% endwith %}
+            {% with field=form.data %}{% include 'base/componentes/campo.html' %}{% endwith %}
+        </div>
+        {% with field=form.finalidade %}{% include 'base/componentes/campo.html' %}{% endwith %}
+        {% with field=form.observacoes %}{% include 'base/componentes/campo.html' %}{% endwith %}
+        <div class="form-acoes">
+            <a href="{% if transferencia %}{% url 'financeiro_grupo:transferencia_detail' transferencia.pk %}{% else %}{% url 'financeiro_grupo:dashboard' %}{% endif %}" class="btn btn-secundario">Cancelar</a>
+            <button type="submit" class="btn btn-primary">{% if transferencia %}Salvar alterações{% else %}Registrar transferência{% endif %}</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

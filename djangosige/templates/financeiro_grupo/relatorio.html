@@ -1,0 +1,54 @@
+{% extends 'base/base.html' %}
+{% load led_ui %}
+
+{% block title %}Relatório de transferências{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <p class="page-subtitle"><a href="{% url 'financeiro_grupo:dashboard' %}">Financeiro do grupo</a></p>
+        <h1 class="page-title">Relatório de transferências</h1>
+        <p class="page-subtitle">De {{ inicio|date:"d/m/Y" }} a {{ fim|date:"d/m/Y" }}</p>
+    </div>
+    <form method="get" class="page-actions">
+        <label class="campo-filtro">De<input type="date" name="de" value="{{ inicio|date:'Y-m-d' }}" style="min-width:150px"></label>
+        <label class="campo-filtro">Até<input type="date" name="ate" value="{{ fim|date:'Y-m-d' }}" style="min-width:150px"></label>
+        <button type="submit" class="btn btn-secundario">Ver período</button>
+        <button type="button" class="btn btn-secundario" onclick="window.print()">Imprimir</button>
+    </form>
+</div>
+
+<section class="painel" aria-label="Totais do período">
+    <div class="numeros">
+        <div class="numero"><span class="numero-rotulo">Concluídas</span>{% valor_brl totais.concluida %}</div>
+        <div class="numero"><span class="numero-rotulo">Pendentes</span>{% valor_brl totais.pendente %}</div>
+        <div class="numero"><span class="numero-rotulo">Canceladas</span>{% valor_brl totais.cancelada %}</div>
+    </div>
+    {% if por_tipo %}<div class="numeros-faixa">{% for t in por_tipo %}<div class="numero"><span class="numero-rotulo">{{ t.tipo }}</span><span class="numero-valor">{{ t.total|brl }}</span></div>{% endfor %}</div>{% endif %}
+</section>
+
+<section class="painel">
+    {% if transferencias %}
+    <div class="tabela-caixa">
+        <table class="tabela" style="min-width: 900px">
+            <thead><tr><th scope="col">Data</th><th scope="col">Origem</th><th scope="col">Destino</th><th scope="col">Tipo</th><th scope="col" class="num">Valor</th><th scope="col">Situação</th><th scope="col">Responsável</th></tr></thead>
+            <tbody>
+                {% for t in transferencias %}
+                <tr>
+                    <td class="nowrap"><a href="{% url 'financeiro_grupo:transferencia_detail' t.pk %}">{{ t.data|date:"d/m/Y" }}</a></td>
+                    <td>{{ t.empresa_origem.pessoa_jur_info.nome_fantasia|default:t.empresa_origem.nome_razao_social }}</td>
+                    <td>{{ t.empresa_destino.pessoa_jur_info.nome_fantasia|default:t.empresa_destino.nome_razao_social }}</td>
+                    <td>{{ t.get_tipo_display }}</td>
+                    <td class="num forte">{{ t.valor|brl }}</td>
+                    <td>{% if t.status == 'concluida' %}<span class="etiqueta etiqueta-positiva">Concluída</span>{% elif t.status == 'cancelada' %}<span class="etiqueta etiqueta-negativa">Cancelada</span>{% else %}<span class="etiqueta etiqueta-atencao">Pendente</span>{% endif %}</td>
+                    <td class="suave">{{ t.usuario|default:"—" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    {% include 'base/componentes/estado_vazio.html' with icone='calendario' texto='Nenhuma transferência neste período. Escolha outras datas acima.' %}
+    {% endif %}
+</section>
+{% endblock %}

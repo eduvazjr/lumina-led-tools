@@ -101,7 +101,7 @@
                 {% for proc in processos %}
                 <tr>
                     <td class="texto-longo"><a href="{% url 'juridico:processo_detail' proc.id %}" class="forte nowrap">{{ proc.numero }}</a><span class="sublinha">{{ proc.descricao|truncatewords:8 }}</span></td>
-                    <td class="nowrap">{{ proc.orgao }}</td>
+                    <td class="nowrap">{{ proc.get_orgao_display }}</td>
                     <td>
                         {% if proc.nivel_risco == 'alto' %}<span class="etiqueta etiqueta-negativa">Alto</span>
                         {% elif proc.nivel_risco == 'medio' %}<span class="etiqueta etiqueta-atencao">Médio</span>

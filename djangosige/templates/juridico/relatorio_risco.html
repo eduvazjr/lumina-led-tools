@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+{% load led_ui %}
+
+{% block title %}Relatório de riscos{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <p class="page-subtitle"><a href="{% url 'juridico:dashboard' %}">Jurídico</a></p>
+        <h1 class="page-title">Relatório de riscos</h1>
+        <p class="page-subtitle">Processos ativos, do maior para o menor valor em risco</p>
+    </div>
+    <div class="page-actions"><button type="button" class="btn btn-secundario" onclick="window.print()">Imprimir</button></div>
+</div>
+
+<section class="painel" aria-label="Resumo">
+    <div class="numeros">
+        <div class="numero"><span class="numero-rotulo">Valor em risco</span>{% valor_brl total_risco %}<span class="numero-nota">{{ processos|length }} processo{{ processos|length|pluralize }} ativo{{ processos|length|pluralize }}</span></div>
+        <div class="numero"><span class="numero-rotulo">Soma das causas</span>{% valor_brl total_causa %}</div>
+    </div>
+    <div class="numeros-faixa">
+        {% for n in por_nivel %}<div class="numero"><span class="numero-rotulo">Risco {{ n.nome|lower }} ({{ n.quantidade }})</span><span class="numero-valor{% if n.nivel == 'alto' and n.quantidade %} is-negativo{% endif %}">{{ n.valor_risco|brl }}</span></div>{% endfor %}
+    </div>
+</section>
+
+<section class="painel">
+    {% if processos %}
+    <div class="tabela-caixa">
+        <table class="tabela" style="min-width: 900px">
+            <thead><tr><th scope="col">Processo</th><th scope="col">Órgão</th><th scope="col">Risco</th><th scope="col" class="num">Valor da causa</th><th scope="col" class="num">Chance de perda</th><th scope="col" class="num">Valor em risco</th><th scope="col">Próximo prazo</th></tr></thead>
+            <tbody>
+                {% for p in processos %}
+                <tr>
+                    <td class="texto-longo"><a href="{% url 'juridico:processo_detail' p.pk %}" class="forte nowrap">{{ p.numero }}</a><span class="sublinha">{{ p.parte_contraria }}</span></td>
+                    <td class="nowrap">{{ p.get_orgao_display }}</td>
+                    <td>{% if p.nivel_risco == 'alto' %}<span class="etiqueta etiqueta-negativa">Alto</span>{% elif p.nivel_risco == 'medio' %}<span class="etiqueta etiqueta-atencao">Médio</span>{% else %}<span class="etiqueta">Baixo</span>{% endif %}</td>
+                    <td class="num">{{ p.valor_causa|brl }}</td>
+                    <td class="num">{{ p.probabilidade_perda }}%</td>
+                    <td class="num forte">{{ p.valor_risco|brl }}</td>
+                    <td class="nowrap">{% if p.proximo_prazo %}{{ p.proximo_prazo|date:"d/m/Y" }}{% if p.prazo_vencido %} <span class="etiqueta etiqueta-negativa">vencido</span>{% endif %}{% else %}—{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    {% include 'base/componentes/estado_vazio.html' with icone='documento' texto='Nenhum processo ativo. Os processos com situação ativa aparecem aqui.' %}
+    {% endif %}
+</section>
+{% endblock %}

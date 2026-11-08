@@ -118,19 +118,28 @@ def dashboard(request):
     return render(request, 'juridico/dashboard.html', context)
 
 
+def _formulario_processo(request, processo=None):
+    from .forms import ProcessoForm
+    form = ProcessoForm(request.POST or None, instance=processo)
+    if request.method == 'POST' and form.is_valid():
+        novo = form.save(commit=False)
+        if not novo.usuario_id:
+            novo.usuario = request.user
+        novo.save()
+        return redirect('juridico:processo_detail', pk=novo.pk)
+    return render(request, 'juridico/form.html', {'form': form, 'processo': processo})
+
+
 @login_required
 def processo_add(request):
     """Adicionar novo processo"""
-    # TODO: Implementar formulário
-    return redirect('juridico:dashboard')
+    return _formulario_processo(request)
 
 
 @login_required
 def processo_edit(request, pk):
     """Editar processo"""
-    processo = get_object_or_404(Processo, pk=pk)
-    # TODO: Implementar formulário
-    return redirect('juridico:dashboard')
+    return _formulario_processo(request, get_object_or_404(Processo, pk=pk))
 
 
 @login_required
@@ -219,6 +228,17 @@ def pesquisar_processos(request):
 
 @login_required
 def relatorio_risco(request):
-    """Relatório de riscos jurídicos"""
-    # TODO: Implementar relatório PDF
-    return redirect('juridico:dashboard')
+    """Relatório de riscos: processos ativos do maior para o menor valor em risco"""
+    processos = sorted(Processo.objects.filter(status='ativo').select_related('empresa'),
+                       key=lambda p: p.valor_risco, reverse=True)
+    por_nivel = []
+    for nivel, nome in Processo.RISCO_CHOICES:
+        do_nivel = [p for p in processos if p.nivel_risco == nivel]
+        por_nivel.append({'nivel': nivel, 'nome': nome, 'quantidade': len(do_nivel),
+                          'valor_causa': sum(float(p.valor_causa) for p in do_nivel),
+                          'valor_risco': sum(p.valor_risco for p in do_nivel)})
+    return render(request, 'juridico/relatorio_risco.html', {
+        'processos': processos, 'por_nivel': por_nivel,
+        'total_causa': sum(float(p.valor_causa) for p in processos),
+        'total_risco': sum(p.valor_risco for p in processos),
+    })

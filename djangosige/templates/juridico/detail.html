@@ -9,11 +9,12 @@
     <div class="page-head-texto">
         <p class="page-subtitle"><a href="{% url 'juridico:dashboard' %}">Jurídico</a></p>
         <h1 class="page-title">Processo {{ processo.numero }}</h1>
-        <p class="page-subtitle">{% firstof processo.get_tipo_processo_display processo.tipo_processo as tipo %}{% if tipo %}{{ tipo }} · {% endif %}{{ processo.orgao }}{% if processo.parte_contraria %} · contra {{ processo.parte_contraria }}{% endif %}</p>
+        <p class="page-subtitle">{% firstof processo.get_tipo_processo_display processo.tipo_processo as tipo %}{% if tipo %}{{ tipo }} · {% endif %}{{ processo.get_orgao_display }}{% if processo.parte_contraria %} · contra {{ processo.parte_contraria }}{% endif %}</p>
     </div>
     <div class="page-actions">
         {% if processo.nivel_risco == 'alto' %}<span class="etiqueta etiqueta-negativa">Risco alto</span>{% elif processo.nivel_risco == 'medio' %}<span class="etiqueta etiqueta-atencao">Risco médio</span>{% else %}<span class="etiqueta">Risco baixo</span>{% endif %}
         <span class="etiqueta{% if processo.status == 'ganho' %} etiqueta-positiva{% elif processo.status == 'perdido' %} etiqueta-negativa{% endif %}">{{ processo.get_status_display }}</span>
+        <a href="{% url 'juridico:processo_edit' processo.pk %}" class="btn btn-secundario">Editar</a>
     </div>
 </div>
 

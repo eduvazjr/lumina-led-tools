@@ -162,19 +162,28 @@ def dashboard(request):
     return render(request, 'financeiro_grupo/dashboard.html', context)
 
 
+def _formulario_transferencia(request, transferencia=None):
+    from .forms import TransferenciaForm
+    form = TransferenciaForm(request.POST or None, instance=transferencia)
+    if request.method == 'POST' and form.is_valid():
+        nova = form.save(commit=False)
+        if not nova.usuario_id:
+            nova.usuario = request.user
+        nova.save()
+        return redirect('financeiro_grupo:transferencia_detail', pk=nova.pk)
+    return render(request, 'financeiro_grupo/form.html', {'form': form, 'transferencia': transferencia})
+
+
 @login_required
 def transferencia_add(request):
-    """Adicionar nova transferência"""
-    # TODO: Implementar formulário
-    return redirect('financeiro_grupo:dashboard')
+    """Adicionar nova transferência (entra como pendente; 'Confirmar' conclui)"""
+    return _formulario_transferencia(request)
 
 
 @login_required
 def transferencia_edit(request, pk):
     """Editar transferência"""
-    transferencia = get_object_or_404(TransferenciaGrupo, pk=pk)
-    # TODO: Implementar formulário
-    return redirect('financeiro_grupo:dashboard')
+    return _formulario_transferencia(request, get_object_or_404(TransferenciaGrupo, pk=pk))
 
 
 @login_required
@@ -196,6 +205,23 @@ def transferencia_confirmar(request, pk):
 
 @login_required
 def relatorio(request):
-    """Relatório completo"""
-    # TODO: Implementar relatório PDF/Excel
-    return redirect('financeiro_grupo:dashboard')
+    """Relatório de todas as transferências de um período, com totais"""
+    from datetime import datetime as _dt
+    hoje = date.today()
+    def _data(nome, padrao):
+        try:
+            return _dt.strptime(request.GET.get(nome, ''), '%Y-%m-%d').date()
+        except ValueError:
+            return padrao
+    inicio = _data('de', hoje.replace(month=1, day=1))
+    fim = _data('ate', hoje)
+    transferencias = TransferenciaGrupo.objects.filter(
+        data__date__gte=inicio, data__date__lte=fim).select_related('empresa_origem', 'empresa_destino', 'usuario').order_by('-data')
+    totais = {status: transferencias.filter(status=status).aggregate(t=Sum('valor'))['t'] or 0
+              for status, _ in TransferenciaGrupo.STATUS_CHOICES}
+    por_tipo = transferencias.filter(status='concluida').values('tipo').annotate(total=Sum('valor')).order_by('-total')
+    nomes_tipo = dict(TransferenciaGrupo.TIPO_CHOICES)
+    return render(request, 'financeiro_grupo/relatorio.html', {
+        'transferencias': transferencias, 'inicio': inicio, 'fim': fim, 'totais': totais,
+        'por_tipo': [{'tipo': nomes_tipo.get(t['tipo'], t['tipo']), 'total': t['total']} for t in por_tipo],
+    })
