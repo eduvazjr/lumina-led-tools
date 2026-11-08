@@ -65,7 +65,7 @@ def dashboard(request):
         
         saldo = float(entradas) - float(saidas)
         saldos_empresas.append({
-            'empresa': empresa.nome_fantasia,
+            'empresa': getattr(getattr(empresa, 'pessoa_jur_info', None), 'nome_fantasia', None) or empresa.nome_razao_social,
             'saldo': saldo
         })
     
@@ -92,7 +92,7 @@ def dashboard(request):
     
     for emp_origem in empresas:
         linha = {
-            'empresa': emp_origem.nome_fantasia[:15],
+            'empresa': (getattr(getattr(emp_origem, 'pessoa_jur_info', None), 'nome_fantasia', None) or emp_origem.nome_razao_social)[:15],
             'valores': [],
             'total': 0
         }
@@ -126,7 +126,7 @@ def dashboard(request):
         total=Sum('valor')
     ).order_by('dia')
     
-    fluxo_labels = [item['dia'].strftime('%d/%m') for item in fluxo_30d[:14]]
+    fluxo_labels = [(item['dia'].strftime('%d/%m') if hasattr(item['dia'], 'strftime') else '/'.join(str(item['dia']).split('-')[::-1][:2])) for item in fluxo_30d[:14]]
     fluxo_valores = [float(item['total']) for item in fluxo_30d[:14]]
     
     saldos_labels = [item['empresa'][:15] for item in saldos_empresas]
