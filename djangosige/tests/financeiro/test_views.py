@@ -11,6 +11,8 @@ from datetime import datetime, timedelta
 from decimal import Decimal
 import json
 import locale
+
+from djangosige.apps.gerencial.templatetags.gerencial_format import ptbr_number
 try:
     locale.setlocale(locale.LC_ALL, 'pt_BR.utf8')
 except locale.Error:
@@ -458,10 +460,10 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         data = response.context['form'].initial
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Recebimento editado'
-        data['valor_total'] = locale.format_string(u'%.2f', Decimal(
-            data['valor_total']) + Decimal('20.00'), 1)
-        data['valor_liquido'] = locale.format_string(u'%.2f', Decimal(
-            data['valor_liquido']) + Decimal('20.00'), 1)
+        data['valor_total'] = ptbr_number(Decimal(
+            data['valor_total']) + Decimal('20.00'), 2)
+        data['valor_liquido'] = ptbr_number(Decimal(
+            data['valor_liquido']) + Decimal('20.00'), 2)
         response = self.client.post(url, data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
@@ -492,10 +494,10 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         novo_valor_entradas = Decimal(data['valor_liquido']) + Decimal('20.00')
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Recebimento editado'
-        data['valor_total'] = locale.format_string(u'%.2f', Decimal(
-            data['valor_total']) + Decimal('20.00'), 1)
-        data['valor_liquido'] = locale.format_string(u'%.2f', Decimal(
-            data['valor_liquido']) + Decimal('20.00'), 1)
+        data['valor_total'] = ptbr_number(Decimal(
+            data['valor_total']) + Decimal('20.00'), 2)
+        data['valor_liquido'] = ptbr_number(Decimal(
+            data['valor_liquido']) + Decimal('20.00'), 2)
         data['data_pagamento'] = nova_data_pagamento.strftime('%d/%m/%Y')
         response = self.client.post(url, data, follow=True)
         self.assertEqual(response.status_code, 200)
@@ -525,10 +527,10 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
             data_movimento=nova_data_pagamento).entradas + Decimal(data['valor_liquido']) + Decimal('20.00')
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Recebimento editado'
-        data['valor_total'] = locale.format_string(u'%.2f', Decimal(
-            data['valor_total']) + Decimal('20.00'), 1)
-        data['valor_liquido'] = locale.format_string(u'%.2f', Decimal(
-            data['valor_liquido']) + Decimal('20.00'), 1)
+        data['valor_total'] = ptbr_number(Decimal(
+            data['valor_total']) + Decimal('20.00'), 2)
+        data['valor_liquido'] = ptbr_number(Decimal(
+            data['valor_liquido']) + Decimal('20.00'), 2)
         data['data_pagamento'] = nova_data_pagamento.strftime('%d/%m/%Y')
         response = self.client.post(url, data, follow=True)
         self.assertEqual(response.status_code, 200)
@@ -573,10 +575,8 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         data = response.context['form'].initial
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Recebimento editado'
-        data['valor_total'] = locale.format_string(
-            u'%.2f', Decimal(data['valor_total']), 1)
-        data['valor_liquido'] = locale.format_string(
-            u'%.2f', Decimal(data['valor_liquido']), 1)
+        data['valor_total'] = ptbr_number(Decimal(data['valor_total']), 2)
+        data['valor_liquido'] = ptbr_number(Decimal(data['valor_liquido']), 2)
         data['movimentar_caixa'] = False
         response = self.client.post(url, data, follow=True)
         self.assertEqual(response.status_code, 200)
@@ -600,10 +600,8 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         data = response.context['form'].initial
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Recebimento editado'
-        data['valor_total'] = locale.format_string(
-            u'%.2f', Decimal(data['valor_total']), 1)
-        data['valor_liquido'] = locale.format_string(
-            u'%.2f', Decimal(data['valor_liquido']), 1)
+        data['valor_total'] = ptbr_number(Decimal(data['valor_total']), 2)
+        data['valor_liquido'] = ptbr_number(Decimal(data['valor_liquido']), 2)
         data['movimentar_caixa'] = True
         response = self.client.post(url, data, follow=True)
         self.assertEqual(response.status_code, 200)
@@ -629,10 +627,10 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         data = response.context['form'].initial
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Pagamento editado'
-        data['valor_total'] = locale.format_string(u'%.2f', Decimal(
-            data['valor_total']) + Decimal('20.00'), 1)
-        data['valor_liquido'] = locale.format_string(u'%.2f', Decimal(
-            data['valor_liquido']) + Decimal('20.00'), 1)
+        data['valor_total'] = ptbr_number(Decimal(
+            data['valor_total']) + Decimal('20.00'), 2)
+        data['valor_liquido'] = ptbr_number(Decimal(
+            data['valor_liquido']) + Decimal('20.00'), 2)
         response = self.client.post(url, data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
@@ -663,10 +661,10 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         novo_valor_saidas = Decimal(data['valor_liquido']) + Decimal('20.00')
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Pagamento editado'
-        data['valor_total'] = locale.format_string(u'%.2f', Decimal(
-            data['valor_total']) + Decimal('20.00'), 1)
-        data['valor_liquido'] = locale.format_string(u'%.2f', Decimal(
-            data['valor_liquido']) + Decimal('20.00'), 1)
+        data['valor_total'] = ptbr_number(Decimal(
+            data['valor_total']) + Decimal('20.00'), 2)
+        data['valor_liquido'] = ptbr_number(Decimal(
+            data['valor_liquido']) + Decimal('20.00'), 2)
         data['data_pagamento'] = nova_data_pagamento.strftime('%d/%m/%Y')
         response = self.client.post(url, data, follow=True)
         self.assertEqual(response.status_code, 200)
@@ -696,10 +694,10 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
             data_movimento=nova_data_pagamento).saidas + Decimal(data['valor_liquido']) + Decimal('20.00')
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Pagamento editado'
-        data['valor_total'] = locale.format_string(u'%.2f', Decimal(
-            data['valor_total']) + Decimal('20.00'), 1)
-        data['valor_liquido'] = locale.format_string(u'%.2f', Decimal(
-            data['valor_liquido']) + Decimal('20.00'), 1)
+        data['valor_total'] = ptbr_number(Decimal(
+            data['valor_total']) + Decimal('20.00'), 2)
+        data['valor_liquido'] = ptbr_number(Decimal(
+            data['valor_liquido']) + Decimal('20.00'), 2)
         data['data_pagamento'] = nova_data_pagamento.strftime('%d/%m/%Y')
         response = self.client.post(url, data, follow=True)
         self.assertEqual(response.status_code, 200)
@@ -744,10 +742,8 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         data = response.context['form'].initial
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Pagamento editado'
-        data['valor_total'] = locale.format_string(
-            u'%.2f', Decimal(data['valor_total']), 1)
-        data['valor_liquido'] = locale.format_string(
-            u'%.2f', Decimal(data['valor_liquido']), 1)
+        data['valor_total'] = ptbr_number(Decimal(data['valor_total']), 2)
+        data['valor_liquido'] = ptbr_number(Decimal(data['valor_liquido']), 2)
         data['movimentar_caixa'] = False
         response = self.client.post(url, data, follow=True)
         self.assertEqual(response.status_code, 200)
@@ -771,10 +767,8 @@ class FinanceiroEditarViewsTestCase(BaseTestCase):
         data = response.context['form'].initial
         replace_none_values_in_dictionary(data)
         data['descricao'] = 'Pagamento editado'
-        data['valor_total'] = locale.format_string(
-            u'%.2f', Decimal(data['valor_total']), 1)
-        data['valor_liquido'] = locale.format_string(
-            u'%.2f', Decimal(data['valor_liquido']), 1)
+        data['valor_total'] = ptbr_number(Decimal(data['valor_total']), 2)
+        data['valor_liquido'] = ptbr_number(Decimal(data['valor_liquido']), 2)
         data['movimentar_caixa'] = True
         response = self.client.post(url, data, follow=True)
         self.assertEqual(response.status_code, 200)

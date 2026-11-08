@@ -109,7 +109,9 @@ class AgenteAdministrativoTestCase(BaseTestCase):
         ObrigacaoAcessoria.objects.create(fiscal=fiscal, tipo='dctf', mes_referencia=1,
                                           ano_referencia=self.hoje.year,
                                           data_vencimento=self.hoje + timedelta(days=1))
-        anterior = self.hoje.replace(day=1) - timedelta(days=1)
+        # Competência de dois meses atrás: o vencimento (dia 20 do mês seguinte) já
+        # passou em qualquer dia do mês, então o alerta não depende da data do teste.
+        anterior = (self.hoje.replace(day=1) - timedelta(days=1)).replace(day=1) - timedelta(days=1)
         ApuracaoTributos.objects.create(fiscal=fiscal, mes_referencia=anterior.month,
                                         ano_referencia=anterior.year, total_tributos=Decimal('820.00'))
         titulos = self.titulos()
