@@ -35,6 +35,9 @@ CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
 # Em produção, a variável DATABASE_URL é automaticamente fornecida
 DATABASE_URL = config('DATABASE_URL', default=None)
 
+# Token da API do Base.com (BaseLinker): Base.com > Minha conta > API
+BASELINKER_TOKEN = config('BASELINKER_TOKEN', default='')
+
 if DATABASE_URL:
     # Produção: usa PostgreSQL via DATABASE_URL
     DATABASES = {
@@ -82,6 +85,7 @@ INSTALLED_APPS = [
 
     # Documentos anexados a qualquer registro
     'djangosige.apps.anexos',
+    'djangosige.apps.canais',
 ]
 
 

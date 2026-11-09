@@ -27,6 +27,9 @@ urlpatterns = [
 
     # Documentos anexados (todas as telas)
     url(r'^anexos/', include('djangosige.apps.anexos.urls')),
+
+    # Canais de venda: métricas dos marketplaces vindas do Base.com
+    url(r'^canais/', include('djangosige.apps.canais.urls')),
 ]
 
 if DEBUG is True:

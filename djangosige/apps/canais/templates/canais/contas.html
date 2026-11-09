@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Comissões por conta{% endblock %}
+{% block breadcrumb %}Comissões por conta{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <p class="page-subtitle"><a href="{% url 'canais:painel' %}">Canais de venda</a></p>
+        <h1 class="page-title">Comissões por conta</h1>
+        <p class="page-subtitle">O Mercado Livre informa a comissão em cada pedido. Para as outras plataformas, informe o percentual médio cobrado; ele é aplicado sobre o valor dos produtos.</p>
+    </div>
+</div>
+
+<form method="post" class="painel">
+    {% csrf_token %}
+    {% if contas %}
+    <div class="tabela-caixa">
+        <table class="tabela" data-sem-exportar>
+            <thead><tr><th scope="col">Conta</th><th scope="col">Plataforma</th><th scope="col">Comissão estimada (%)</th></tr></thead>
+            <tbody>
+                {% for c in contas %}
+                <tr>
+                    <td class="forte">{{ c.nome }}</td>
+                    <td>{{ c.plataforma }}</td>
+                    <td>
+                        <input type="text" aria-label="Comissão estimada de {{ c.nome }} (%)" id="pct_{{ c.pk }}" name="pct_{{ c.pk }}" inputmode="decimal" placeholder="{% if c.origem == 'melibr' %}Só se faltar no pedido{% else %}Ex.: 20{% endif %}" value="{% if c.comissao_percentual is not None %}{{ c.comissao_percentual|floatformat:'-2' }}{% endif %}" style="max-width: 200px">
+                        {% if c.origem == 'melibr' %}<span class="sublinha">O Mercado Livre já informa a comissão em cada pedido</span>{% endif %}
+                        {% if c.erro %}<span class="error-message">{{ c.erro }}</span>{% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="painel-corpo form-acoes">
+        <a href="{% url 'canais:painel' %}" class="btn btn-secundario">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+    {% else %}
+    {% include 'base/componentes/estado_vazio.html' with texto='Nenhuma conta ainda.' dica='As contas aparecem depois da primeira sincronização com o Base.com.' %}
+    {% endif %}
+</form>
+{% endblock %}

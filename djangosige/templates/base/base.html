@@ -1,4 +1,4 @@
-{% load static led_ui %}{# Aumente ao publicar mudanças em led-ui.css ou admin.js, para o navegador não usar a versão em cache #}{% with ui_v='21' %}<!DOCTYPE html>
+{% load static led_ui %}{# Aumente ao publicar mudanças em led-ui.css ou admin.js, para o navegador não usar a versão em cache #}{% with ui_v='22' %}<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -141,6 +141,10 @@
                     <li><a href="{% url 'gerencial:dashboard' %}" class="nav-link{% if ns == 'gerencial' %} active{% endif %}"{% if ns == 'gerencial' %} aria-current="page"{% endif %}>
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
                         <span>Controle gerencial</span>
+                    </a></li>
+                    <li><a href="{% url 'canais:painel' %}" class="nav-link{% if ns == 'canais' %} active{% endif %}"{% if ns == 'canais' %} aria-current="page"{% endif %}>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18l-1.5-5h-15zM4 9v11h16V9M9 20v-6h6v6"/></svg>
+                        <span>Canais de venda</span>
                     </a></li>
                     <li><a href="{% url 'base:importacaoview' 'planilha' %}" class="nav-link{% if un == 'importacaoview' and tipo == 'planilha' %} active{% endif %}"{% if un == 'importacaoview' and tipo == 'planilha' %} aria-current="page"{% endif %}>
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7z"/><path d="M14 3v4h4M12 17v-6M9.5 13.5 12 11l2.5 2.5"/></svg>

@@ -1114,3 +1114,13 @@ input[type="file"]::file-selector-button:hover { background: #F3F4F5; }
 .tabela-cobertura tbody tr:last-child th { border-bottom: 0; }
 .tabela-cobertura td { padding-left: 6px; padding-right: 6px; }
 .tabela-cobertura .etiqueta { text-decoration: none; }
+
+/* ---------- Canais de venda ---------- */
+.numeros-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.variacao { align-self: flex-start; padding: 2px 8px; border-radius: var(--raio-etiqueta); background: var(--superficie-2); color: var(--texto-2); font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.variacao.is-positivo { background: var(--positivo-fundo); color: var(--positivo); }
+.variacao.is-negativo { background: var(--negativo-fundo); color: var(--negativo-texto); }
+.filtros-periodo .painel-corpo { display: flex; flex-wrap: wrap; gap: 12px 16px; padding: 16px 24px; }
+.filtros-periodo .datas { display: flex; gap: 12px 16px; flex-wrap: wrap; }
+.filtros-periodo .datas[hidden] { display: none; }
+.filtros-periodo .sinc-nota { margin-left: auto; align-self: center; }

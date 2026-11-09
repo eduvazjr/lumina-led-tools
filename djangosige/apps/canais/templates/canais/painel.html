@@ -1,0 +1,128 @@
+{% extends 'base/base.html' %}
+{% load led_ui canais_tags %}
+
+{% block title %}Canais de venda{% endblock %}
+{% block breadcrumb %}Canais de venda{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <h1 class="page-title">Canais de venda</h1>
+        <p class="page-subtitle">Pedidos dos marketplaces trazidos do Base.com · {{ inicio|date:"d/m/Y" }} a {{ fim|date:"d/m/Y" }}, comparando com {{ inicio_comp|date:"d/m/Y" }} a {{ fim_comp|date:"d/m/Y" }}</p>
+    </div>
+    <div class="page-actions">
+        <a href="{% url 'canais:contas' %}" class="btn btn-secundario">Comissões por conta</a>
+        {% if tem_token %}
+        <form method="post" action="{% url 'canais:sincronizar' %}" onsubmit="this.querySelector('button').disabled=true;this.querySelector('button').textContent='Sincronizando…';">
+            {% csrf_token %}<button type="submit" class="btn btn-primary">Sincronizar agora</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+{% include 'base/msg_sucesso.html' %}
+{% if messages %}{% for m in messages %}{% if m.tags == 'error' %}{% include 'base/componentes/aviso.html' with tipo='erro' texto=m.message %}{% endif %}{% endfor %}{% endif %}
+
+{% if not tem_token %}
+<div class="aviso aviso-atencao" role="status">{% include 'base/componentes/icone_aviso.html' with tipo='atencao' %}<span class="aviso-texto">Falta o token da API do Base.com. Gere em <strong>Base.com &gt; Minha conta &gt; API</strong> e coloque no arquivo <strong>.env</strong> do servidor como <strong>BASELINKER_TOKEN=...</strong>.</span></div>
+{% elif ultima and ultima.erro and not ultima.completa %}
+{% include 'base/componentes/aviso.html' with tipo='atencao' texto=ultima.erro %}
+{% endif %}
+
+<form method="get" class="painel filtros-periodo">
+    <div class="painel-corpo filtros">
+        <label class="campo-filtro">Período
+            <select name="periodo" onchange="this.form.querySelector('.datas').hidden = this.value !== 'personalizado'">
+                {% for valor, rotulo in periodos %}<option value="{{ valor }}"{% if valor == periodo %} selected{% endif %}>{{ rotulo }}</option>{% endfor %}
+            </select>
+        </label>
+        <span class="datas filtros"{% if periodo != 'personalizado' %} hidden{% endif %}>
+            <label class="campo-filtro">De<input type="date" name="de" value="{{ inicio|date:'Y-m-d' }}"></label>
+            <label class="campo-filtro">Até<input type="date" name="ate" value="{{ fim|date:'Y-m-d' }}"></label>
+        </span>
+        <label class="campo-filtro">Plataforma
+            <select name="plataforma"><option value="">Todas</option>{% for codigo, nome in plataformas %}<option value="{{ codigo }}"{% if codigo == plataforma %} selected{% endif %}>{{ nome }}</option>{% endfor %}</select>
+        </label>
+        <button type="submit" class="btn btn-secundario">Ver</button>
+        <span class="painel-nota sinc-nota">{% if ultima_ok %}Atualizado em {{ ultima_ok.terminada_em|date:"d/m/Y \à\s H:i" }}{% else %}Ainda não sincronizado{% endif %}</span>
+    </div>
+</form>
+
+{% if not tem_dados %}
+<section class="painel">
+    {% include 'base/componentes/estado_vazio.html' with texto='Ainda não há pedidos do Base.com no sistema.' dica='Depois de configurar o token, clique em Sincronizar agora ou rode a carga inicial no servidor.' icone='calendario' %}
+</section>
+{% else %}
+<section class="painel" aria-label="Vendas">
+    <div class="numeros numeros-4">
+        <div class="numero"><span class="numero-rotulo">Vendas brutas</span>{% valor_brl atual.vendas_brutas %}{% variacao v.vendas_brutas %}<span class="numero-nota">Produtos e frete cobrado, antes de cancelamentos</span></div>
+        <div class="numero"><span class="numero-rotulo">Cancelados e devolvidos</span>{% valor_brl atual.cancelados_devolvidos %}{% variacao v.cancelados_devolvidos inverso=True %}<span class="numero-nota">{{ atual.cancelados_qtd }} cancelado{{ atual.cancelados_qtd|pluralize }} · {{ atual.devolucoes_qtd }} devoluç{{ atual.devolucoes_qtd|pluralize:"ão,ões" }}</span></div>
+        <div class="numero"><span class="numero-rotulo">Vendas líquidas</span>{% valor_brl atual.vendas_liquidas %}{% variacao v.vendas_liquidas %}</div>
+        <div class="numero"><span class="numero-rotulo">Pedidos</span><span class="numero-grande">{{ atual.pedidos|ptbr_int }}</span>{% variacao v.pedidos moeda=False %}<span class="numero-nota">Ticket médio {% if atual.ticket_medio %}{{ atual.ticket_medio|brl }}{% else %}—{% endif %}</span></div>
+    </div>
+</section>
+<section class="painel" aria-label="Custos e margem">
+    <div class="numeros numeros-4">
+        <div class="numero"><span class="numero-rotulo">Custo dos produtos</span>{% valor_brl atual.custo %}{% variacao v.custo inverso=True %}<span class="numero-nota">{% if atual.pedidos_sem_custo %}{{ atual.pedidos_sem_custo }} pedido{{ atual.pedidos_sem_custo|pluralize }} com produto sem custo no Base{% else %}Custo médio do estoque do Base{% endif %}</span></div>
+        <div class="numero"><span class="numero-rotulo">Comissão dos marketplaces</span>{% valor_brl atual.comissao %}{% variacao v.comissao inverso=True %}<span class="numero-nota">{% if atual.comissao_estimada %}{{ atual.comissao_estimada|brl }} estimado pelo percentual da conta{% else %}Informada nos pedidos do Mercado Livre{% endif %}</span></div>
+        <div class="numero"><span class="numero-rotulo">Frete pago pelo vendedor</span>{% valor_brl atual.frete_vendedor %}{% variacao v.frete_vendedor inverso=True %}<span class="numero-nota">Informado nos pedidos do Mercado Livre</span></div>
+        <div class="numero"><span class="numero-rotulo">Margem</span>{% valor_brl atual.margem %}{% variacao v.margem %}<span class="numero-nota">{{ atual.margem_pct|pct }} das vendas líquidas</span></div>
+    </div>
+</section>
+
+{% if sem_taxa and atual.base_sem_comissao_sem_taxa %}
+{% url 'canais:contas' as url_contas %}
+{% include 'base/componentes/aviso.html' with tipo='info' texto='Shopee, TikTok e outras plataformas não informam a comissão pela API. Cadastre o percentual de cada conta para a margem considerar essa despesa.' link_url=url_contas link_texto='Cadastrar comissões' %}
+{% endif %}
+
+<section class="painel">
+    <div class="painel-cabecalho"><h2 class="painel-titulo">Por conta de venda</h2></div>
+    <div class="tabela-caixa">
+        <table class="tabela" style="min-width: 1000px">
+            <thead><tr><th scope="col">Conta</th><th scope="col" class="num">Pedidos</th><th scope="col" class="num">Vendas brutas</th><th scope="col" class="num">Canc. e devol.</th><th scope="col" class="num">Vendas líquidas</th><th scope="col" class="num">Custo</th><th scope="col" class="num">Comissão</th><th scope="col" class="num">Frete vendedor</th><th scope="col" class="num">Margem</th></tr></thead>
+            <tbody>
+                {% for l in linhas_conta %}
+                <tr>
+                    <td>{{ l.conta.nome|default:"Conta removida" }}<span class="sublinha">{{ l.conta.plataforma }}</span></td>
+                    <td class="num">{{ l.pedidos|ptbr_int }}</td>
+                    <td class="num">{{ l.vendas_brutas|brl }}</td>
+                    <td class="num">{{ l.cancelados_devolvidos|brl }}</td>
+                    <td class="num">{{ l.vendas_liquidas|brl }}</td>
+                    <td class="num">{{ l.custo|brl }}</td>
+                    <td class="num">{{ l.comissao|brl }}{% if l.comissao_estimada %}<span class="sublinha">estimada</span>{% endif %}</td>
+                    <td class="num">{{ l.frete_vendedor|brl }}</td>
+                    <td class="num forte">{{ l.margem|brl }}<span class="sublinha">{{ l.margem_pct|pct }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot><tr><td>Total</td><td class="num">{{ atual.pedidos|ptbr_int }}</td><td class="num">{{ atual.vendas_brutas|brl }}</td><td class="num">{{ atual.cancelados_devolvidos|brl }}</td><td class="num">{{ atual.vendas_liquidas|brl }}</td><td class="num">{{ atual.custo|brl }}</td><td class="num">{{ atual.comissao|brl }}</td><td class="num">{{ atual.frete_vendedor|brl }}</td><td class="num">{{ atual.margem|brl }}</td></tr></tfoot>
+        </table>
+    </div>
+</section>
+
+<section class="painel">
+    <div class="painel-cabecalho"><h2 class="painel-titulo">Por dia</h2></div>
+    <div class="tabela-caixa">
+        <table class="tabela" style="min-width: 860px">
+            <thead><tr><th scope="col">Dia</th><th scope="col" class="num">Pedidos</th><th scope="col" class="num">Vendas brutas</th><th scope="col" class="num">Canc. e devol.</th><th scope="col" class="num">Vendas líquidas</th><th scope="col" class="num">Custo</th><th scope="col" class="num">Comissão</th><th scope="col" class="num">Margem</th></tr></thead>
+            <tbody>
+                {% for d in por_dia %}
+                <tr>
+                    <td class="nowrap">{{ d.data|date:"d/m/Y" }}<span class="sublinha">{{ d.data|date:"l"|lower }}</span></td>
+                    <td class="num">{{ d.pedidos|ptbr_int }}</td>
+                    <td class="num">{{ d.vendas_brutas|brl }}</td>
+                    <td class="num">{{ d.cancelados_devolvidos|brl }}</td>
+                    <td class="num">{{ d.vendas_liquidas|brl }}</td>
+                    <td class="num">{{ d.custo|brl }}</td>
+                    <td class="num">{{ d.comissao|brl }}</td>
+                    <td class="num forte">{{ d.margem|brl }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="8">Nenhum pedido no período.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
