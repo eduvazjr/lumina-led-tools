@@ -5,6 +5,55 @@
 {% block breadcrumb %}Controle gerencial{% endblock %}
 
 {% block content %}
+<style>
+.gerencial-insights { display: grid; grid-template-columns: minmax(280px, .8fr) minmax(420px, 1.2fr); gap: 16px; margin: 16px 0; }
+.gerencial-insights .painel { margin: 0; min-width: 0; }
+.distribuicao-lista { display: grid; gap: 14px; padding: 18px; }
+.distribuicao-item { display: grid; grid-template-columns: minmax(100px, 1fr) minmax(90px, 1.8fr) auto; gap: 12px; align-items: center; }
+.distribuicao-nome { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; color: #334155; }
+.distribuicao-trilho { height: 9px; overflow: hidden; border-radius: 999px; background: #e9edf2; }
+.distribuicao-barra { display: block; height: 100%; min-width: 3px; border-radius: inherit; background: #d97706; }
+.distribuicao-valor { color: #475569; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.calendario-toolbar { display: flex; align-items: center; gap: 8px; }
+.calendario-toolbar .btn { min-width: 38px; min-height: 38px; padding: 6px 10px; }
+.calendario-mes { min-width: 150px; margin: 0; text-align: center; font-size: 15px; color: #1e293b; text-transform: capitalize; }
+.calendario-corpo { padding: 16px; }
+.calendario-legenda { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 14px; color: #475569; font-size: 12px; }
+.calendario-legenda span { display: inline-flex; align-items: center; gap: 6px; }
+.calendario-ponto { width: 9px; height: 9px; border-radius: 50%; background: #d97706; }
+.calendario-ponto.is-pago { background: #16803c; }
+.calendario-ponto.is-vencido { background: #c2413a; }
+.calendario-semana, .calendario-grade { display: grid; grid-template-columns: repeat(7, minmax(38px, 1fr)); gap: 5px; }
+.calendario-semana { margin-bottom: 5px; color: #64748b; font-size: 12px; font-weight: 700; text-align: center; text-transform: uppercase; }
+.calendario-dia { position: relative; min-height: 62px; padding: 7px; border: 1px solid #e2e8f0; border-radius: 10px; background: #fff; color: #334155; text-align: left; cursor: pointer; }
+.calendario-dia:hover { border-color: #d97706; background: #fffaf3; }
+.calendario-dia:focus-visible { outline: 3px solid rgba(217, 119, 6, .25); outline-offset: 1px; }
+.calendario-dia.is-outro-mes { color: #94a3b8; background: #f8fafc; }
+.calendario-dia.is-hoje { border-color: #d97706; box-shadow: inset 0 0 0 1px #d97706; }
+.calendario-dia.is-selecionado { background: #fff7ed; border-color: #b45309; }
+.calendario-numero { display: block; font-weight: 700; font-variant-numeric: tabular-nums; }
+.calendario-eventos { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.calendario-evento { width: 8px; height: 8px; border-radius: 50%; background: #d97706; }
+.calendario-evento.is-paid { background: #16803c; }
+.calendario-evento.is-overdue { background: #c2413a; }
+.calendario-contagem { margin-left: 2px; color: #64748b; font-size: 12px; }
+.calendario-detalhes { margin-top: 14px; padding-top: 14px; border-top: 1px solid #e2e8f0; }
+.calendario-detalhes h3 { margin: 0 0 8px; color: #334155; font-size: 13px; }
+.calendario-lista { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
+.calendario-lista li { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; gap: 8px; align-items: center; color: #475569; font-size: 12px; }
+.calendario-lista strong { color: #1e293b; }
+.calendario-vazio { margin: 0; color: #64748b; font-size: 12px; }
+@media (max-width: 980px) { .gerencial-insights { grid-template-columns: 1fr; } }
+@media (max-width: 620px) {
+  .distribuicao-item { grid-template-columns: minmax(90px, 1fr) 1.5fr; }
+  .distribuicao-valor { grid-column: 1 / -1; margin-top: -7px; font-size: 12px; }
+  .calendario-corpo { padding: 12px; }
+  .calendario-semana, .calendario-grade { gap: 3px; }
+  .calendario-dia { min-height: 50px; padding: 5px; border-radius: 8px; }
+  .calendario-toolbar { width: 100%; justify-content: space-between; }
+  .calendario-mes { min-width: 0; }
+}
+</style>
 <div class="page-head">
     <div class="page-head-texto">
         <h1 class="page-title">Negociações com fornecedores</h1>
@@ -78,6 +127,58 @@
     <a href="?fornecedor={{ acima.0.0|urlencode }}#detalhes">Ver lançamentos</a>
 </div>
 {% endif %}{% endwith %}
+
+<div class="gerencial-insights">
+<section class="painel" aria-labelledby="t-distribuicao">
+<div class="painel-cabecalho">
+<div>
+<h2 class="painel-titulo" id="t-distribuicao">Distribuição por fornecedor</h2>
+<span class="painel-nota">Participação no valor negociado</span>
+</div>
+</div>
+<div class="distribuicao-lista">
+{% for linha in supplier_kpis|fornecedores_por_negociado %}
+{% if linha.dados.total_negotiated %}
+<div class="distribuicao-item">
+<span class="distribuicao-nome" title="{{ linha.nome }}">{{ linha.nome }}</span>
+<span class="distribuicao-trilho" aria-hidden="true"><span class="distribuicao-barra" style="width: {{ linha.pct|default:0|floatformat:0 }}%"></span></span>
+<span class="distribuicao-valor">{{ linha.dados.total_negotiated|brl }}</span>
+</div>
+{% endif %}
+{% empty %}
+<p class="calendario-vazio">Nenhum valor disponível para o gráfico.</p>
+{% endfor %}
+</div>
+</section>
+
+<section class="painel" aria-labelledby="t-calendario">
+<div class="painel-cabecalho">
+<div>
+<h2 class="painel-titulo" id="t-calendario">Calendário financeiro</h2>
+<span class="painel-nota">Vencimentos e pagamentos registrados na planilha</span>
+</div>
+<div class="calendario-toolbar" aria-label="Navegação do calendário">
+<button class="btn btn-secundario" type="button" id="calAnterior" aria-label="Mês anterior">‹</button>
+<h3 class="calendario-mes" id="calMes" aria-live="polite"></h3>
+<button class="btn btn-secundario" type="button" id="calHoje">Hoje</button>
+<button class="btn btn-secundario" type="button" id="calProximo" aria-label="Próximo mês">›</button>
+</div>
+</div>
+<div class="calendario-corpo">
+<div class="calendario-legenda" aria-label="Legenda">
+<span><i class="calendario-ponto" aria-hidden="true"></i>Vencimento futuro</span>
+<span><i class="calendario-ponto is-pago" aria-hidden="true"></i>Pagamento efetuado</span>
+<span><i class="calendario-ponto is-vencido" aria-hidden="true"></i>Vencido</span>
+</div>
+<div class="calendario-semana" aria-hidden="true"><span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span></div>
+<div class="calendario-grade" id="calGrade" role="grid" aria-labelledby="t-calendario"></div>
+<div class="calendario-detalhes" aria-live="polite">
+<h3 id="calDetalheTitulo">Selecione uma data</h3>
+<div id="calDetalhes"><p class="calendario-vazio">Clique em um dia para consultar os pagamentos.</p></div>
+</div>
+</div>
+</section>
+</div>
 
 <section class="painel" aria-labelledby="t-forn">
     <div class="painel-cabecalho">
@@ -158,4 +259,129 @@
     {% include 'base/componentes/estado_vazio.html' with icone='busca' texto='Nenhuma negociação para este filtro. Escolha outro fornecedor ou confira a planilha no Google Drive.' %}
     {% endif %}
 </section>
+<script id="calendarioDados" type="application/json">[
+{% for item in records %}{"date":"{{ item.due_date|date:'Y-m-d' }}","supplier":"{{ item.supplier|escapejs }}","description":"{{ item.product|escapejs }}","amount":"{{ item.total_value|brl|escapejs }}","status":"{% if item.payment_value or item.paid_installments %}paid{% else %}pending{% endif %}"}{% if not forloop.last %},{% endif %}{% endfor %}
+]</script>
+<script>
+(function () {
+  'use strict';
+  const source = document.getElementById('calendarioDados');
+  const grid = document.getElementById('calGrade');
+  if (!source || !grid) return;
+
+  let events = [];
+  try { events = JSON.parse(source.textContent).filter(function (item) { return item.date; }); } catch (error) { events = []; }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  let visibleMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  let selectedKey = '';
+  const monthLabel = document.getElementById('calMes');
+  const detailTitle = document.getElementById('calDetalheTitulo');
+  const detailBox = document.getElementById('calDetalhes');
+  const formatter = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric' });
+  const dayFormatter = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+  function keyFor(date) {
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return date.getFullYear() + '-' + month + '-' + day;
+  }
+
+  function statusFor(event) {
+    if (event.status === 'paid') return 'paid';
+    const eventDate = new Date(event.date + 'T00:00:00');
+    return eventDate < today ? 'overdue' : 'pending';
+  }
+
+  function labelFor(status) {
+    if (status === 'paid') return 'Pagamento efetuado';
+    if (status === 'overdue') return 'Vencido';
+    return 'Vencimento futuro';
+  }
+
+  function showDetails(key) {
+    selectedKey = key;
+    const date = new Date(key + 'T00:00:00');
+    const matches = events.filter(function (event) { return event.date === key; });
+    detailTitle.textContent = dayFormatter.format(date);
+    detailBox.replaceChildren();
+    if (!matches.length) {
+      const empty = document.createElement('p');
+      empty.className = 'calendario-vazio';
+      empty.textContent = 'Nenhum pagamento registrado nesta data.';
+      detailBox.appendChild(empty);
+      return;
+    }
+    const list = document.createElement('ul');
+    list.className = 'calendario-lista';
+    matches.forEach(function (event) {
+      const status = statusFor(event);
+      const item = document.createElement('li');
+      const dot = document.createElement('i');
+      dot.className = 'calendario-evento is-' + status;
+      dot.setAttribute('aria-hidden', 'true');
+      const copy = document.createElement('span');
+      const supplier = document.createElement('strong');
+      supplier.textContent = event.supplier || 'Fornecedor';
+      copy.appendChild(supplier);
+      copy.appendChild(document.createTextNode(' · ' + (event.description || labelFor(status))));
+      const amount = document.createElement('span');
+      amount.textContent = event.amount || '';
+      amount.title = labelFor(status);
+      item.append(dot, copy, amount);
+      list.appendChild(item);
+    });
+    detailBox.appendChild(list);
+  }
+
+  function render() {
+    monthLabel.textContent = formatter.format(visibleMonth);
+    grid.replaceChildren();
+    const first = new Date(visibleMonth.getFullYear(), visibleMonth.getMonth(), 1);
+    const cursor = new Date(first);
+    cursor.setDate(cursor.getDate() - cursor.getDay());
+
+    for (let index = 0; index < 42; index += 1) {
+      const date = new Date(cursor);
+      date.setDate(cursor.getDate() + index);
+      const key = keyFor(date);
+      const matches = events.filter(function (event) { return event.date === key; });
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'calendario-dia';
+      button.setAttribute('role', 'gridcell');
+      button.setAttribute('aria-label', dayFormatter.format(date) + (matches.length ? ', ' + matches.length + ' lançamento(s)' : ''));
+      if (date.getMonth() !== visibleMonth.getMonth()) button.classList.add('is-outro-mes');
+      if (key === keyFor(today)) button.classList.add('is-hoje');
+      if (key === selectedKey) button.classList.add('is-selecionado');
+      const number = document.createElement('span');
+      number.className = 'calendario-numero';
+      number.textContent = date.getDate();
+      const markers = document.createElement('span');
+      markers.className = 'calendario-eventos';
+      matches.slice(0, 3).forEach(function (event) {
+        const marker = document.createElement('i');
+        marker.className = 'calendario-evento is-' + statusFor(event);
+        marker.setAttribute('aria-hidden', 'true');
+        markers.appendChild(marker);
+      });
+      if (matches.length > 3) {
+        const count = document.createElement('span');
+        count.className = 'calendario-contagem';
+        count.textContent = '+' + (matches.length - 3);
+        markers.appendChild(count);
+      }
+      button.append(number, markers);
+      button.addEventListener('click', function () { showDetails(key); render(); });
+      grid.appendChild(button);
+    }
+  }
+
+  document.getElementById('calAnterior').addEventListener('click', function () { visibleMonth.setMonth(visibleMonth.getMonth() - 1); render(); });
+  document.getElementById('calProximo').addEventListener('click', function () { visibleMonth.setMonth(visibleMonth.getMonth() + 1); render(); });
+  document.getElementById('calHoje').addEventListener('click', function () { visibleMonth = new Date(today.getFullYear(), today.getMonth(), 1); showDetails(keyFor(today)); render(); });
+  render();
+}());
+</script>
 {% endblock %}

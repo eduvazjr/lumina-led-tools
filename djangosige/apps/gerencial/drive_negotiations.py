@@ -17,13 +17,14 @@ from django.conf import settings
 from django.core.cache import cache
 from django.utils import timezone
 
-CACHE_KEY = 'gerencial:negotiations:v2'
-LAST_GOOD_KEY = 'gerencial:negotiations:last-good'
+CACHE_KEY = 'gerencial:negotiations:v3'
+LAST_GOOD_KEY = 'gerencial:negotiations:last-good:v3'
 CACHE_SECONDS = 300
 EXPECTED_SUPPLIERS = (
     'Negociacoes knakasaki', 'Amarante', 'Nakasaki', 'Lucas',
-    'Terra 2025', 'Terra 2026', 'Max', 'Yé',
+    'Terra 2025', 'Terra 2026',
 )
+EXCLUDED_SUPPLIERS = {'MAX', 'YE'}
 XML_NS = {'x': 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'}
 REL_NS = {'r': 'http://schemas.openxmlformats.org/package/2006/relationships'}
 OFFICE_REL = '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id'
@@ -253,6 +254,8 @@ def parse_xlsx(content):
         targets = {relation.get('Id'): relation.get('Target') for relation in relations.findall('r:Relationship', REL_NS)}
         for sheet in workbook.findall('.//x:sheet', XML_NS):
             supplier = sheet.get('name')
+            if _normalise_header(supplier) in EXCLUDED_SUPPLIERS:
+                continue
             target = targets.get(sheet.get(OFFICE_REL), '')
             if not target:
                 continue
