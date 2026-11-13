@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+from djangosige.apps.base.storage import DocumentosPrivadosStorage
 from django.contrib.auth.models import User
 from djangosige.apps.cadastro.models import Fornecedor
 
@@ -137,3 +140,33 @@ class ImportacaoPlanilha(models.Model):
     
     def __str__(self):
         return f'Importação {self.id} - {self.data_importacao.strftime("%d/%m/%Y %H:%M")}'
+
+
+class PagamentoNegociacao(models.Model):
+    """Pagamento feito a um fornecedor da planilha de negociações, com o
+    comprovante. Fica no sistema; a planilha do Google Drive não é alterada."""
+
+    fornecedor = models.CharField('Fornecedor', max_length=80)
+    pedido = models.CharField('Pedido', max_length=60, blank=True)
+    data = models.DateField('Data do pagamento')
+    valor = models.DecimalField('Valor pago', max_digits=16, decimal_places=2)
+    comprovante = models.FileField('Comprovante', upload_to='gerencial/comprovantes/%Y/%m/',
+                                   storage=DocumentosPrivadosStorage(), blank=True)
+    nome_comprovante = models.CharField(max_length=255, blank=True)
+    observacao = models.CharField('Observação', max_length=255, blank=True)
+    usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Pagamento de negociação'
+        verbose_name_plural = 'Pagamentos de negociações'
+        ordering = ['-data', '-pk']
+
+    def __str__(self):
+        return '%s · %s' % (self.fornecedor, self.data.strftime('%d/%m/%Y'))
+
+
+@receiver(post_delete, sender=PagamentoNegociacao)
+def remover_comprovante(sender, instance, **kwargs):
+    if instance.comprovante:
+        instance.comprovante.delete(save=False)

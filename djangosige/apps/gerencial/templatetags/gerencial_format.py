@@ -35,13 +35,16 @@ def ptbr_currency(value):
 @register.filter
 def fornecedores_por_negociado(supplier_kpis):
     """Linhas da tabela por fornecedor, do maior valor negociado para o menor,
-    com o percentual quitado (recebido / negociado)."""
+    com o percentual quitado (recebido / negociado) e a participação de cada um
+    no total negociado de todos."""
     linhas = []
+    soma = sum((_as_decimal(d.get('total_negotiated')) for d in (supplier_kpis or {}).values()), Decimal('0'))
     for nome, dados in (supplier_kpis or {}).items():
         total = _as_decimal(dados.get('total_negotiated'))
         recebido = _as_decimal(dados.get('received_estimate'))
         pct = (recebido / total * 100) if total > 0 else None
-        linhas.append({'nome': nome, 'dados': dados, 'pct': pct})
+        participacao = (total / soma * 100) if soma > 0 else None
+        linhas.append({'nome': nome, 'dados': dados, 'pct': pct, 'participacao': participacao})
     return sorted(linhas, key=lambda linha: (-_as_decimal(linha['dados'].get('total_negotiated')), linha['nome']))
 
 
@@ -85,3 +88,15 @@ def percentual(parte, total):
     """parte / total * 100 (0 quando o total é zero)."""
     total = _as_decimal(total)
     return (_as_decimal(parte) / total * 100) if total else Decimal('0')
+
+
+@register.filter
+def css_pct(valor):
+    """Percentual para usar em CSS (width: 52.1%), sempre com ponto."""
+    return '%.1f' % float(_as_decimal(valor))
+
+
+@register.filter
+def valor_input(valor):
+    """Valor para pré-preencher um campo: 1234.56 -> 1.234,56."""
+    return ptbr_number(valor, 2)

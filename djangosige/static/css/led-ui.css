@@ -1114,3 +1114,60 @@ input[type="file"]::file-selector-button:hover { background: #F3F4F5; }
 .tabela-cobertura tbody tr:last-child th { border-bottom: 0; }
 .tabela-cobertura td { padding-left: 6px; padding-right: 6px; }
 .tabela-cobertura .etiqueta { text-decoration: none; }
+
+/* ---------- Controle gerencial: distribuição e calendário de pagamentos ---------- */
+.distribuicao-lista { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 14px 40px; padding: 20px 24px; }
+.distribuicao-item { display: grid; grid-template-columns: minmax(110px, 1fr) minmax(100px, 1.6fr) 52px auto; gap: 12px; align-items: center; min-width: 0; }
+.distribuicao-nome { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; color: var(--tinta); text-decoration: none; }
+.distribuicao-nome:hover { color: var(--destaque-texto); text-decoration: underline; }
+.distribuicao-trilho { height: 8px; overflow: hidden; border-radius: 999px; background: var(--linha-tabela); }
+.distribuicao-barra { display: block; height: 100%; min-width: 3px; border-radius: inherit; background: var(--destaque); }
+.distribuicao-pct { font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; color: var(--tinta); }
+.distribuicao-valor { color: var(--texto-2); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.cal-cabecalho { flex-wrap: wrap; gap: 12px; }
+.cal-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-left: auto; }
+.cal-nav strong { min-width: 150px; text-align: center; font-size: 16px; }
+.cal-nav .btn .ico { width: 16px; height: 16px; }
+.cal-resumo { border-top: 0; border-bottom: 1px solid var(--linha-2); }
+.cal-resumo .numero-valor { white-space: nowrap; }
+.cal-legenda { display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 14px 24px 0; color: var(--texto-2); font-size: 13px; }
+.cal-legenda span { display: inline-flex; align-items: center; gap: 6px; }
+.cal-marca { width: 10px; height: 10px; border-radius: 3px; background: var(--informacao); }
+.cal-marca.is-vencido { background: var(--negativo); }
+.cal-marca.is-pago { background: var(--texto-3); }
+.cal-marca.is-registrado { background: var(--positivo); }
+#calendario .cal-grade { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); margin: 14px 24px 24px; border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; background: var(--superficie); }
+#calendario .cal-cab { padding: 10px 8px; font-size: 12px; font-weight: 600; color: var(--texto-2); border-bottom: 1px solid var(--linha); text-align: center; background: var(--superficie-2); }
+#calendario .cal-dia { min-height: 118px; padding: 8px; border-right: 1px solid var(--linha-2); border-bottom: 1px solid var(--linha-2); min-width: 0; }
+#calendario .cal-dia:nth-child(7n) { border-right: 0; }
+#calendario .cal-fora { background: var(--superficie-2); }
+#calendario .cal-fora .cal-num { color: var(--texto-3); }
+#calendario .cal-hoje { box-shadow: inset 0 0 0 2px var(--destaque); }
+#calendario .cal-topo { display: flex; align-items: center; justify-content: space-between; gap: 4px; margin-bottom: 6px; }
+#calendario .cal-num { font-weight: 600; font-size: 14px; color: var(--tinta); }
+#calendario .cal-semana { display: none; font-weight: 500; color: var(--texto-2); }
+#calendario .cal-add { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 6px; color: var(--texto-2); text-decoration: none; }
+#calendario .cal-add:hover { background: #F3F4F5; color: var(--tinta); }
+#calendario .cal-add .ico { width: 14px; height: 14px; }
+.cal-evento { display: block; margin-top: 4px; padding: 4px 6px; border-left: 3px solid var(--informacao); border-radius: 4px; background: var(--informacao-fundo); color: var(--tinta); font-size: 12px; line-height: 1.3; text-decoration: none; overflow-wrap: anywhere; }
+.cal-evento:hover { filter: brightness(.97); color: var(--tinta); }
+.cal-evento.is-vencido { border-left-color: var(--negativo); background: var(--negativo-fundo); }
+.cal-evento.is-pago { border-left-color: var(--texto-3); background: var(--superficie-2); color: var(--texto-2); }
+.cal-evento.is-registrado { border-left-color: var(--positivo); background: var(--positivo-fundo); }
+.cal-evento-nome { display: block; font-weight: 500; }
+.cal-evento-valor { display: block; font-weight: 600; font-variant-numeric: tabular-nums; }
+.cal-evento-valor small { font-weight: 400; color: var(--texto-2); }
+.cal-clipe { width: 12px; height: 12px; vertical-align: -2px; }
+.cal-mais summary { margin-top: 4px; font-size: 12px; color: var(--destaque-texto); cursor: pointer; }
+#calendario .cal-total { margin-top: 6px; padding-top: 4px; border-top: 1px dashed var(--linha); font-size: 11.5px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; color: var(--texto-2); }
+@media (max-width: 900px) {
+  #calendario .cal-grade { grid-template-columns: 1fr; margin: 14px 16px 16px; }
+  #calendario .cal-cab, #calendario .cal-vazio-celular { display: none; }
+  #calendario .cal-dia { min-height: 0; border-right: 0; }
+  #calendario .cal-semana { display: inline; }
+  .cal-nav { margin-left: 0; }
+  .distribuicao-lista { grid-template-columns: 1fr; padding: 16px; }
+  .distribuicao-item { grid-template-columns: minmax(90px, 1fr) 1.4fr 48px; }
+  .distribuicao-valor { grid-column: 1 / -1; margin-top: -8px; text-align: left; font-size: 13px; }
+}

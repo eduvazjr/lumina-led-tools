@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{% if pagamento %}Editar pagamento{% else %}Registrar pagamento{% endif %}{% endblock %}
+{% block breadcrumb %}{% if pagamento %}Editar pagamento{% else %}Registrar pagamento{% endif %}{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div class="page-head-texto">
+        <p class="page-subtitle"><a href="{% url 'gerencial:dashboard' %}#calendario">Controle gerencial</a></p>
+        <h1 class="page-title">{% if pagamento %}Editar pagamento{% else %}Registrar pagamento{% endif %}</h1>
+        <p class="page-subtitle">{% if pagamento and pagamento.comprovante %}Comprovante atual: <a href="{% url 'gerencial:pagamento_negociacao_comprovante' pagamento.pk %}" target="_blank" rel="noopener">{{ pagamento.nome_comprovante|default:"abrir" }}</a>{% else %}Valor pago a um fornecedor da planilha de negociações, com o comprovante.{% endif %}</p>
+    </div>
+</div>
+
+<form method="post" enctype="multipart/form-data" class="painel">
+    {% csrf_token %}
+    <div class="painel-corpo">
+        {% if form.non_field_errors %}<div class="aviso aviso-erro" role="alert">{% include 'base/componentes/icone_aviso.html' with tipo='erro' %}<span class="aviso-texto">{{ form.non_field_errors|join:" " }}</span></div>{% endif %}
+        <div class="campos">
+            {% for field in form.visible_fields %}{% include 'base/componentes/campo.html' %}{% endfor %}
+        </div>
+        <datalist id="fornecedores-planilha">{% for f in fornecedores %}<option value="{{ f }}">{% endfor %}</datalist>
+        <p class="painel-nota">O pagamento fica registrado no sistema e aparece no calendário. A planilha do Google Drive não é alterada: marque a parcela como paga nela também.</p>
+        <div class="form-acoes">
+            <a href="{% url 'gerencial:dashboard' %}#calendario" class="btn btn-secundario">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Salvar pagamento</button>
+        </div>
+    </div>
+</form>
+{% if pagamento %}
+<form method="post" action="{% url 'gerencial:pagamento_negociacao_remover' pagamento.pk %}" class="form-remover" onsubmit="return confirm('Remover este pagamento e o comprovante? Não dá para desfazer.');">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Remover pagamento</button>
+</form>
+{% endif %}
+{% endblock %}

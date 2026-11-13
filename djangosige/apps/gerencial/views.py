@@ -5,7 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, Count, Avg, Q
 from django.utils import timezone
 from datetime import date, timedelta
-from .models import PagamentoFornecedor, ImportacaoPlanilha
+from .models import PagamentoFornecedor, ImportacaoPlanilha, PagamentoNegociacao
+from . import calendario as cal
 from .drive_negotiations import build_dashboard_data, load_negotiations
 from djangosige.apps.cadastro.models import Fornecedor
 
@@ -26,6 +27,16 @@ def dashboard(request):
         'consolidated_kpis': consolidated['kpis'],
         'chart_distribution_data': dashboard_data['chart_distribution'],
         'chart_due_data': dashboard_data['chart_due'],
+    })
+    hoje = timezone.localdate()
+    ano, mes = cal.mes_pedido(request, hoje)
+    pagamentos = PagamentoNegociacao.objects.select_related('usuario')
+    if supplier:
+        pagamentos = pagamentos.filter(fornecedor=supplier)
+    calendario = cal.montar(records, pagamentos.filter(data__year__in=(ano - 1, ano, ano + 1)), ano, mes, hoje)
+    context.update({
+        'cal': calendario,
+        'pagamentos_mes': pagamentos.filter(data__range=(calendario['inicio_mes'], calendario['fim_mes'])),
     })
     return render(request, 'gerencial/dashboard.html', context)
 
@@ -226,3 +237,79 @@ def importar_planilha(request):
             messages.error(request, f'❌ Erro ao processar arquivo: {str(e)}')
     
     return redirect('gerencial:dashboard')
+
+
+# ------------------------------------------------- pagamentos com comprovante
+
+def _voltar_calendario(fornecedor, data):
+    from django.urls import reverse
+    from urllib.parse import urlencode
+    params = {'cal_ano': data.year, 'cal_mes': data.month}
+    if fornecedor:
+        params['fornecedor'] = fornecedor
+    return '%s?%s#calendario' % (reverse('gerencial:dashboard'), urlencode(params))
+
+
+def _form_pagamento_negociacao(request, pagamento=None):
+    from django.contrib import messages
+    from .forms import PagamentoNegociacaoForm
+    inicial = {}
+    if pagamento is None:
+        inicial = {chave: request.GET.get(chave) for chave in ('fornecedor', 'pedido', 'valor', 'data')
+                   if request.GET.get(chave)}
+        inicial.setdefault('data', date.today())
+    form = PagamentoNegociacaoForm(request.POST or None, request.FILES or None, instance=pagamento, initial=inicial)
+    if request.method == 'POST' and form.is_valid():
+        novo = form.save(commit=False)
+        enviado = request.FILES.get('comprovante')
+        if enviado:
+            if pagamento is not None:
+                anterior = PagamentoNegociacao.objects.get(pk=pagamento.pk).comprovante
+                if anterior:
+                    anterior.delete(save=False)
+            novo.nome_comprovante = enviado.name[:255]
+        if not novo.usuario_id:
+            novo.usuario = request.user
+        novo.save()
+        messages.success(request, 'Pagamento salvo.')
+        return redirect(_voltar_calendario(request.GET.get('filtro', ''), novo.data))
+    fornecedores = load_negotiations().get('records', [])
+    return render(request, 'gerencial/pagamento_negociacao_form.html', {
+        'form': form, 'pagamento': pagamento,
+        'fornecedores': sorted({r.get('supplier') for r in fornecedores if r.get('supplier')}),
+    })
+
+
+@login_required
+def pagamento_negociacao_add(request):
+    return _form_pagamento_negociacao(request)
+
+
+@login_required
+def pagamento_negociacao_edit(request, pk):
+    return _form_pagamento_negociacao(request, get_object_or_404(PagamentoNegociacao, pk=pk))
+
+
+@login_required
+def pagamento_negociacao_comprovante(request, pk):
+    from django.http import FileResponse, Http404
+    pagamento = get_object_or_404(PagamentoNegociacao, pk=pk)
+    if not pagamento.comprovante:
+        raise Http404
+    nome = pagamento.nome_comprovante or pagamento.comprovante.name.rsplit('/', 1)[-1]
+    extensao = nome.rsplit('.', 1)[-1].lower() if '.' in nome else ''
+    return FileResponse(pagamento.comprovante.open('rb'), filename=nome,
+                        as_attachment=extensao not in ('pdf', 'jpg', 'jpeg', 'png', 'webp'))
+
+
+@login_required
+def pagamento_negociacao_remover(request, pk):
+    from django.contrib import messages
+    from django.http import HttpResponseNotAllowed
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    pagamento = get_object_or_404(PagamentoNegociacao, pk=pk)
+    data = pagamento.data
+    pagamento.delete()
+    messages.success(request, 'Pagamento removido.')
+    return redirect(_voltar_calendario('', data))

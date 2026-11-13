@@ -1,0 +1,5 @@
+{% load led_ui gerencial_format %}
+<a class="cal-evento is-{{ item.status }}" href="{% url 'gerencial:pagamento_negociacao_add' %}?fornecedor={{ item.fornecedor|urlencode }}&amp;pedido={{ item.pedido|urlencode }}&amp;valor={{ item.valor|valor_input|urlencode }}&amp;data={{ dia.data|date:'Y-m-d' }}{% if selected_supplier %}&amp;filtro={{ selected_supplier|urlencode }}{% endif %}" title="{{ item.fornecedor }}{% if item.pedido %} · pedido {{ item.pedido }}{% endif %}{% if item.produto %} · {{ item.produto }}{% endif %}{% if item.parcelas %} · {{ item.parcelas }}{% endif %}{% if item.status != 'pago' %} · clique para registrar o pagamento{% endif %}">
+    <span class="cal-evento-nome">{{ item.fornecedor }}{% if item.pedido %} · {{ item.pedido }}{% endif %}</span>
+    <span class="cal-evento-valor">{{ item.valor|brl }}{% if item.parcelas %} <small>{{ item.parcelas }}</small>{% endif %}</span>
+</a>

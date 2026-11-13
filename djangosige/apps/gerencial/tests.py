@@ -9,6 +9,7 @@ from django.core.cache import cache
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
 
+from . import drive_negotiations
 from .drive_negotiations import build_dashboard_data, load_negotiations, parse_xlsx
 from .templatetags.gerencial_format import ptbr_currency, ptbr_number
 
@@ -154,7 +155,7 @@ class NegotiationsCacheTests(SimpleTestCase):
 
     @patch('djangosige.apps.gerencial.drive_negotiations.download_drive_file')
     def test_returns_stale_cache_when_refresh_fails(self, download):
-        cache.set('gerencial:negotiations:last-good', {'records': [], 'synced_at': 'previous'}, None)
+        cache.set(drive_negotiations.LAST_GOOD_KEY, {'records': [], 'synced_at': 'previous'}, None)
         download.side_effect = RuntimeError('Drive indisponível')
         result = load_negotiations()
         self.assertTrue(result['is_stale'])
