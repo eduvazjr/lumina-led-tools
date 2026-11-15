@@ -24,17 +24,23 @@ class ValorField(forms.DecimalField):
 
 class ItemCalendarioForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super(ItemCalendarioForm, self).__init__(*args, **kwargs)
+        self.fields['tipo_pagamento'].required = True
+
     class Meta:
         model = ItemCalendario
-        fields = ('data', 'descricao', 'valor', 'concluido', 'destaque')
+        fields = ('data', 'tipo_pagamento', 'descricao', 'valor', 'concluido', 'destaque')
         field_classes = {'valor': ValorField}
         widgets = {
             'data': forms.DateInput(format='%d/%m/%Y', attrs={'class': 'form-control datepicker'}),
+            'tipo_pagamento': forms.Select(attrs={'class': 'form-control'}),
             'descricao': forms.TextInput(attrs={'class': 'form-control'}),
             'valor': forms.TextInput(attrs={'class': 'form-control'}),
         }
         labels = {
             'data': 'Data',
+            'tipo_pagamento': 'Tipo de Pagamento',
             'descricao': 'Descrição',
             'valor': 'Valor (R$)',
             'concluido': 'Concluído',
@@ -57,3 +63,4 @@ class ImportarCalendarioForm(forms.Form):
         if arquivo.size > 20 * 1024 * 1024:
             raise forms.ValidationError('O arquivo tem mais de 20 MB.')
         return arquivo
+

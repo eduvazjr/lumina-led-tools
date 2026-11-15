@@ -150,10 +150,15 @@ class CalendarioTestCase(BaseTestCase):
             self.assertEqual(self.client.get(self.url, parametros).status_code, 200)
 
     def test_alternar_adicionar_editar_remover(self):
+        self.assertContains(
+            self.client.get(reverse('financeiro:addcalendarioitemview')),
+            'Tipo de Pagamento')
         response = self.client.post(reverse('financeiro:addcalendarioitemview'), {
-            'data': '10/11/2026', 'descricao': 'Novo item', 'valor': '1.234,56'})
+            'data': '10/11/2026', 'tipo_pagamento': 'aluguel',
+            'descricao': 'Novo item', 'valor': '1.234,56'})
         item = ItemCalendario.objects.get(descricao='Novo item')
         self.assertEqual(item.valor, Decimal('1234.56'))
+        self.assertEqual(item.tipo_pagamento, 'aluguel')
         self.assertIn('dia-2026-11-10', response['Location'])
 
         self.client.post(reverse('financeiro:alternarcalendarioitemview'), {'item': item.pk})
@@ -161,9 +166,12 @@ class CalendarioTestCase(BaseTestCase):
         self.assertTrue(item.concluido)
 
         self.client.post(reverse('financeiro:editarcalendarioitemview', kwargs={'pk': item.pk}), {
-            'data': '11/11/2026', 'descricao': 'Editado'})
+            'data': '11/11/2026', 'tipo_pagamento': 'reembolso_outros',
+            'descricao': 'Editado'})
         item.refresh_from_db()
-        self.assertEqual((item.descricao, item.valor, item.data), ('Editado', None, date(2026, 11, 11)))
+        self.assertEqual(
+            (item.descricao, item.valor, item.data, item.tipo_pagamento),
+            ('Editado', None, date(2026, 11, 11), 'reembolso_outros'))
 
         self.client.post(reverse('financeiro:removercalendarioitemview', kwargs={'pk': item.pk}))
         self.assertFalse(ItemCalendario.objects.filter(pk=item.pk).exists())
@@ -188,3 +196,4 @@ class CalendarioTestCase(BaseTestCase):
         self.assertIn('1 item atrasado', titulos)
         self.assertIn('1 item para hoje', titulos)
         self.assertIn('1 item nos próximos 7 dias', titulos)
+
