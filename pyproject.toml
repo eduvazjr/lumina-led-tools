@@ -24,6 +24,18 @@ dependencies = [
     # Demais runtime deps.
     "asgiref>=3.11",
     "django>=5.2,<5.3",
+    # O extra `socialaccount` exige cryptography>=3.3, mas a emissao de NF-e
+    # ainda depende de cryptography 2.9.2. Para Google OAuth, estas sao as
+    # dependencias de runtime necessarias sem alterar a pilha fiscal.
+    "django-allauth==65.22.1",
+    "PyJWT>=2,<3",
+    "requests>=2.32,<3",
+    # Dependencias ja usadas em producao e anteriormente mantidas apenas no
+    # requirements.txt. Declara-las aqui evita que o export do lock as remova.
+    "gunicorn==21.2.0",
+    "psycopg2-binary==2.9.9",
+    "whitenoise==6.6.0",
+    "openpyxl==3.1.5",
     "dj-database-url>=2",
     "lxml>=4.9,<5",
     "pillow>=12",

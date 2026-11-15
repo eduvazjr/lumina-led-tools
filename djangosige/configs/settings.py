@@ -61,6 +61,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Autenticacao social (Google OAuth 2.0)
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+
     # djangosige apps:
     'djangosige.apps.base',
     'djangosige.apps.login',
@@ -92,6 +98,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
@@ -191,7 +198,56 @@ LOGIN_NOT_REQUIRED = (
     r'/login/esqueceu/',
     r'/login/trocarsenha/',
     r'/logout/',
+    r'^/accounts/',
 )
+
+AUTHENTICATION_BACKENDS = [
+    # Preserva o login atual por usuario e senha.
+    'django.contrib.auth.backends.ModelBackend',
+    # Habilita o login social gerenciado pelo django-allauth.
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+LOGIN_URL = 'login:loginview'
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/login/'
+
+# O Google e apenas uma forma adicional de autenticar usuarios ja cadastrados.
+# Nao permite criacao publica de contas pelo fluxo social.
+ACCOUNT_SIGNUP_ENABLED = False
+SOCIALACCOUNT_ADAPTER = 'djangosige.apps.login.adapters.ExistingUserSocialAccountAdapter'
+SOCIALACCOUNT_AUTO_SIGNUP = False
+SOCIALACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_LOGIN_ON_GET = False
+SOCIALACCOUNT_STORE_TOKENS = False
+
+GOOGLE_OAUTH_CLIENT_ID = config('GOOGLE_OAUTH_CLIENT_ID', default='')
+GOOGLE_OAUTH_CLIENT_SECRET = config('GOOGLE_OAUTH_CLIENT_SECRET', default='')
+GOOGLE_LOGIN_ENABLED = bool(GOOGLE_OAUTH_CLIENT_ID and GOOGLE_OAUTH_CLIENT_SECRET)
+
+_GOOGLE_PROVIDER = {
+    'SCOPE': ['profile', 'email'],
+    'AUTH_PARAMS': {
+        'access_type': 'online',
+        'prompt': 'select_account',
+    },
+    'OAUTH_PKCE_ENABLED': True,
+    # So associa a um usuario local quando o Google confirmar o e-mail.
+    'EMAIL_AUTHENTICATION': True,
+}
+
+if GOOGLE_LOGIN_ENABLED:
+    _GOOGLE_PROVIDER['APP'] = {
+        'client_id': GOOGLE_OAUTH_CLIENT_ID,
+        'secret': GOOGLE_OAUTH_CLIENT_SECRET,
+        'key': '',
+    }
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': _GOOGLE_PROVIDER,
+}
+
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # FIX STATIC FILES

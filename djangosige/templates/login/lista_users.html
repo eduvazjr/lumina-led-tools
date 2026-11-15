@@ -18,6 +18,8 @@
                     <th class="col-id">#</th>
                     <th>Usuário</th>
                     <th>Nome</th>
+                    <th>E-mail</th>
+                    <th style="width:140px">Google</th>
                     <th style="width:160px">Perfil</th>
                     {% include 'base/list_check_all.html' %}
                 </tr>
@@ -28,6 +30,16 @@
                     <td class="col-id">{{usr.id}}</td>
                     <td><strong>{{usr.username}}</strong></td>
                     <td>{% if usr.first_name or usr.last_name %}{{usr.first_name}} {{usr.last_name}}{% else %}<span class="cell-muted">—</span>{% endif %}</td>
+                    <td>{% if usr.email %}{{usr.email}}{% else %}<span class="cell-muted">—</span>{% endif %}</td>
+                    <td>
+                        {% if usr.google_connected %}
+                        <span class="badge badge-success">Vinculado</span>
+                        {% elif usr.email %}
+                        <span class="badge badge-info">Não vinculado</span>
+                        {% else %}
+                        <span class="badge badge-warning">Sem e-mail</span>
+                        {% endif %}
+                    </td>
                     <td>{% if usr.is_superuser %}<span class="badge badge-led">Administrador</span>{% else %}<span class="badge">Usuário</span>{% endif %}</td>
                     {% if usr.is_superuser %}
                     <td class="col-check"><span class="cell-muted" title="Administradores não podem ser removidos por aqui">—</span></td>
