@@ -20,6 +20,15 @@ STATUS_CONTA_SAIDA_ESCOLHAS = (
     (u'2', u'Atrasada'),
 )
 
+TIPOS_PAGAMENTO_ESCOLHAS = (
+    ('ajuda_custo', 'Ajuda de Custo'),
+    ('pagamento_fornecedor', 'Pagamento Fornecedor'),
+    ('aluguel', 'Aluguel'),
+    ('reembolso_cliente', 'Reembolso Cliente'),
+    ('reembolso_funcionario', 'Reembolso Funcionário'),
+    ('reembolso_outros', 'Reembolso Outros'),
+)
+
 STATUS_CONTA_ENTRADA_ESCOLHAS = (
     (u'0', u'Recebida'),
     (u'1', u'A receber'),
@@ -82,6 +91,10 @@ class Saida(Lancamento):
     fornecedor = models.ForeignKey(
         'cadastro.Fornecedor', related_name="conta_fornecedor", on_delete=models.SET_NULL, null=True, blank=True)
     numero_documento = models.CharField(max_length=60, blank=True, default='')
+    # Lançamentos anteriores permanecem sem classificação até serem atualizados.
+    tipo_pagamento = models.CharField(
+        'Tipo de Pagamento', max_length=30, choices=TIPOS_PAGAMENTO_ESCOLHAS,
+        blank=True, default='')
     status = models.CharField(
         max_length=1, choices=STATUS_CONTA_SAIDA_ESCOLHAS, default='1')
     grupo_plano = models.ForeignKey(

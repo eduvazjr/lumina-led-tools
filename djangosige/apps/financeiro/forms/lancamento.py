@@ -101,6 +101,7 @@ class EntradaForm(LancamentoForm):
     def __init__(self, *args, **kwargs):
         super(EntradaForm, self).__init__(*args, **kwargs)
         self.fields['status'].initial = '0'
+        self.fields['tipo_pagamento'].required = True
 
         if PlanoContasGrupo.objects.filter(tipo_grupo='1').count():
             self.fields['grupo_plano'].choices = ((grupo.id, str(grupo.codigo) + ' - ' + str(
@@ -152,16 +153,18 @@ class SaidaForm(LancamentoForm):
     class Meta(LancamentoForm.Meta):
         model = Saida
         fields = LancamentoForm.Meta.fields + \
-            ('fornecedor', 'status', 'numero_documento',)
+            ('fornecedor', 'status', 'numero_documento', 'tipo_pagamento',)
         widgets = LancamentoForm.Meta.widgets
         widgets['fornecedor'] = forms.Select(attrs={'class': 'form-control'})
         widgets['status'] = forms.Select(
             attrs={'class': 'form-control', 'disabled': True})
         labels = LancamentoForm.Meta.labels
+        widgets['tipo_pagamento'] = forms.Select(attrs={'class': 'form-control'})
         widgets['numero_documento'] = forms.TextInput(
             attrs={'class': 'form-control'})
         labels['fornecedor'] = _('Fornecedor')
         labels['numero_documento'] = _('Número do documento')
+        labels['tipo_pagamento'] = _('Tipo de Pagamento')
         labels['status'] = _('Status')
 
 

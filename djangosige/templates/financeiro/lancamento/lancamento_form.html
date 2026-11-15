@@ -22,6 +22,18 @@
       </div>
     </div>
 
+    {% if form.tipo_pagamento %}
+    <div class="col-sm-6">
+      <div class="form-group">
+        <div class="form-line">
+          <label for="{{form.tipo_pagamento.id_for_label}}">{{form.tipo_pagamento.label}}</label>{% if form.tipo_pagamento.field.required %} <span class="required" aria-hidden="true">*</span>{% endif %}
+          {% if form.tipo_pagamento.errors %}<label class="error">{% for error in form.tipo_pagamento.errors %}{{error}}{% endfor %}</label>{% endif %}
+          {{form.tipo_pagamento}}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
     {% if form.numero_documento %}
     <div class="col-sm-6">
       <div class="form-group">
