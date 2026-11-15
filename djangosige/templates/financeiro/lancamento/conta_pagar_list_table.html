@@ -10,6 +10,7 @@
                 <th style="width:120px">Nº documento</th>
                 <th style="width:160px">Grupo</th>
                 <th>Fornecedor</th>
+                <th>Tipo de Pagamento</th>
                 <th class="col-num" style="width:140px">Valor</th>
                 <th class="col-actions no-sort"></th>
                 {% include 'base/list_check_all.html' %}
@@ -24,6 +25,7 @@
                 <td>{{conta.numero_documento|default:"—"}}</td>
                 <td>{{conta.classificacao|default_if_none:"—"}}</td>
                 <td>{{conta.fornecedor|default_if_none:"—"}}</td>
+                <td>{{conta.get_tipo_pagamento_display|default:"—"}}</td>
                 <td class="col-num"><strong>{{ conta.valor_liquido|brl }}</strong></td>
                 <td class="col-actions"><button type="button" class="btn btn-sm btn-soft-success js-pagar-conta" data-id="{{conta.id}}" data-vencimento="{{conta.format_data_vencimento|default_if_none:''}}">Pagar</button></td>
                 {% include 'base/list_check.html' with obj_id=conta.id %}
