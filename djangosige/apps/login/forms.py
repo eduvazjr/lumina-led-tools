@@ -54,6 +54,13 @@ class UserRegistrationForm(forms.ModelForm):
         model = User
         fields = ('username', 'email', 'password',)
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '').strip()
+        if email and User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError(
+                'Este e-mail já está vinculado a outro usuário.')
+        return email
+
 
 class PasswordResetForm(forms.Form):
     email_or_username = forms.CharField(widget=forms.TextInput(
@@ -89,3 +96,16 @@ class PerfilUsuarioForm(forms.ModelForm):
     class Meta:
         model = Usuario
         fields = ('first_name', 'last_name', 'username', 'email', 'user_foto',)
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '').strip()
+        users = (
+            User.objects.filter(email__iexact=email)
+            if email else User.objects.none()
+        )
+        if self.instance and self.instance.user_id:
+            users = users.exclude(pk=self.instance.user_id)
+        if users.exists():
+            raise forms.ValidationError(
+                'Este e-mail já está vinculado a outro usuário.')
+        return email

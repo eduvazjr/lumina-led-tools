@@ -16,6 +16,8 @@ from django.core.mail import send_mail
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
+from django.conf import settings
+from django.db.models import Exists, OuterRef
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template import loader
@@ -45,12 +47,19 @@ class UserFormView(View):
     form_class = UserLoginForm
     template_name = 'login/login.html'
 
+    @staticmethod
+    def get_context(form):
+        return {
+            'form': form,
+            'google_login_enabled': settings.GOOGLE_LOGIN_ENABLED,
+        }
+
     def get(self, request):
         form = self.form_class(None)
 
         if request.user.is_authenticated:
             return redirect('base:index')
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, self.get_context(form))
 
     def post(self, request):
         form = self.form_class(request.POST or None)
@@ -64,7 +73,7 @@ class UserFormView(View):
                 login(request, user)
                 return redirect('base:index')
 
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, self.get_context(form))
 
 
 class UserRegistrationFormView(SuperUserRequiredMixin, SuccessMessageMixin, FormView):
@@ -353,7 +362,13 @@ class UsuariosListView(SuperUserRequiredMixin, ListView):
     success_url = reverse_lazy('login:usuariosview')
 
     def get_queryset(self):
-        return User.objects.all()
+        from allauth.socialaccount.models import SocialAccount
+
+        google_accounts = SocialAccount.objects.filter(
+            user_id=OuterRef('pk'),
+            provider='google',
+        )
+        return User.objects.annotate(google_connected=Exists(google_accounts))
 
     def post(self, request, *args, **kwargs):
         for key, value in request.POST.items():

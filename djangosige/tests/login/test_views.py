@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 
+from types import SimpleNamespace
+
 from djangosige.tests.test_case import BaseTestCase, TEST_USERNAME, TEST_PASSWORD
 from djangosige.apps.cadastro.models import Empresa, MinhaEmpresa
 from djangosige.apps.login.models import Usuario
+from djangosige.apps.login.adapters import ExistingUserSocialAccountAdapter
 
+from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth.models import User
+from django.test import override_settings
 from django.urls import reverse
 from django.db.models import Q
 
@@ -35,6 +40,59 @@ class UserFormViewTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/index.html')
 
+    @override_settings(GOOGLE_LOGIN_ENABLED=False)
+    def test_google_login_hidden_without_credentials(self):
+        self.client.logout()
+        response = self.client.get(reverse('login:loginview'))
+        self.assertNotContains(response, 'Continuar com Google')
+
+    @override_settings(
+        GOOGLE_LOGIN_ENABLED=True,
+        SOCIALACCOUNT_PROVIDERS={
+            'google': {
+                'APP': {
+                    'client_id': 'test-client-id',
+                    'secret': 'test-client-secret',
+                    'key': '',
+                },
+            },
+        },
+    )
+    def test_google_login_button_uses_post(self):
+        self.client.logout()
+        response = self.client.get(reverse('login:loginview'))
+        self.assertContains(response, 'Continuar com Google')
+        self.assertContains(
+            response,
+            'action="/accounts/google/login/?process=login"',
+        )
+        self.assertContains(response, 'method="post"')
+
+    def test_social_signup_is_closed(self):
+        adapter = ExistingUserSocialAccountAdapter()
+        self.assertFalse(adapter.is_open_for_signup(None, None))
+
+    def test_google_email_requires_one_active_user(self):
+        email = 'usuario-google@example.com'
+        self.user.email = email
+        self.user.save(update_fields=['email'])
+
+        adapter = ExistingUserSocialAccountAdapter()
+        adapter.can_authenticate_by_email = lambda sociallogin, value: True
+        sociallogin = SimpleNamespace(
+            email_addresses=[SimpleNamespace(email=email, verified=True)],
+        )
+
+        matched_user, matched_email = adapter.authenticate_by_email(sociallogin)
+        self.assertEqual(matched_user, self.user)
+        self.assertEqual(matched_email, email)
+
+        User.objects.create_user(
+            username='usuario-google-duplicado',
+            email=email,
+        )
+        self.assertIsNone(adapter.authenticate_by_email(sociallogin))
+
 
 class UserRegistrationFormViewTestCase(BaseTestCase):
 
@@ -63,6 +121,22 @@ class UserRegistrationFormViewTestCase(BaseTestCase):
         response = self.client.post(url, data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(User.objects.filter(username='newUser').exists())
+
+        # E-mail precisa identificar um unico usuario para o login Google.
+        data = {
+            'username': 'newUserDuplicateEmail',
+            'password': 'password1234',
+            'confirm': 'password1234',
+            'email': 'newUser@email.com',
+        }
+        response = self.client.post(url, data, follow=True)
+        self.assertFormError(
+            response.context['form'],
+            'email',
+            'Este e-mail já está vinculado a outro usuário.',
+        )
+        self.assertFalse(
+            User.objects.filter(username='newUserDuplicateEmail').exists())
 
         # Assert form invalido (senhas diferentes)
         data = {
@@ -187,11 +261,21 @@ class UsuariosListViewTestCase(BaseTestCase):
         self.client.login(username=TEST_USERNAME, password=TEST_PASSWORD)
 
         # Testar GET request lista
-        obj = User.objects.create()
+        obj = User.objects.create(
+            username='usuario-google',
+            email='usuario@example.com',
+        )
+        SocialAccount.objects.create(
+            user=obj,
+            provider='google',
+            uid='google-test-uid',
+        )
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(obj in response.context['object_list'])
         self.assertTemplateUsed(response, 'login/lista_users.html')
+        self.assertContains(response, 'usuario@example.com')
+        self.assertContains(response, 'Vinculado')
 
         # Deletar objeto criado por POST request
         data = {

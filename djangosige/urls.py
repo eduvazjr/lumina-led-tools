@@ -7,6 +7,7 @@ from .configs.settings import DEBUG, MEDIA_ROOT, MEDIA_URL
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/', include('allauth.urls')),
     url(r'^', include('djangosige.apps.base.urls')),
     url(r'^login/', include('djangosige.apps.login.urls')),
     url(r'^cadastro/', include('djangosige.apps.cadastro.urls')),
