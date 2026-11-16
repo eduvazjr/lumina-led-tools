@@ -87,5 +87,13 @@
     $('body').on('click', '#importar_nota', function(){
       $('.importar_nota_modal').modal('show');
     });
+    $('body').on('change', '#id_arquivo_xml_nfe', function(){
+      var quantidade = this.files ? this.files.length : 0;
+      var texto = quantidade ? quantidade + ' arquivo(s) selecionado(s).' : '';
+      $('#arquivos_xml_selecionados').text(texto);
+    });
+    $('body').on('submit', '#form_importar_nota', function(){
+      $('#importar_nota_btn').prop('disabled', true).text('Importando...');
+    });
   </script>
 {% endblock %}
