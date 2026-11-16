@@ -1,9 +1,16 @@
 # -*- coding: utf-8 -*-
 
+import logging
+import os
+from datetime import datetime
+from decimal import Decimal
+
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.db import transaction
 from django.shortcuts import redirect
 from django.http import HttpResponse
+from django.utils.html import escape
 
 from djangosige.apps.base.custom_views import CustomView, CustomCreateView, CustomListView, CustomUpdateView, CustomTemplateView
 from djangosige.apps.base.views_mixins import FormValidationMessageMixin
@@ -15,13 +22,14 @@ from djangosige.apps.cadastro.models import MinhaEmpresa
 from djangosige.apps.login.models import Usuario
 from djangosige.apps.vendas.models import PedidoVenda, ItensVenda
 
+logger = logging.getLogger(__name__)
+
+PROCESSADOR_NF_IMPORT_ERROR = None
 try:
     from .processador_nf import ProcessadorNotaFiscal
-except ImportError:
-    pass
-
-from decimal import Decimal
-from datetime import datetime
+except ImportError as exc:
+    ProcessadorNotaFiscal = None
+    PROCESSADOR_NF_IMPORT_ERROR = exc
 
 
 class NotaFiscalViewMixin(object):
@@ -516,16 +524,89 @@ class GerarCopiaNotaView(CustomView):
 
 class ImportarNotaView(CustomView):
 
+    max_arquivos = 20
+    max_tamanho_arquivo = 5 * 1024 * 1024
+
+    def validar_arquivo(self, arquivo):
+        nome = arquivo.name or ''
+        if not nome.lower().endswith('.xml'):
+            raise ValueError('Selecione somente arquivos com extensão .xml.')
+        if arquivo.size == 0:
+            raise ValueError('O arquivo está vazio.')
+        if arquivo.size > self.max_tamanho_arquivo:
+            raise ValueError('O arquivo excede o limite de 5 MB.')
+
     def post(self, request, *args, **kwargs):
-        if len(request.FILES):
-            processador_nota = ProcessadorNotaFiscal()
-            try:
-                processador_nota.importar_xml(request)
-            except Exception as e:
-                messages.error(
-                    request, 'O seguinte erro foi encontrado ao tentar ler o arquivo XML: ' + str(e))
-        else:
+        arquivos = request.FILES.getlist('arquivo_xml')
+
+        if not arquivos:
             messages.error(request, 'Arquivo XML não selecionado.')
+            return self.get_redirect_url()
+
+        if len(arquivos) > self.max_arquivos:
+            messages.error(
+                request,
+                'Selecione no máximo %d arquivos XML por importação.' %
+                self.max_arquivos,
+            )
+            return self.get_redirect_url()
+
+        if ProcessadorNotaFiscal is None:
+            logger.error(
+                'Processador fiscal indisponível para importar XML: %s',
+                PROCESSADOR_NF_IMPORT_ERROR,
+            )
+            messages.error(
+                request,
+                'O importador fiscal está indisponível no servidor. '
+                'Atualize as dependências fiscais e tente novamente.',
+            )
+            return self.get_redirect_url()
+
+        importados = 0
+        erros = []
+
+        for arquivo in arquivos:
+            nome_arquivo = escape(os.path.basename(arquivo.name or 'arquivo.xml'))
+            try:
+                self.validar_arquivo(arquivo)
+                with transaction.atomic():
+                    ProcessadorNotaFiscal().importar_xml(request, arquivo)
+                importados += 1
+            except Exception as exc:
+                if isinstance(exc, ValueError):
+                    logger.warning(
+                        'Arquivo XML %r não importado: %s',
+                        arquivo.name,
+                        exc,
+                    )
+                else:
+                    logger.exception(
+                        'Erro ao importar o arquivo XML %r',
+                        arquivo.name,
+                    )
+                detalhe = escape(str(exc)) or 'Não foi possível processar o arquivo.'
+                erros.append('%s: %s' % (nome_arquivo, detalhe))
+
+        if importados:
+            messages.success(
+                request,
+                '%d arquivo(s) XML importado(s) com sucesso.' % importados,
+            )
+
+        if erros:
+            limite_exibicao = 5
+            detalhes = erros[:limite_exibicao]
+            if len(erros) > limite_exibicao:
+                detalhes.append(
+                    'Outros %d arquivo(s) também apresentaram erro.' %
+                    (len(erros) - limite_exibicao)
+                )
+            messages.error(
+                request,
+                '%d arquivo(s) não foram importados:<br>%s' %
+                (len(erros), '<br>'.join(detalhes)),
+            )
 
         return self.get_redirect_url()
 

@@ -12,9 +12,9 @@
         <div class="modal-body">
           <div class="container-fluid">
 
-            <!-- SELECIONAR ARQUIVO XML -->
+            <!-- SELECIONAR ARQUIVOS XML -->
             <div class="row">
-              <h4 class="form-secao">Selecione o arquivo da Nota Fiscal</h4>
+              <h4 class="form-secao">Selecione os arquivos das Notas Fiscais</h4>
             </div>
             
             <div class="row">
@@ -22,8 +22,10 @@
               <div class="col-sm-12">
                 <div class="form-group">
                   <div class="form-line">
-                    <label>Arquivo XML</label>
-                    <input class="form-control" id="id_arquivo_xml_nfe" name="arquivo_xml" type="file" accept="text/xml" required/>
+                    <label>Arquivos XML</label>
+                    <input class="form-control" id="id_arquivo_xml_nfe" name="arquivo_xml" type="file" accept=".xml,application/xml,text/xml" multiple required/>
+                    <span class="help-block">Você pode selecionar até 20 arquivos XML de uma vez, com no máximo 5 MB cada.</span>
+                    <span class="help-block" id="arquivos_xml_selecionados"></span>
                   </div>
                 </div>
               </div>
@@ -35,14 +37,14 @@
               {% endif %}
 
             </div>
-            <!-- #SELECIONAR ARQUIVO XML -->
+            <!-- #SELECIONAR ARQUIVOS XML -->
 
           </div>
 
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-          <button type="submit" class="btn btn-primary" id="importar_nota_btn">Importar</button>
+          <button type="submit" class="btn btn-primary" id="importar_nota_btn">Importar arquivos</button>
         </div>
       </div>
     </form>

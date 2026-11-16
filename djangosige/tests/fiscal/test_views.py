@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from unittest.mock import Mock, patch
+
 from djangosige.tests.test_case import BaseTestCase, replace_none_values_in_dictionary
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from django.utils import timezone
 
@@ -153,6 +156,116 @@ class FiscalListarViewsTestCase(BaseTestCase):
         obj = NotaFiscalEntrada.objects.create(dhemi=timezone.now())
         self.check_list_view_delete(url=reverse(
             'fiscal:listanotafiscalentradaview'), deleted_object=obj)
+
+
+class FiscalImportarXMLViewTestCase(BaseTestCase):
+
+    url = reverse('fiscal:importarnotafiscalentrada')
+    list_url = reverse('fiscal:listanotafiscalentradaview')
+
+    @staticmethod
+    def arquivo_xml(nome='nota.xml'):
+        return SimpleUploadedFile(
+            nome,
+            b'<?xml version="1.0" encoding="UTF-8"?><NFe/>',
+            content_type='application/xml',
+        )
+
+    def test_tela_permite_selecionar_varios_xmls(self):
+        response = self.client.get(self.list_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'name="arquivo_xml"')
+        self.assertContains(response, 'multiple')
+
+    def test_importador_carrega_sem_biblioteca_legada_de_emissao(self):
+        from djangosige.apps.fiscal.views.nota_fiscal import (
+            ProcessadorNotaFiscal,
+        )
+
+        self.assertIsNotNone(ProcessadorNotaFiscal)
+
+    @patch('djangosige.apps.fiscal.views.nota_fiscal.ProcessadorNotaFiscal')
+    def test_importa_varios_arquivos_separadamente(self, processador_factory):
+        processador = Mock()
+        processador_factory.return_value = processador
+
+        response = self.client.post(
+            self.url,
+            {
+                'fornecedor': 'on',
+                'arquivo_xml': [
+                    self.arquivo_xml('nota-1.xml'),
+                    self.arquivo_xml('nota-2.xml'),
+                ],
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(processador.importar_xml.call_count, 2)
+        self.assertContains(
+            response,
+            '2 arquivo(s) XML importado(s) com sucesso.',
+        )
+
+    @patch('djangosige.apps.fiscal.views.nota_fiscal.ProcessadorNotaFiscal')
+    def test_falha_em_um_xml_desfaz_somente_aquele_arquivo(
+            self, processador_factory):
+        quantidade_inicial = NotaFiscalEntrada.objects.count()
+        processador = Mock()
+
+        def importar_com_erro(request, arquivo):
+            NotaFiscalEntrada.objects.create(dhemi=timezone.now())
+            raise ValueError('XML inválido para teste.')
+
+        processador.importar_xml.side_effect = importar_com_erro
+        processador_factory.return_value = processador
+
+        response = self.client.post(
+            self.url,
+            {
+                'fornecedor': 'on',
+                'arquivo_xml': self.arquivo_xml('nota-invalida.xml'),
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(NotaFiscalEntrada.objects.count(), quantidade_inicial)
+        self.assertContains(response, 'nota-invalida.xml')
+        self.assertContains(response, 'XML inválido para teste.')
+
+    @patch(
+        'djangosige.apps.fiscal.views.nota_fiscal.ProcessadorNotaFiscal',
+        None,
+    )
+    def test_dependencia_fiscal_ausente_nao_gera_erro_500(self):
+        response = self.client.post(
+            self.url,
+            {
+                'fornecedor': 'on',
+                'arquivo_xml': self.arquivo_xml(),
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'importador fiscal está indisponível')
+
+    @patch('djangosige.apps.fiscal.views.nota_fiscal.ProcessadorNotaFiscal')
+    def test_rejeita_arquivo_que_nao_e_xml(self, processador_factory):
+        response = self.client.post(
+            self.url,
+            {
+                'fornecedor': 'on',
+                'arquivo_xml': self.arquivo_xml('nota.txt'),
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        processador_factory.assert_not_called()
+        self.assertContains(response, 'somente arquivos com extensão .xml')
 
 
 class FiscalEditarViewsTestCase(BaseTestCase):

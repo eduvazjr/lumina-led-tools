@@ -10,12 +10,20 @@ from djangosige.apps.vendas.models import PedidoVenda, ItensVenda
 
 from djangosige.apps.vendas.models import Pagamento as PagamentoVenda
 
-from pysignfe.nf_e import nf_e
-from pysignfe.nfe.manual_700.nfe_400 import NFe as NFe_400
-from pysignfe.nfe.manual_700.nfe_400 import Det as Det_400
-from pysignfe.nfe.manual_700.nfe_400 import autXML as autXML_400
-from pysignfe.nfe.manual_700.nfe_400 import Dup as Dup_400
+try:
+    from pysignfe.nf_e import nf_e
+    from pysignfe.nfe.manual_700.nfe_400 import NFe as NFe_400
+    from pysignfe.nfe.manual_700.nfe_400 import Det as Det_400
+    from pysignfe.nfe.manual_700.nfe_400 import autXML as autXML_400
+    from pysignfe.nfe.manual_700.nfe_400 import Dup as Dup_400
+except ImportError:
+    nf_e = None
+    NFe_400 = None
+    Det_400 = None
+    autXML_400 = None
+    Dup_400 = None
 
+from .leitor_xml_nfe import LeitorXMLNFe
 from ssl import SSLError
 from datetime import datetime
 
@@ -357,18 +365,27 @@ class ProcessadorNotaFiscal(object):
 
         return nfe
 
-    def importar_xml(self, request):
-        if request.POST.get('fornecedor') == 'on':
-            self.importar_xml_fornecedor(request)
-        else:
-            self.importar_xml_cliente(request)
+    @staticmethod
+    def ler_arquivo_xml(request, arquivo_xml=None):
+        arquivo = arquivo_xml or request.FILES['arquivo_xml']
+        conteudo = arquivo.read()
 
-    def importar_xml_cliente(self, request):
-        nfe = NFe_400()
+        if not conteudo or not conteudo.strip():
+            raise ValueError('O arquivo XML está vazio.')
+        return conteudo
+
+    def importar_xml(self, request, arquivo_xml=None):
+        if request.POST.get('fornecedor') == 'on':
+            self.importar_xml_fornecedor(request, arquivo_xml)
+        else:
+            self.importar_xml_cliente(request, arquivo_xml)
+
+    def importar_xml_cliente(self, request, arquivo_xml=None):
+        nfe = LeitorXMLNFe()
         nota_saida = NotaFiscalSaida()
         venda = PedidoVenda()
 
-        xml_nfe = request.FILES['arquivo_xml'].read().decode("utf-8")
+        xml_nfe = self.ler_arquivo_xml(request, arquivo_xml)
 
         nfe.xml = xml_nfe
 
@@ -803,17 +820,19 @@ class ProcessadorNotaFiscal(object):
             pagamento.valor_parcela = d.vDup.valor
             pagamento.save()
 
-    def importar_xml_fornecedor(self, request):
-        nfe = NFe_400()
+    def importar_xml_fornecedor(self, request, arquivo_xml=None):
+        nfe = LeitorXMLNFe()
         nota_entrada = NotaFiscalEntrada()
         compra = PedidoCompra()
 
-        xml_nfe = request.FILES['arquivo_xml'].read().decode("utf-8")
+        xml_nfe = self.ler_arquivo_xml(request, arquivo_xml)
 
         nfe.xml = xml_nfe
 
         nota_entrada.n_nf_entrada = str(nfe.infNFe.ide.nNF.valor)
         nota_entrada.chave = str(nfe.infNFe.Id.valor[-44:])
+        if NotaFiscalEntrada.objects.filter(chave=nota_entrada.chave).exists():
+            raise ValueError('Esta nota fiscal já foi importada.')
         nota_entrada.natop = nfe.infNFe.ide.natOp.valor
         nota_entrada.indpag = str(nfe.infNFe.ide.indPag.valor)
         nota_entrada.mod = str(nfe.infNFe.ide.mod.valor)
@@ -903,7 +922,7 @@ class ProcessadorNotaFiscal(object):
             empresas = [e for e in Empresa.objects.filter(
                 tipo_pessoa='PJ') if e.cpf_cnpj_apenas_digitos == nfe.infNFe.dest.CNPJ.valor]
             if len(empresas):
-                nota_entrada.dest_entrada = fornecedores[0]
+                nota_entrada.dest_entrada = empresas[0]
             else:
                 empresa = Empresa()
                 empresa.nome_razao_social = nfe.infNFe.dest.xNome.valor
